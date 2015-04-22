@@ -1,6 +1,6 @@
 @extends('app')
 @section('footer')
-    Html::script('/admin/js/RuleModule.js')
+    <?php echo Html::script('/admin/js/RuleModule.js') ?>
 @endsection
 @section('content')
     <style>
