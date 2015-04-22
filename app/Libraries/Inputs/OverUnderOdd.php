@@ -6,8 +6,8 @@
  * Time: 2:58 PM
  */
 namespace App\Libraries\Inputs;
-class HandicapOdd extends InputBase {
-    public $_view = 'over_under_odd';
+class OverUnderOdd extends InputBase {
+    public $_view = 'handicap_odd';
     public function renderView(){
         try {
             return parent::renderView();

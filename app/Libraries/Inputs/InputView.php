@@ -14,7 +14,7 @@ class InputView {
     public $_folderClass = "App\Libraries\Inputs\\";
     public function __construct($request){
         try {
-            $className = ucfirst($request->get('name'));
+            $className = ucfirst($request->get('class_name'));
             $classPath = $this->_folderClass . $className;
             $r = new ReflectionClass($classPath);
             $this->_refClass = $r->newInstanceArgs([$request]);
@@ -25,6 +25,16 @@ class InputView {
     public function render() {
         if($this->_refClass !== null) {
             return $this->_refClass->renderView();
+        }
+    }
+    public function setAttributes($request) {
+        if($this->_refClass !== null) {
+            $this->_refClass->setAttributes($request);
+        }
+    }
+    public function save() {
+        if($this->_refClass !== null) {
+            return $this->_refClass->save();
         }
     }
 }
