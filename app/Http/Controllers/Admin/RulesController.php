@@ -30,4 +30,11 @@ class RulesController extends AdminController {
         echo $inputClass->render();
     }
 
+    public function save(Request $request) {
+        $all = $request->all();
+        $inputClass = new InputView($request);
+        $inputClass->setAttributes($all);
+        $inputClass->save();
+        echo $inputClass->render();
+    }
 }
