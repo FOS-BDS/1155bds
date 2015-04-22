@@ -19,6 +19,10 @@ Route::get('/', 'WelcomeController@index');
 Route::get('testInput', 'HomeController@testInput');
 Route::get('home', 'HomeController@index');
 
+/* Admin */
+Route::get('rules', 'Admin\RulesController@index');
+/* End Admin */
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',

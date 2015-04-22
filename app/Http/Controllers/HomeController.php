@@ -50,7 +50,7 @@ class HomeController extends Controller {
         $supplies = Suppliers::all();
         debug($supplies);
         $inputClass = new InputView($request);
-        return view('admin/index');
+        return view('admin.rules.index');
         echo $inputClass->render();
     }
 
