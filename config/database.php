@@ -26,7 +26,7 @@ return [
 	|
 	*/
 
-	'default' => 'mysql',
+	'default' => 'mongodb',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -83,6 +83,14 @@ return [
 			'password' => env('DB_PASSWORD', ''),
 			'prefix'   => '',
 		],
+        'mongodb' => [
+            'driver'   => 'mongodb',
+            'host'     => env('MONGO_DB_HOST', 'localhost'),
+            'port'     => 27017,
+            'username' => env('MONGO_DB_USERNAME', 'username'),
+            'password' => env('MONGO_DB_PASSWORD', 'pass'),
+            'database' => env('MONGO_DB_DATABASE', 'fos')
+        ],
 
 	],
 
