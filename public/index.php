@@ -55,3 +55,11 @@ $response = $kernel->handle(
 $response->send();
 
 $kernel->terminate($request, $response);
+
+
+function debug($strString, $exit = false) {
+    print '<pre>';
+    print_r($strString);
+    print '</pre>';
+    if($exit) exit();
+}

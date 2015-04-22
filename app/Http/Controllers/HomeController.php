@@ -1,4 +1,10 @@
-<?php namespace App\Http\Controllers;
+<?php
+namespace App\Http\Controllers;
+
+use App\Libraries\Inputs\InputView;
+use App\Models\Suppliers;
+use App\Models\Users;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller {
 
@@ -20,7 +26,7 @@ class HomeController extends Controller {
 	 */
 	public function __construct()
 	{
-		$this->middleware('auth');
+		//$this->middleware('auth');
 	}
 
 	/**
@@ -32,5 +38,20 @@ class HomeController extends Controller {
 	{
 		return view('home');
 	}
+
+    public function testInput(Request $request) {
+        /*$supplierArr = array('Crown','ibcbet','Sbobet','Macauslot');
+        foreach($supplierArr as $index => $suppli) {
+            $user = new Suppliers();
+            $user->id = $index+1;
+            $user->name = $suppli;
+            $user->save();
+        }*/
+        $supplies = Suppliers::all();
+        debug($supplies);
+        $inputClass = new InputView($request);
+        return view('admin.rules.index');
+        echo $inputClass->render();
+    }
 
 }

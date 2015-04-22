@@ -11,9 +11,17 @@
 |
 */
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 Route::get('/', 'WelcomeController@index');
 
+Route::get('testInput', 'HomeController@testInput');
 Route::get('home', 'HomeController@index');
+
+/* Admin */
+Route::get('rules', 'Admin\RulesController@index');
+/* End Admin */
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
