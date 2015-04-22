@@ -42,12 +42,12 @@
                                 <div class="panel-heading">Loại luật - {{$supplier->name}}</div>
                                 <div class="panel-body">
                                     <div class="list-group" id="rule_type_list">
-                                        <a href="#" class="list-group-item" onclick="RuleModule.LoadRuleData(this,{{$supplier->id}}); return false;">
+                                        <a href="#" class="list-group-item" onclick="RuleModule.getRules(this,{{$supplier->id}},'HandicapOdd','role_list_{{$supplier->id}}'); return false;">
                                             <span class="glyphicon glyphicon-chevron-right"></span>
                                             Handicap Odds
                                             <span class="badge">28</span>
                                         </a>
-                                        <a href="#" class="list-group-item" onclick="RuleModule.LoadRuleData(this,{{$supplier->id}}); return false;">
+                                        <a href="#" class="list-group-item" onclick="RuleModule.getRules(this,{{$supplier->id}},'OverUnderOdd','role_list_{{$supplier->id}}'); return false;">
                                             <span class="glyphicon glyphicon-chevron-right"></span>
                                             Over/Under Odds
                                             <span class="badge">28</span>
@@ -57,9 +57,10 @@
                             </div>
                         </div>
                         <div class="col-lg-9 col-md-9 col-xs-12 col-sm-12">
-                            <div class="panel panel-default">
+                            <div id="role_list_{{$supplier->id}}"></div>
+                            <div class="panel panel-primary">
                                 <div class="panel-heading">Danh sách các luật</div>
-                                <div class="panel-body" id="role_list_{{$supplier->id}}">
+                                <div class="panel-body">
 
                                 </div>
                             </div>

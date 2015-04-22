@@ -25,18 +25,8 @@ class RulesController extends AdminController {
         return view('admin.rules.index', ['suppliers' => $suppliers]);
 	}
 
-    public function testInput(Request $request) {
-        /*$supplierArr = array('Crown','ibcbet','Sbobet','Macauslot');
-        foreach($supplierArr as $index => $suppli) {
-            $user = new Suppliers();
-            $user->id = $index+1;
-            $user->name = $suppli;
-            $user->save();
-        }*/
-        $supplies = Suppliers::all();
-        debug($supplies);
+    public function getRules(Request $request) {
         $inputClass = new InputView($request);
-        return view('admin/index');
         echo $inputClass->render();
     }
 

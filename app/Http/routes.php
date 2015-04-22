@@ -20,7 +20,8 @@ Route::get('testInput', 'HomeController@testInput');
 Route::get('home', 'HomeController@index');
 
 /* Admin */
-Route::get('rules', 'Admin\RulesController@index');
+Route::get('admin/rules', 'Admin\RulesController@index');
+Route::get('admin/rules/getRules', 'Admin\RulesController@getRules');
 /* End Admin */
 
 Route::controllers([
