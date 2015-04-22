@@ -11,8 +11,12 @@
 |
 */
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
 Route::get('/', 'WelcomeController@index');
 
+Route::get('testInput', 'HomeController@testInput');
 Route::get('home', 'HomeController@index');
 
 Route::controllers([
