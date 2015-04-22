@@ -9,7 +9,7 @@ namespace App\Libraries\Inputs;
 use ReflectionClass;
 
 abstract class InputBase {
-    public $_folder = 'inputs/';
+    public $_folder = 'inputs.';
     public $_view = 'default';
 
     public function __construct($request){
