@@ -29,3 +29,17 @@ Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
+
+//////////// SYNC DATA  //////////
+
+Route::post('/matchs','Data\MatchController@postMatchs');
+
+
+
+//////// END SYNC DATA ////////////
+
+Route::get('/test',function() {
+    $users=new \App\Models\Users();
+    $user=$users->find()->skip(3)->limit(10);
+    var_dump(iterator_to_array($user));
+});
