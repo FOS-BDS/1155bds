@@ -19,18 +19,18 @@
             @foreach($suppliers as $supplier)
                 <div class="tab-pane" id="{{$supplier['name']}}">
                     <aside class="left-side sidebar-offcanvas">
-                        <section class="content-header"><h3 class="panel-title">Loại luật - {{$supplier['name']}}</h3></section>
+                        <section class="content-header box box-primary"><h3 class="panel-title">Loại luật - {{$supplier['name']}}</h3></section>
                         <section class="sidebar">
                             <ul class="sidebar-menu">
                                 <li>
-                                    <a href="#" onclick="RuleModule.getRules(this,{{$supplier['id']}},'HandicapOdd','role_list_{{$supplier['id']}}'); return false;">
+                                    <a href="#" onclick="RuleModule.getRules(this,{{$supplier['id']}},'HandicapOdd'); return false;">
                                         <span class="glyphicon glyphicon-chevron-right"></span>
                                         Handicap Odds
                                         <span class="badge">28</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" onclick="RuleModule.getRules(this,{{$supplier['id']}},'OverUnderOdd','role_list_{{$supplier['id']}}'); return false;">
+                                    <a href="#" onclick="RuleModule.getRules(this,{{$supplier['id']}},'OverUnderOdd'); return false;">
                                         <span class="glyphicon glyphicon-chevron-right"></span>
                                         Over/Under Odds
                                         <span class="badge">28</span>
@@ -41,7 +41,7 @@
                     </aside>
                     <aside class="right-side">
                         <div id="role_edit_{{$supplier['id']}}"></div>
-                        <div id="role_list_{{$supplier['id']}}">
+                        <div id="role_list_{{$supplier['id']}}" class="box box-danger">
                             <section class="content-header"><h3 class="panel-title">Danh sách các luật</h3></section>
                             <section class="content">Vui long chon mot loai luat de hien thi.</section>
                         </div>
