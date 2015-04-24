@@ -8,14 +8,17 @@
 namespace App\Libraries\Inputs;
 use App\Models\Rules;
 use ReflectionClass;
+use MongoId;
 
 abstract class InputBase {
-    public $_folder = 'inputs.';
-    public $_view = 'default';
+    public $_folderView = 'admin.rules_renders.views.';
+    public $_folderForm = 'admin.rules_renders.forms.';
+    public $_viewForm = 'default';
+    public $_viewList = 'rules';
     public $_attributes = array();
 
     public function __construct($request){
-
+        $this->_attributes = $request->all();
     }
     /**
      * @return string
@@ -25,10 +28,33 @@ abstract class InputBase {
         return $ref->getShortName();
     }
 
+    /**
+     * @return html view
+     */
     public function renderView(){
         try {
+            $ruleModels = new Rules();
             $className = $this->getName();
-            return view($this->_folder.$this->_view, array('className' => $className))->render();
+            $supplierId = $this->_attributes['supplier_id'];
+            $rules = $ruleModels->find(array('class_name'=>$className,'supplier_id'=>$supplierId));
+            $rules = iterator_to_array($rules);
+            return view($this->_folderView.$this->_viewList, array('className' => $className, 'supplierId' => $supplierId))->with('rules', $rules)->render();
+        } catch(\Exception $e) {
+            debug($e->getMessage());
+        }
+    }
+
+    /**
+     * @return html form
+     */
+    public function renderForm(){
+        try {
+            if(isset($this->_attributes['_id']) && $this->_attributes['_id']) {
+                $ruleModel = new Rules();
+                $this->_attributes = $ruleModel->findOne(array('_id' => new MongoId($this->_attributes['_id'])));
+            }
+            $className = $this->getName();
+            return view($this->_folderForm.$this->_viewForm, array('className' => $className))->with('params', $this->_attributes)->render();
         } catch(\Exception $e) {
             debug($e->getMessage());
         }
@@ -36,12 +62,14 @@ abstract class InputBase {
 
     public function save() {
         $ruleModel = new Rules();
-        foreach($this->_attributes as $attribute => $value) {
-            if(!in_array($attribute, array('_token', 'class_name'))) {
-                $ruleModel->$attribute = $value;
-            }
+        if(isset($this->_attributes['_id']) && $this->_attributes['_id']) {
+            $mongoId = new MongoId($this->_attributes['_id']);
+            unset($this->_attributes['_id']);
+            return $ruleModel->update(array('_id' => $mongoId),$this->_attributes,array("upsert" => true));
+        } else {
+            unset($this->_attributes['_id']);
+            return $ruleModel->insert($this->_attributes);
         }
-        $ruleModel->save();
     }
 
     public function setAttributes($attributes) {

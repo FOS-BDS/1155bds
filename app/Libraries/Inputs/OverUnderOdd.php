@@ -7,10 +7,10 @@
  */
 namespace App\Libraries\Inputs;
 class OverUnderOdd extends InputBase {
-    public $_view = 'handicap_odd';
-    public function renderView(){
+    public $_view = 'over_under_odd';
+    public function renderView($params){
         try {
-            return parent::renderView();
+            return parent::renderView($params);
         } catch(\Exception $e) {
             debug($e->getMessage());
         }

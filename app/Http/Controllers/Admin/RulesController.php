@@ -2,8 +2,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Libraries\Inputs\InputView;
+use App\Models\Rules;
 use App\Models\Suppliers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RulesController extends AdminController {
 	/**
@@ -21,20 +23,27 @@ class RulesController extends AdminController {
 	 * @return Response
 	 */
 	public function index() {
-        $suppliers = Suppliers::all();
+        $supplierModel = new Suppliers();
+        $suppliers = $supplierModel->find();
+        $suppliers = iterator_to_array($suppliers);
         return view('admin.rules.index', ['suppliers' => $suppliers]);
 	}
 
     public function getRules(Request $request) {
         $inputClass = new InputView($request);
-        echo $inputClass->render();
+        echo $inputClass->renderView($request);
+    }
+
+    public function editRule(Request $request) {
+        $inputClass = new InputView($request);
+        $params = $request->all();
+        echo $inputClass->renderForm($params);
     }
 
     public function save(Request $request) {
         $all = $request->all();
         $inputClass = new InputView($request);
-        $inputClass->setAttributes($all);
         $inputClass->save();
-        echo $inputClass->render();
+        echo $inputClass->renderForm($all);
     }
 }

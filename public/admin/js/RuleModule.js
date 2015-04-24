@@ -4,25 +4,93 @@
 var RuleModule = {
     urlApi: '/admin/',
     supplier_id: 0,
+    class_name: '',
+    class_form: '#role_edit_',
+    class_list: '#role_list_',
 
     setUp: function() {
         //RuleModule.getRules();
     },
-    getRules: function(myself, supplier_id, className, elementId) {
+    getRules: function(myself, supplier_id, class_name, reload_only) {
         var that = this;
-        //$(that.show_error).empty();
+        that.supplier_id = supplier_id;
+        that.class_name = class_name;
+        $(myself).parent().find('a').removeClass('active');
         $.ajax({
             url: that.urlApi + 'rules/getRules',
-            data: {supplier_id:that.supplier_id,class_name:className},
+            data: {supplier_id:that.supplier_id,class_name:that.class_name},
             dataType: 'html',
             type: "GET",
             beforeSend: function() {
+                $(myself).addClass('active');
+                $(that.class_list+that.supplier_id).prepend('<div class="loading"><i class="fa fa-2x fa-gear fa-spin"></i></div>');
+                if(reload_only === undefined || !reload_only) $(that.class_form+that.supplier_id).slideUp();
             },
             success:function(result) {
-                $('#'+elementId).html(result);
+                $(that.class_list+that.supplier_id).html(result);
             },
             error: function(jqXHR){
-                $('#'+elementId).html(jqXHR);
+                $(that.class_list+that.supplier_id).html(jqXHR);
+            }
+        });
+    },
+    addRule: function(myself) {
+        var that = this;
+        $.ajax({
+            url: that.urlApi + 'rules/editRule',
+            data: {supplier_id:that.supplier_id,class_name:that.class_name},
+            dataType: 'html',
+            type: "GET",
+            beforeSend: function() {
+                $(myself).addClass('active');
+                $(that.class_form+that.supplier_id).fadeIn();
+            },
+            success:function(result) {
+                $(that.class_form+that.supplier_id).html(result);
+            },
+            error: function(jqXHR){
+                $(that.class_form+that.supplier_id).html(jqXHR);
+            }
+        });
+    },
+    editRule: function(myself, _id) {
+        var that = this;
+        //$('#'+elementId).boxRefresh();
+        $.ajax({
+            url: that.urlApi + 'rules/editRule',
+            data: {_id:_id,class_name:that.class_name},
+            dataType: 'html',
+            type: "GET",
+            beforeSend: function() {
+                $(myself).addClass('active');
+                $(that.class_form+that.supplier_id).fadeIn();
+            },
+            success:function(result) {
+                $(that.class_form+that.supplier_id).html(result);
+            },
+            error: function(jqXHR){
+                $(that.class_form+that.supplier_id).html(jqXHR);
+            }
+        });
+    },
+    deleteRule: function(myself, _id) {
+        var that = this;
+        alert(_id);
+        return false;
+        $.ajax({
+            url: that.urlApi + 'rules/editRule',
+            data: {_id:_id,class_name:that.class_name},
+            dataType: 'html',
+            type: "GET",
+            beforeSend: function() {
+                $(myself).addClass('active');
+                $(that.class_form+that.supplier_id).fadeIn();
+            },
+            success:function(result) {
+                $(that.class_form+that.supplier_id).html(result);
+            },
+            error: function(jqXHR){
+                $(that.class_form+that.supplier_id).html(jqXHR);
             }
         });
     },
@@ -42,6 +110,7 @@ var RuleModule = {
             },
             success:function(result) {
                 $(myself).button('reset');
+                that.getRules(myself,that.supplier_id,that.class_name, true)
             },
             error: function(jqXHR){
                 $(myself).button('reset');

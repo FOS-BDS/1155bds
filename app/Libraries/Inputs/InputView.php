@@ -22,7 +22,12 @@ class InputView {
             printf($e->getMessage());
         }
     }
-    public function render() {
+    public function renderForm() {
+        if($this->_refClass !== null) {
+            return $this->_refClass->renderForm();
+        }
+    }
+    public function renderView($request) {
         if($this->_refClass !== null) {
             return $this->_refClass->renderView();
         }

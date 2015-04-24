@@ -1,77 +1,55 @@
 @extends('app')
-@section('footer')
+@section('scripts')
     <?php echo Html::script('/admin/js/RuleModule.js') ?>
+    <?php echo Html::script('/admin/js/plugins/tinycolor/tinycolor.min.js') ?>
+    <?php echo Html::script('/admin/js/plugins/colorpicker-slider/bootstrap.colorpickersliders.js') ?>
+@endsection
+@section('styles')
+    <?php echo Html::style('/admin/js/plugins/colorpicker-slider/bootstrap.colorpickersliders.css') ?>
 @endsection
 @section('content')
-    <style>
-        .rules>.panel-body {
-            padding: 0;
-        }
-        .rules>.panel-body>.list-group {
-            margin-bottom: 0;
-        }
-        .rules>.panel-body .list-group-item:first-child {
-            border-top-right-radius: 0;
-            border-top-left-radius: 0;
-        }
-        .rules>.panel-body .list-group-item {
-            border-left: none;
-            border-right: none;
-        }
-        .rules>.panel-body .list-group-item:last-child {
-            margin-bottom: 0;
-            border-bottom: none;
-        }
-        .tab-pane {
-            padding: 15px 0;
-        }
-    </style>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <ul class="nav nav-tabs">
-                    @foreach($suppliers as $supplier)
-                        <li role="presentation" class=""><a href="#{{$supplier->name}}" data-toggle="tab">{{$supplier->name}}</a></li>
-                    @endforeach
-                </ul>
-                <div class="tab-content">
-                    @foreach($suppliers as $supplier)
-                    <div class="tab-pane" id="{{$supplier->name}}">
-                        <div class="col-lg-3 col-md-3 col-xs-12 col-sm-12 no-padding">
-                            <div class="panel panel-primary rules">
-                                <div class="panel-heading">Loại luật - {{$supplier->name}}</div>
-                                <div class="panel-body">
-                                    <div class="list-group" id="rule_type_list">
-                                        <a href="#" class="list-group-item" onclick="RuleModule.getRules(this,{{$supplier->id}},'HandicapOdd','role_list_{{$supplier->id}}'); return false;">
-                                            <span class="glyphicon glyphicon-chevron-right"></span>
-                                            Handicap Odds
-                                            <span class="badge">28</span>
-                                        </a>
-                                        <a href="#" class="list-group-item" onclick="RuleModule.getRules(this,{{$supplier->id}},'OverUnderOdd','role_list_{{$supplier->id}}'); return false;">
-                                            <span class="glyphicon glyphicon-chevron-right"></span>
-                                            Over/Under Odds
-                                            <span class="badge">28</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+    <section class="content-header panel-primary"><h3 class="panel-title">Quan ly luat</h3></section>
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            @foreach($suppliers as $supplier)
+                <li role="presentation" class=""><a href="#{{$supplier['name']}}" data-toggle="tab">{{$supplier['name']}}</a></li>
+            @endforeach
+        </ul>
+        <div class="tab-content">
+            @foreach($suppliers as $supplier)
+                <div class="tab-pane" id="{{$supplier['name']}}">
+                    <aside class="left-side sidebar-offcanvas">
+                        <section class="content-header box box-primary"><h3 class="panel-title">Loại luật - {{$supplier['name']}}</h3></section>
+                        <section class="sidebar">
+                            <ul class="sidebar-menu">
+                                <li>
+                                    <a href="#" onclick="RuleModule.getRules(this,{{$supplier['id']}},'HandicapOdd'); return false;">
+                                        <span class="glyphicon glyphicon-chevron-right"></span>
+                                        Handicap Odds
+                                        <span class="badge">28</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="RuleModule.getRules(this,{{$supplier['id']}},'OverUnderOdd'); return false;">
+                                        <span class="glyphicon glyphicon-chevron-right"></span>
+                                        Over/Under Odds
+                                        <span class="badge">28</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </section>
+                    </aside>
+                    <aside class="right-side">
+                        <div id="role_edit_{{$supplier['id']}}"></div>
+                        <div id="role_list_{{$supplier['id']}}" class="box box-danger">
+                            <section class="content-header"><h3 class="panel-title">Danh sách các luật</h3></section>
+                            <section class="content">Vui long chon mot loai luat de hien thi.</section>
                         </div>
-                        <div class="col-lg-9 col-md-9 col-xs-12 col-sm-12">
-                            <div id="role_list_{{$supplier->id}}"></div>
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">Danh sách các luật</div>
-                                <div class="panel-body">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
+                    </aside>
                 </div>
-            </div>
+            @endforeach
         </div>
     </div>
-
     <div class="modal fade" id="editRuleModal" tabindex="-1" role="dialog" aria-labelledby="Edit Rule" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
