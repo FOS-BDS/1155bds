@@ -1,1 +1,0 @@
-mongod --dbpath E:\projects\newteam\data
