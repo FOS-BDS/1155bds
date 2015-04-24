@@ -8,6 +8,7 @@
 namespace App\Libraries\Inputs;
 use App\Models\Rules;
 use ReflectionClass;
+use MongoId;
 
 abstract class InputBase {
     public $_folderView = 'admin.rules_renders.views.';
@@ -32,9 +33,11 @@ abstract class InputBase {
      */
     public function renderView(){
         try {
+            $ruleModels = new Rules();
             $className = $this->getName();
             $supplierId = $this->_attributes['supplier_id'];
-            $rules = Rules::where('class_name', '=', $className)->where('supplier_id', '=', $supplierId)->take(100)->get();
+            $rules = $ruleModels->find(array('class_name'=>$className,'supplier_id'=>$supplierId));
+            $rules = iterator_to_array($rules);
             return view($this->_folderView.$this->_viewList, array('className' => $className, 'supplierId' => $supplierId))->with('rules', $rules)->render();
         } catch(\Exception $e) {
             debug($e->getMessage());
@@ -47,8 +50,8 @@ abstract class InputBase {
     public function renderForm(){
         try {
             if(isset($this->_attributes['_id']) && $this->_attributes['_id']) {
-                $rule = Rules::find($this->_attributes['_id']);
-                $params = $rule->getAttributes();
+                $ruleModel = new Rules();
+                $this->_attributes = $ruleModel->findOne(array('_id' => new MongoId($this->_attributes['_id'])));
             }
             $className = $this->getName();
             return view($this->_folderForm.$this->_viewForm, array('className' => $className))->with('params', $this->_attributes)->render();
@@ -58,19 +61,15 @@ abstract class InputBase {
     }
 
     public function save() {
+        $ruleModel = new Rules();
         if(isset($this->_attributes['_id']) && $this->_attributes['_id']) {
-            $ruleModel = Rules::find($this->_attributes['_id']);
+            $mongoId = new MongoId($this->_attributes['_id']);
+            unset($this->_attributes['_id']);
+            return $ruleModel->update(array('_id' => $mongoId),$this->_attributes,array("upsert" => true));
         } else {
             unset($this->_attributes['_id']);
-            $ruleModel = new Rules();
+            return $ruleModel->insert($this->_attributes);
         }
-        foreach($this->_attributes as $attribute => $value) {
-            if(!in_array($attribute, array('_token'))) {
-                $ruleModel->$attribute = $value;
-            }
-        }
-
-        return $ruleModel->save();
     }
 
     public function setAttributes($attributes) {

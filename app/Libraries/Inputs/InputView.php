@@ -22,14 +22,14 @@ class InputView {
             printf($e->getMessage());
         }
     }
-    public function renderForm($params = array()) {
+    public function renderForm() {
         if($this->_refClass !== null) {
-            return $this->_refClass->renderForm($params);
+            return $this->_refClass->renderForm();
         }
     }
     public function renderView($request) {
         if($this->_refClass !== null) {
-            return $this->_refClass->renderView($request);
+            return $this->_refClass->renderView();
         }
     }
     public function setAttributes($request) {

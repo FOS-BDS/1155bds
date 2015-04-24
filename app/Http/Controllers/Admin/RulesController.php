@@ -23,7 +23,9 @@ class RulesController extends AdminController {
 	 * @return Response
 	 */
 	public function index() {
-        $suppliers = Suppliers::all();
+        $supplierModel = new Suppliers();
+        $suppliers = $supplierModel->find();
+        $suppliers = iterator_to_array($suppliers);
         return view('admin.rules.index', ['suppliers' => $suppliers]);
 	}
 
