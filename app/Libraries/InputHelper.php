@@ -71,4 +71,11 @@ class InputHelper
     {
         return self::$input;
     }
+    public static function getDataSource() {
+        if(array_key_exists(Constants::DATA_SOURCE,self::$input)) {
+            return self::$input[Constants::DATA_SOURCE];
+        } else {
+            return Constants::SOURCE_NOWGOAL;// default is nowgoal
+        }
+    }
 }

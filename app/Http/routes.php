@@ -40,6 +40,11 @@ Route::post('/matchs','Data\MatchController@postMatchs');
 
 Route::get('/test',function() {
     $users=new \App\Models\Users();
-    $user=$users->find()->skip(3)->limit(10);
-    var_dump(iterator_to_array($user));
+    $user_cur=$users->find();
+    $user_cur->next();
+    while($user_cur->hasNext()) {
+        var_dump($user_cur->current());
+        $user_cur->next();
+    }
+
 });

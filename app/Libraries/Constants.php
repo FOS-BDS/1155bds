@@ -9,5 +9,6 @@ namespace App\Libraries;
  */
 class Constants
 {
-
+    const DATA_SOURCE='data_source';
+    const SOURCE_NOWGOAL='NOWGOAL';
 }
