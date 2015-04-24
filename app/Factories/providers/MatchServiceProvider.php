@@ -6,7 +6,7 @@
  * Time: 09:46
  */
 
-namespace app\Factories\providers;
+namespace App\Factories\providers;
 
 
 use App\Libraries\APIException;

@@ -9,7 +9,7 @@
 namespace App\Http\Controllers\Data;
 
 
-use app\Factories\providers\MatchServiceProvider;
+use App\Factories\providers\MatchServiceProvider;
 use App\Http\Controllers\BaseController;
 
 class MatchController extends BaseController{

@@ -13,6 +13,7 @@ use App\Libraries\InputHelper;
 use App\Libraries\ResponseBuilder;
 use App\Libraries\StringHelper;
 use App\Logics\base\MatchDataServiceBase;
+use App\Models\Leagues;
 use App\Models\Teams;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -32,9 +33,9 @@ class NowGoalMatchs extends MatchDataServiceBase{
 
             $this->generateObjects($matchs,$leags);
 
-            $this->updateMatchs($matchs,$leags);
+            //$this->updateMatchs($matchs,$leags);
 
-            $this->updateLeagues($leags);
+            //$this->updateLeagues($leags);
 
         } catch(Exception $e) {
             return ResponseBuilder::error($e);
@@ -42,27 +43,63 @@ class NowGoalMatchs extends MatchDataServiceBase{
     }
     private function generateObjects($match,$leagues) {
 
+        $teamModel=new Teams();
         $team_objects=array();
         // gen team objects
-        $teams=array();
+        $new_teams=array();
         foreach ($match as $match_obj) {
             if($match_obj==null) continue;
-            $teams[$match_obj[2]]=$match_obj[4];
-            $teams[$match_obj[3]]=$match_obj[5];
+            $match_obj[1]=$leagues[$match_obj[1]][0];
+            $h_team=$match_obj[4];
+
+            $pos=strpos($h_team,'<');
+            if($pos>0) {
+                $h_team=substr($h_team,0,$pos);
+            }
+            $g_team=$match_obj[5];
+
+            $pos=strpos($g_team,'<');
+            if($pos>0) {
+                $g_team=substr($g_team,0,$pos);
+            }
+            $t1=Teams::makeObject($match_obj[2],$h_team);
+            $new_teams[intval($match_obj[2])]=$t1;
+            $t2=Teams::makeObject($match_obj[3],$g_team);
+            $new_teams[intval($match_obj[3])]=$t2;
         }
-        $team=new Teams();
-        $team_cur=$team->find(array("reference_id"=>array('$in'=>array_keys($teams))));
+
+        $team_ids=array_keys($new_teams);
+
+        $team_cur=$teamModel->find(array('reference_id'=>array('$in'=>$team_ids)));
         $team_cur->next();
 
         while($team_cur->hasNext()) {
             $team_obj=$team_cur->current();
-
-
-
+            $team_objects[$team_obj->reference_id]=$team_obj;
+            unset($new_teams[$team_obj->reference_id]);
             $team_cur->next();
         }
+        if(count($new_teams)>0)
+        {
+            $teamModel->batchInsert(array_values($new_teams));
+            foreach ($new_teams as $team_item) {
+                $team_objects[$team_item->reference_id]=$team_item;
+            }
+        }
 
+        $league_objects=array();
+        $new_leagues=array();
         // gen leagues objects
+        foreach ($leagues as $league_item) {
+            $new_teams[intval($league_item[0])]
+                =Leagues::makeObject($league_item[0],$league_item[1],$league_item[2],$league_item[5],$league_item[3]);
+        }
+
+        $leagueModel=new Leagues();
+        $league_ids=array_keys($new_teams);
+
+        $league_cur=$leagueModel->find(array('reference_id'=>array('$in'=>$league_ids)));
+
         // filter existing and new match
     }
     private function formatData($js_data) {
