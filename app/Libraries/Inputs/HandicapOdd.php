@@ -7,10 +7,19 @@
  */
 namespace App\Libraries\Inputs;
 class HandicapOdd extends InputBase {
-    public $_view = 'over_under_odd';
+    public $_viewForm = 'handicap_odd';
+    public $_viewList = 'rules';
     public function renderView(){
         try {
             return parent::renderView();
+        } catch(\Exception $e) {
+            debug($e->getMessage());
+        }
+    }
+
+    public function renderForm(){
+        try {
+            return parent::renderForm();
         } catch(\Exception $e) {
             debug($e->getMessage());
         }
