@@ -14,7 +14,9 @@ use App\Libraries\ResponseBuilder;
 use App\Libraries\StringHelper;
 use App\Logics\base\MatchDataServiceBase;
 use App\Models\Leagues;
+use App\Models\Matchs;
 use App\Models\Teams;
+use DateTime;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use stdClass;
@@ -47,9 +49,9 @@ class NowGoalMatchs extends MatchDataServiceBase{
         $team_objects=array();
         // gen team objects
         $new_teams=array();
-        foreach ($match as $match_obj) {
+        foreach ($match as $key=>$match_obj) {
             if($match_obj==null) continue;
-            $match_obj[1]=$leagues[$match_obj[1]][0];
+            $match[$key][1]=$leagues[$match_obj[1]][0];
             $h_team=$match_obj[4];
 
             $pos=strpos($h_team,'<');
@@ -71,14 +73,15 @@ class NowGoalMatchs extends MatchDataServiceBase{
         $team_ids=array_keys($new_teams);
 
         $team_cur=$teamModel->find(array('reference_id'=>array('$in'=>$team_ids)));
-        $team_cur->next();
 
-        while($team_cur->hasNext()) {
-            $team_obj=$team_cur->current();
+        do {
+            $team_cur->next();
+            $team_obj=(object)$team_cur->current();
             $team_objects[$team_obj->reference_id]=$team_obj;
             unset($new_teams[$team_obj->reference_id]);
-            $team_cur->next();
         }
+        while($team_cur->hasNext());
+
         if(count($new_teams)>0)
         {
             $teamModel->batchInsert(array_values($new_teams));
@@ -87,20 +90,85 @@ class NowGoalMatchs extends MatchDataServiceBase{
             }
         }
 
+        // generate league objects
         $league_objects=array();
         $new_leagues=array();
         // gen leagues objects
         foreach ($leagues as $league_item) {
-            $new_teams[intval($league_item[0])]
+            if($league_item==null) continue;
+            $new_leagues[intval($league_item[0])]
                 =Leagues::makeObject($league_item[0],$league_item[1],$league_item[2],$league_item[5],$league_item[3]);
         }
 
         $leagueModel=new Leagues();
-        $league_ids=array_keys($new_teams);
+        $league_ids=array_keys($new_leagues);
 
         $league_cur=$leagueModel->find(array('reference_id'=>array('$in'=>$league_ids)));
 
-        // filter existing and new match
+        do {
+            $league_cur->next();
+            $league_obj=(object)$league_cur->current();
+            $league_objects[$league_obj->reference_id]=$league_obj;
+            unset($new_leagues[$league_obj->reference_id]);
+        } while($league_cur->hasNext());
+
+        if(count($new_leagues)>0) {
+            $leagueModel->batchInsert(array_values($new_leagues));
+            foreach ($new_leagues as $league) {
+                $league_objects[$league->reference_id]=$league;
+            }
+        }
+
+        // generate match objects
+        $this->generateMatchObject($team_objects,$league_objects,$match);
+        
+    }
+    private function generateMatchObject($teams,$leagues,$matchs) {
+
+        $match_objs=array();
+        foreach ($matchs as $match) {
+            if($match==null) continue;
+
+            $id=$match[0];
+
+            $link="http://data.nowgoal.com/3in1odds/{$id}.html";
+
+            $time_1=new DateTime();
+            $time_1->setDate($match[6],$match[7]+1,$match[8]);
+            $time_1->setTime($match[9],$match[10],$match[11]);
+
+            $time_2=new DateTime();
+            $time_2->setDate($match[12],$match[13]+1,$match[14]);
+            $time_2->setTime($match[15],$match[16],$match[17]);
+
+            $league_obj=$leagues[$match[1]];
+            $h_team=$teams[$match[2]];
+            $g_team=$teams[$match[3]];
+
+            $match_objs[]=array(
+                'reference_id'=>intval($id),
+                'league_id'=>$league_obj->_id,
+                'time_1'=>new \MongoDate($time_1->getTimestamp()),
+                'time_2'=>new \MongoDate($time_2->getTimestamp()),
+                'h_goal'=>intval($match[19]),
+                'g_goal'=>intval($match[20]),
+                'h_read_card'=>intval($match[23]),
+                'g_read_card'=>intval($match[24]),
+                'h_yellow_card'=>intval($match[25]),
+                'g_yellow_card'=>intval($match[26]),
+                'status'=>intval($match[18]),
+                'ht_h_goal'=>$match[21]==null?0:intval($match[21]),
+                'ht_g_goal'=>$match[22]==null?0:intval($match[22]),
+                'created_at'=>new \MongoDate(),
+                'updated_at'=>new \MongoDate(),
+                'h_team'=>$h_team->_id,
+                'g_team'=>$g_team->_id,
+                'have_odd'=>$match[30]=='True'?1:0,
+                'odd_link'=>$match[30]=='True'?$link:""
+            );
+        }
+        $match=new Matchs();
+        $match->batchInsert($match_objs);
     }
     private function formatData($js_data) {
         $data=explode("\r\n",$js_data);
@@ -155,20 +223,21 @@ class NowGoalMatchs extends MatchDataServiceBase{
             $time_2->setTime($match[15],$match[16],$match[17]);
 
             $match_objs[$id]=array(
-                'id'=>$id,
+                'id'=>intval($id),
                 'league_id'=>$leagues[$match[1]][0],
                 'time_1'=>$time_1->format("Y,m,j,H,i,s"),
                 'time_2'=>$time_2->format("Y,m,j,H,i,s"),
-                'h_goal'=>$match[19],
-                'g_goal'=>$match[20],
-                'h_read_card'=>$match[23],
-                'g_read_card'=>$match[24],
-                'h_yellow_card'=>$match[25],
-                'g_yellow_card'=>$match[26],
-                'status'=>$match[18],
-                'ht_h_goal'=>$match[21]==null?0:$match[21],
-                'ht_g_goal'=>$match[22]==null?0:$match[22],
-                'created_at'=>array('now()'),
+                'h_goal'=>intval($match[19]),
+                'g_goal'=>intval($match[20]),
+                'h_read_card'=>intval($match[23]),
+                'g_read_card'=>intval($match[24]),
+                'h_yellow_card'=>intval($match[25]),
+                'g_yellow_card'=>intval($match[26]),
+                'status'=>intval($match[18]),
+                'ht_h_goal'=>$match[21]==null?0:intval($match[21]),
+                'ht_g_goal'=>$match[22]==null?0:intval($match[22]),
+                'created_at'=>new \MongoDate(),
+                'updated_at'=>new \MongoDate(),
                 'h_team'=>$h_team,
                 'g_team'=>$g_team,
                 'have_odd'=>$match[30]=='True'?1:0,
