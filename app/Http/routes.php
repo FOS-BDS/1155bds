@@ -16,6 +16,14 @@ use Illuminate\Support\Facades\Log;
 
 Route::get('/', 'WelcomeController@index');
 
+/////////////CRON///////////////////
+Route::get('/cron/match/v9bet/{in_time}','BackgroundProcessController@cronGetMatchData');
+
+
+
+/////// END OF CRON ///////////////
+
+
 Route::get('testInput', 'HomeController@testInput');
 Route::get('home', 'HomeController@index');
 

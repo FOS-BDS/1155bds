@@ -10,5 +10,5 @@ namespace App\Logics\base;
 
 
 abstract class MatchDataServiceBase {
-    public abstract function processData();
+    public abstract function processData($data=null);
 }

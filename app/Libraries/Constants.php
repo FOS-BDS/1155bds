@@ -11,4 +11,8 @@ class Constants
 {
     const DATA_SOURCE='data_source';
     const SOURCE_NOWGOAL='NOWGOAL';
+    const SOURCE_V9BET='V9BET';
+
+    const ONTIME_KEY='i-ots';
+    const OFFTIME_KEY='ot';
 }
