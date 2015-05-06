@@ -39,6 +39,12 @@ Route::post('/matchs','Data\MatchController@postMatchs');
 
 //////// END SYNC DATA ////////////
 
+//User
+Route::get('users/home','Users\UserController@home');
+Route::post('users/register','Users\UserController@register');
+Route::get('users/login','Users\UserController@login');
+Route::get('users/register','Users\UserController@viewRegister');
+// end User
 Route::get('/test',function() {
     $users=new \App\Models\Users();
     $user_cur=$users->find();
@@ -49,3 +55,4 @@ Route::get('/test',function() {
     }
 
 });
+
