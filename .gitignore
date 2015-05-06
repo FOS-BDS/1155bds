@@ -3,5 +3,6 @@
 .env
 .idea
 /.idea
+.idea/workspace.xml
 /database/data
 .idea/workspace.xml

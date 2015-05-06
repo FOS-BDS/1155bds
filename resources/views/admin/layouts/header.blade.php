@@ -6,7 +6,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="logo" href="#">Laravel</a>
+        <a class="logo" href="#">FOS</a>
     </div>
     <div class="navbar navbar-static-top">
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

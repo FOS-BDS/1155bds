@@ -2,7 +2,7 @@
  * Created by Hieutrieu on 4/22/2015.
  */
 var RuleModule = {
-    urlApi: '/admin/',
+    urlApi: '/FOS/public/admin/',
     supplier_id: 0,
     class_name: '',
     class_form: '#role_edit_',
