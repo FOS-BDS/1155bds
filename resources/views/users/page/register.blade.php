@@ -54,9 +54,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-lg-offset-4 col-lg-10">
+                                    <div class="col-lg-offset-5 col-lg-10">
                                         <a  class="btn btn-warning" href="/users/home" >Trang chủ</a>
-                                        <a  class="btn btn-primary" data-text-loading="Đang chờ..." onclick="user.register(this,'#form_login');">Đồng ý</a>
+                                        <a  class="btn btn-primary" data-text-loading="Đang chờ..." onclick="user.register(this,'#form_register');">Đồng ý</a>
                                     </div>
                                 </div>
                             </form>

@@ -26,4 +26,7 @@ class Constants
     const ODD_AH1ST="AH1ST";
     const ODD_OU="OU";
     const ODD_OU1ST="OU1ST";
+
+    const TYPE_USER     = 'user';
+    const TYPE_ADMIN    = 'admin';
 }
