@@ -31,12 +31,14 @@ var user={
                         $(myself).button('loading');
                     },
                     success:function(result){
+                        console.log(result);
                         if(result.error != false){
                             $(myself).button('reset');
                             $('.error_register').show();
                             $('.error_register').text(result.message);
                         }else{
-                            $(myself).button('reset');
+
+                            //location.href = 'http://google.com';
                         }
                     },
                     error:function(result){

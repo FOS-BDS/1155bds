@@ -4,8 +4,14 @@
     <script type="text/javascript">
         $(document).ready(function(){
             $('#form_register input').keypress(function(){
-                        $(this).css('background','#DFFFFA');
-                    })
+                $(this).css('background','#DFFFFA');
+            })
+            $('#form_register input').focusout(function(){
+                var value = $(this).val();
+                    if(value == ''){
+                        $(this).css('background','#ffe4fb');
+                    }
+            })
         })
     </script>
     <body>
