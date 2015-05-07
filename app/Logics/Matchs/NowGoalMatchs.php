@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Log;
 use stdClass;
 
 class NowGoalMatchs extends MatchDataServiceBase{
-    public function processData()
+    public function processData($eee=null)
     {
         try {
             Log::info("Run Post Matchs");

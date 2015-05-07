@@ -16,6 +16,14 @@ use Illuminate\Support\Facades\Log;
 
 Route::get('/', 'WelcomeController@index');
 
+/////////////CRON///////////////////
+Route::get('/cron/match/v9bet/{in_time}','BackgroundProcessController@cronGetMatchData');
+
+
+
+/////// END OF CRON ///////////////
+
+
 Route::get('testInput', 'HomeController@testInput');
 Route::get('home', 'HomeController@index');
 
@@ -40,6 +48,13 @@ Route::post('/matchs','Data\MatchController@postMatchs');
 
 //////// END SYNC DATA ////////////
 
+//User
+Route::get('users/home','Users\UserController@home');
+Route::post('users/register','Users\UserController@register');
+Route::get('users/login','Users\UserController@login');
+Route::get('users/register','Users\UserController@viewRegister');
+Route::get('users/logout','Users\UserController@logout');
+// end User
 Route::get('/test',function() {
     $users=new \App\Models\Users();
     $user_cur=$users->find();
@@ -50,3 +65,4 @@ Route::get('/test',function() {
     }
 
 });
+

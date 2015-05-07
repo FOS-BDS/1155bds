@@ -11,4 +11,19 @@ class Constants
 {
     const DATA_SOURCE='data_source';
     const SOURCE_NOWGOAL='NOWGOAL';
+    const SOURCE_V9BET='V9BET';
+
+    const ONTIME_KEY='i-ots';
+    const OFFTIME_KEY='ot';
+
+    const TIME_PRE_MATCH=-1;
+    const TIME_HT=-2;
+    const TIME_FULL=-3;
+
+    const ODD_1X2="1X2";
+    const ODD_1X21ST="1X21ST";
+    const ODD_AH="AH";
+    const ODD_AH1ST="AH1ST";
+    const ODD_OU="OU";
+    const ODD_OU1ST="OU1ST";
 }

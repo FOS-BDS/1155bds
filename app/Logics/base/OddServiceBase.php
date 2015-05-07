@@ -10,5 +10,5 @@ namespace App\Logics\base;
 
 
 abstract class OddServiceBase {
-    public abstract function processData();
+    public abstract function processData($match=null,$match_odd=null);
 }
