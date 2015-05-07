@@ -23,6 +23,7 @@ Route::get('home', 'HomeController@index');
 Route::get('admin/rules', 'Admin\RulesController@index');
 Route::get('admin/rules/getRules', 'Admin\RulesController@getRules');
 Route::get('admin/rules/editRule', 'Admin\RulesController@editRule');
+Route::get('admin/rules/getConditionAndRules', 'Admin\RulesController@getConditionAndRules');
 Route::post('admin/rules/save', 'Admin\RulesController@save');
 /* End Admin */
 

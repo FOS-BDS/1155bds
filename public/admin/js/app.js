@@ -335,7 +335,6 @@ $(window).load(function() {
     "use strict";
 
     $.fn.boxRefresh = function(options) {
-
         // Render options
         var settings = $.extend({
             //Refressh button selector
@@ -355,17 +354,23 @@ $(window).load(function() {
 
         return this.each(function() {
             //if a source is specified
-            if (settings.source === "") {
+            /*if (settings.source === "") {
                 if (console) {
                     console.log("Please specify a source first - boxRefresh()");
                 }
                 return;
-            }
+            }*/
             //the box
             var box = $(this);
             //the button
-            var rBtn = box.find(settings.trigger).first();
+            //Add loading overlay
+            start(box);
 
+            //Perform ajax call
+            box.find(".box-body").load(settings.source, function() {
+                done(box);
+            });
+            /*var rBtn = box.find(settings.trigger).first();
             //On trigger click
             rBtn.click(function(e) {
                 e.preventDefault();
@@ -378,7 +383,7 @@ $(window).load(function() {
                 });
 
 
-            });
+            });*/
 
         });
 
