@@ -72,4 +72,5 @@ Route::filter('checkSession',function(){
 // some apis need to login function
 Route::group(array('before'=>'checkSession'),function(){
     Route::get('users/logout','Users\UserController@logout');
+    Route::get('manager','Users\UserController@manager');
 });

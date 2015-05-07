@@ -84,10 +84,16 @@ class UserController extends BaseController{
                    return response()->json(array('message'=>'Sai tên đăng nhập hoặc mật khẩu!','error'=>true));
                }
            }else{
-
+                if(count($user)>0){
+                    Session::put('username',$username);
+                    return redirect::to('/manager');
+                }
            }
         }catch (\Exception $e){
             return response()->json(array('message'=>$e->getMessage(),'error'=>$e->getCode()));
         }
+    }
+    public function manager(){
+        return view('users.page.manager');
     }
 }
