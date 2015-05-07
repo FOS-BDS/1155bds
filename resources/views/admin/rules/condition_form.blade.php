@@ -1,115 +1,97 @@
-<style>
-    .typeahead {
-        background-color: #fff;
-    }
-
-    .typeahead:focus {
-        border: 2px solid #0097cf;
-    }
-
-    .tt-query {
-        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    }
-    .tt-menu {
-        width: 200px;
-        margin: 12px 0;
-        padding: 8px 0;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border: 1px solid rgba(0, 0, 0, 0.2);
-        -webkit-border-radius: 8px;
-        -moz-border-radius: 8px;
-        border-radius: 8px;
-        -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
-        -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
-        box-shadow: 0 5px 10px rgba(0,0,0,.2);
-    }
-
-    .tt-suggestion {
-        padding: 3px 20px;
-        line-height: 24px;
-    }
-
-    .tt-suggestion:hover {
-        cursor: pointer;
-        color: #fff;
-        background-color: #0097cf;
-    }
-
-    .tt-suggestion.tt-cursor {
-        color: #fff;
-        background-color: #0097cf;
-
-    }
-
-    .tt-suggestion p {
-        margin: 0;
-    }
-</style>
+<?php use App\Libraries\Constants; ?>
 <script>
-    $(function() {
-        $('.condition_left').typeahead({
-            ajax: '/admin/rules/getConditionAndRules',
-            displayField: 'name',
-            valueField: 'id',
-            scrollBar:true,
-            onSelect: function(item) {
-                $('#condition_left').val(item.value);
-                $('#condition_left_display').val(item.value);
-            }
-        });
-        $('.condition_right').typeahead({
-            ajax: '/admin/rules/getConditionAndRules',
-            displayField: 'name',
-            valueField: 'id',
-            scrollBar:true,
-            onSelect: function(item) {
-                $('#condition_right').val(item.value);
-                $('#condition_right_display').val(item.value);
-            }
+    $(function(){
+        $('div.btn-group[data-toggle-name]').each(function () {
+            var group = $(this);
+            var form = $('#condition_form').eq(0);
+            var name = group.attr('data-toggle-name');
+            var hidden = $('input[name="' + name + '"]', form);
+            $('button', group).each(function () {
+                var button = $(this);
+                button.on('click', function () {
+                    hidden.val($(this).val());
+                    $('button',group).removeClass('active');
+                    if (button.val() == hidden.val()) {
+                        button.addClass('active');
+                    }
+                });
+                if (button.val() == hidden.val()) {
+                    button.addClass('active');
+                }
+            });
         });
     });
 </script>
-<div class="box box-solid box-primary" id="rule_form">
+<div class="box box-solid box-warning" id="rule_form">
     <div class="box-header">
-        <h4 class="box-title panel-title">{{ isset($params['_id']) && $params['_id']?Lang::get('app.edit_condition'):Lang::get('app.create_condition_new')}}</h4>
+        <h4 class="box-title panel-title"><i class="fa fa-cogs"></i> {{ isset($params['_id']) && $params['_id']?Lang::get('app.edit_condition'):Lang::get('app.create_condition_new')}}</h4>
         <div class="box-tools pull-right">
-            <button class="btn btn-primary btn-xs" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-minus"></i></button>
-            <button class="btn btn-primary btn-xs" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>
+            <button class="btn btn-warning btn-xs" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-minus"></i></button>
+            <button class="btn btn-warning btn-xs" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>
         </div>
     </div>
-    {!! Form::open(array('method' => 'POST', 'role' => 'form')) !!}
+    {!! Form::open(array('method' => 'POST', 'role' => 'form', 'id' => 'condition_form')) !!}
     <div class="box-body">
-        <div class="row" >
-            <div class="col-lg-12">
-                <h4 class="form_alert alert-danger"></h4>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    {!! Form::label('name', Lang::get('app.name'), array('class' => 'control-label')) !!}
+                    {!! Form::text('name',isset($params['name'])?$params['name']:'',array('class' => 'form-control')) !!}
+                </div>
+                <div class="form-group">
+                    {!! Form::label('description', Lang::get('app.description'), array('class' => 'control-label')) !!}
+                    {!! Form::textarea('description',isset($params['description'])?$params['description']:'',array('rows'=>4,'class' => 'form-control')) !!}
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            {!! Form::label('name', Lang::get('app.name'), array('class' => 'control-label')) !!}
-            {!! Form::text('name',isset($params['name'])?$params['name']:'',array('class' => 'form-control')) !!}
-        </div>
-        <div class="row form-group">
-            <div class="col-lg-5">
-                {!! Form::label('condition_left', Lang::get('app.choose_condition'), array('class' => 'control-label')) !!}
-                {!! Form::text('condition_left_display',$params['condition_left_display'],array('class' => 'form-control condition_left', 'placeholder' => 'Enter text')) !!}
-                {!! Form::hidden('condition_left',$params['condition_left'],array('class' => 'form-control')) !!}
+            <div class="col-lg-8">
+                <div class="form-group row">
+                    <div class="col-lg-4">
+                        {!! Form::label('odd_type', Lang::get('app.fulltime'), array('class' => 'control-label')) !!}
+                        <div class="btn-block btn-group" data-toggle-name="odd_type" data-toggle="buttons-radio">
+                            <button type="button" value="{{Constants::ODD_1X2}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.odd_1x2')}}</button>
+                            <button type="button" value="{{Constants::ODD_AH}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.odd_ah')}}</button>
+                            <button type="button" value="{{Constants::ODD_OU}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.odd_ou')}}</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        {!! Form::label('odd_type', Lang::get('app.halftime'), array('class' => 'control-label')) !!}
+                        <div class="btn-block btn-group" data-toggle-name="odd_type" data-toggle="buttons-radio">
+                            <button type="button" value="{{Constants::ODD_1X21ST}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.odd_1x2')}}</button>
+                            <button type="button" value="{{Constants::ODD_AH1ST}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.odd_ah')}}</button>
+                            <button type="button" value="{{Constants::ODD_OU1ST}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.odd_ou')}}</button>
+                        </div>
+                    </div>
+                    {!! Form::hidden('odd_type',isset($params['odd_type'])?$params['odd_type']:Constants::ODD_1X2,array('class' => 'form-control')) !!}
+                </div>
+                <div class="form-group">
+                    {!! Form::label('time', Lang::get('app.time'), array('class' => 'control-label')) !!}
+                    <div class="btn-group btn-block" data-toggle-name="time" data-toggle="buttons-radio">
+                        <button type="button" value="{{Constants::TIME_PRE_MATCH}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.beforetime')}}</button>
+                        <button type="button" value="{{Constants::TIME_HT}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.halftime')}}</button>
+                        <button type="button" value="{{Constants::TIME_FULL}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.fulltime')}}</button>
+                    </div>
+                    {!! Form::hidden('time',isset($params['time'])?$params['time']:Constants::TIME_PRE_MATCH,array('class' => 'form-control')) !!}
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-4">
+                        {!! Form::label('field', Lang::get('app.field'), array('class' => 'control-label')) !!}
+                        <div class="btn-group btn-block" data-toggle-name="field" data-toggle="buttons-radio">
+                            <button type="button" value="{{Constants::FIELD_HOME}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.home')}}</button>
+                            <button type="button" value="{{Constants::FIELD_DRAW}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.draw')}}</button>
+                            <button type="button" value="{{Constants::FIELD_AWAY}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.away')}}</button>
+                        </div>
+                        {!! Form::hidden('field',isset($params['field'])?$params['field']:Constants::FIELD_HOME,array('class' => 'form-control')) !!}
+                    </div>
+                    <div class="col-lg-4">
+                        {!! Form::label('operator', Lang::get('app.choose_operator_condition'), array('class' => 'control-label')) !!}
+                        {!! Form::select('operator', $conditions, isset($params['operator'])?$params['operator']:'$and',array('class' => 'form-control')) !!}
+                    </div>
+                    <div class="col-lg-4">
+                        {!! Form::label('value', Lang::get('app.enter_value'), array('class' => 'control-label')) !!}
+                        {!! Form::text('value',$params['value'],array('class' => 'form-control value', 'placeholder' => Lang::get('app.enter_value'))) !!}
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-2">
-                {!! Form::label('operator', Lang::get('app.choose_operator'), array('class' => 'control-label')) !!}
-                {!! Form::select('operator', $conditions, isset($params['operator'])?$params['operator']:'$and',array('class' => 'form-control')) !!}
-            </div>
-            <div class="col-lg-5">
-                {!! Form::label('condition_right', Lang::get('app.choose_condition'), array('class' => 'control-label')) !!}
-                {!! Form::text('condition_right_display',$params['condition_right_display'],array('class' => 'form-control condition_right', 'placeholder' => 'Enter text')) !!}
-                {!! Form::hidden('condition_right',$params['condition_right'],array('class' => 'form-control')) !!}
-            </div>
-        </div>
-        <div class="form-group">
-            {!! Form::label('description', Lang::get('app.description'), array('class' => 'control-label')) !!}
-            {!! Form::textarea('description',isset($params['description'])?$params['description']:'',array('rows'=>4,'class' => 'form-control')) !!}
         </div>
         {!! Form::hidden('_id',isset($params['_id'])?$params['_id']:0,array('class' => 'form-control')) !!}
     </div>

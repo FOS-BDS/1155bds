@@ -26,4 +26,11 @@ class Constants
     const ODD_AH1ST="AH1ST";
     const ODD_OU="OU";
     const ODD_OU1ST="OU1ST";
+
+    const TYPE_RULE         = 'rule';
+    const TYPE_CONDITION    = 'condition';
+
+    const FIELD_HOME = 'home';
+    const FIELD_DRAW = 'draw';
+    const FIELD_AWAY = 'away';
 }

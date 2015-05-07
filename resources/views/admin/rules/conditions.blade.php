@@ -18,9 +18,9 @@
         @foreach($rules as $rule)
             <tr>
                 <td style="text-align: left;">{{$rule['name']}}</td>
-                <td style="text-align: right;">{{$rule['condition_left']['name']}}</td>
+                <td style="text-align: right;">{{$rule['time']}}</td>
                 <td style="text-align: center;">{{$rule['operator']}}</td>
-                <td style="text-align: left;">{{$rule['condition_right']['name']}}</td>
+                <td style="text-align: left;">{{$rule['value']}}</td>
                 <td style="text-align: left;">{{$rule['description']}}</td>
                 <td style="text-align: center;">
                     <div class="btn-group">

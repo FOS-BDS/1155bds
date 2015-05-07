@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
+use App\Libraries\Constants;
 use App\Libraries\InputHelper;
 use App\Models\Rules;
 use Illuminate\Http\Request;
@@ -34,9 +35,9 @@ class RulesController extends AdminController {
         $ruleModels = new Rules();
         $rules = $ruleModels->find(array('type' => $type));
         $rules = iterator_to_array($rules);
-        if($type == Rules::TYPE_RULE) {
+        if($type == Constants::TYPE_RULE) {
             $view = 'admin.rules.rules';
-        } else {
+        } elseif($type == Constants::TYPE_CONDITION) {
             $view = 'admin.rules.conditions';
         }
         return view($view)->with('rules', $rules)->render();
@@ -45,7 +46,7 @@ class RulesController extends AdminController {
     public function editRule(Request $request) {
         $type = $request->get('type', null);
         $params = $request->all();
-        if($type == Rules::TYPE_RULE) {
+        if($type == Constants::TYPE_RULE) {
             $conditions = InputHelper::getConditions();
             if (isset($params['_id']) && $params['_id']) {
                 $ruleModel = new Rules();
@@ -66,36 +67,14 @@ class RulesController extends AdminController {
                 $ruleModel = new Rules();
                 $params = $ruleModel->findOne(array('_id' => new MongoId($params['_id'])));
             }
-            $conditionLeftId = isset($params['condition_left']['id']) ? $params['condition_left']['id'] : '';
-            $conditionLeftType = isset($params['condition_left']['type']) ? $params['condition_left']['type'] : '';
-            $conditionRightId = isset($params['condition_right']['id']) ? $params['condition_right']['id'] : '';
-            $conditionRightType = isset($params['condition_right']['type']) ? $params['condition_right']['type'] : '';
-            $params['condition_left_display'] = isset($params['condition_right']['name']) ? $params['condition_right']['name'] : '';
-            $params['condition_left'] = $conditionLeftId . ':' . $conditionLeftType;
-            $params['condition_right_display'] = isset($params['condition_right']['name']) ? $params['condition_right']['name'] : '';
-            $params['condition_right'] = $conditionRightId . ':' . $conditionRightType;
+            $params['value'] = isset($params['value']) ? $params['value'] : '';
             return view('admin.rules.condition_form', ['conditions' => $conditions])->with('params', $params)->render();
         }
     }
 
     public function save(Request $request) {
         $params = $request->all();
-        $conditionLeftData  = explode(':', $params['condition_left']);
-        $conditionRightData = explode(':', $params['condition_right']);
-        $data['condition_left']    = array(
-            'id'    => $conditionLeftData[0],
-            'name'  => $params['condition_left_display'],
-            'type'  => $conditionLeftData[1],
-        );
-        $data['condition_right']   = array(
-            'id'    => $conditionRightData[0],
-            'name'  => $params['condition_right_display'],
-            'type'  => $conditionRightData[1],
-        );
-        $data['name']              = $params['name'];
-        $data['operator']          = $params['operator'];
-        $data['description']       = $params['description'];
-        $data['type']              = $params['type'];
+        $data = Rules::makeObject($params);
 
         $ruleModel = new Rules();
 
@@ -121,7 +100,7 @@ class RulesController extends AdminController {
         foreach ($datas as $data) {
             $id = (array) $data['_id'];
             $values[] = array(
-                'id' => $id['$id'].':'.Rules::TYPE_RULE,
+                'id' => $id['$id'].':'.Constants::TYPE_RULE,
                 'name' => $data['name'].'('.$data['description'].')',
             );
         }
