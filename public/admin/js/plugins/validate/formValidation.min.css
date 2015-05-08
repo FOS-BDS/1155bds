@@ -8,8 +8,8 @@
 
 .form-control-feedback {
     position: absolute;
-    top: 0;
-    right: 30px;
+    top: 24px;
+    right: 15px;
     z-index: 2;
     display: block;
     width: 34px;

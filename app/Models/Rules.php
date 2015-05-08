@@ -43,7 +43,7 @@ class Rules extends CollectionBase {
                         'value' => $params['time_type'],
                     );
                 }
-                $rule->value = $params['value'];
+                $rule->condition_values = $params['condition_values'];
                 $rule->odd_type = $params['odd_type'];
             }
             $rule->name = $params['name'];

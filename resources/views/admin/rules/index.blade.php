@@ -10,5 +10,5 @@
 @endsection
 @section('content')
     <div id="role_edit"></div>
-    <div id="role_list" class="box box-solid box-success"></div>
+    <div id="role_list"></div>
 @endsection

@@ -51,7 +51,7 @@
 <script>
     $(function() {
         $('.condition_left').typeahead({
-            ajax: '/admin/rules/getConditionAndRules',
+            ajax: RuleModule.urlApi+'rules/getConditionAndRules',
             displayField: 'name',
             valueField: 'id',
             scrollBar:true,
@@ -61,7 +61,7 @@
             }
         });
         $('.condition_right').typeahead({
-            ajax: '/admin/rules/getConditionAndRules',
+            ajax: RuleModule.urlApi+'rules/getConditionAndRules',
             displayField: 'name',
             valueField: 'id',
             scrollBar:true,
@@ -72,7 +72,7 @@
         });
     });
 </script>
-<div class="box box-solid box-primary" id="rule_form">
+<div class="box box-solid box-info" id="rule_form">
     <div class="box-header">
         <h4 class="box-title panel-title">{{ isset($params['_id']) && $params['_id']?Lang::get('app.edit_rule'):Lang::get('app.create_rule_new')}}</h4>
         <div class="box-tools pull-right">
