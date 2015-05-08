@@ -13,6 +13,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 Route::get('/', 'WelcomeController@index');
 
@@ -72,5 +73,7 @@ Route::filter('checkSession',function(){
 // some apis need to login function
 Route::group(array('before'=>'checkSession'),function(){
     Route::get('users/logout','Users\UserController@logout');
-    Route::get('manager','Users\UserController@manager');
 });
+
+// manager data
+Route::get('manager','Users\UserController@manager');
