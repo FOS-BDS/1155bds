@@ -51,7 +51,7 @@
 <script>
     $(function() {
         $('.condition_left').typeahead({
-            ajax: '/admin/rules/getConditionAndRules',
+            ajax: RuleModule.urlApi+'rules/getConditionAndRules',
             displayField: 'name',
             valueField: 'id',
             scrollBar:true,
@@ -61,7 +61,7 @@
             }
         });
         $('.condition_right').typeahead({
-            ajax: '/admin/rules/getConditionAndRules',
+            ajax: RuleModule.urlApi+'rules/getConditionAndRules',
             displayField: 'name',
             valueField: 'id',
             scrollBar:true,
