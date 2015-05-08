@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Libraries\Constants;
 use App\Models\base\CollectionBase;
+use MongoId;
 
 class Rules extends CollectionBase {
     public function __construct() {
