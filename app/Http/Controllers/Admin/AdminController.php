@@ -7,5 +7,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 abstract class AdminController extends BaseController {
 
 	use DispatchesCommands, ValidatesRequests;
-
+    public function __construct() {
+        //$this->middleware('auth');
+    }
 }

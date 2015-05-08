@@ -27,6 +27,10 @@ class Constants
     const ODD_OU="OU";
     const ODD_OU1ST="OU1ST";
 
-    const TYPE_USER     = 'user';
-    const TYPE_ADMIN    = 'admin';
+    const TYPE_RULE         = 'rule';
+    const TYPE_CONDITION    = 'condition';
+
+    const FIELD_HOME = 'home';
+    const FIELD_DRAW = 'draw';
+    const FIELD_AWAY = 'away';
 }

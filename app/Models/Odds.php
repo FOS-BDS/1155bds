@@ -26,6 +26,11 @@ class Odds extends CollectionBase{
         $new_obj->away=$away;
         $new_obj->type=$type;
 
+        $md5_obj=clone $new_obj;
+        unset($md5_obj->created_at);
+        unset($md5_obj->updated_at);
+        $new_obj->md5=md5(json_encode($md5_obj));
+
         return $new_obj;
     }
 

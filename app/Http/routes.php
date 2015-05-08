@@ -32,6 +32,7 @@ Route::get('home', 'HomeController@index');
 Route::get('admin/rules', 'Admin\RulesController@index');
 Route::get('admin/rules/getRules', 'Admin\RulesController@getRules');
 Route::get('admin/rules/editRule', 'Admin\RulesController@editRule');
+Route::get('admin/rules/getConditionAndRules', 'Admin\RulesController@getConditionAndRules');
 Route::post('admin/rules/save', 'Admin\RulesController@save');
 /* End Admin */
 
@@ -56,13 +57,6 @@ Route::get('users/register','Users\UserController@viewRegister');
 Route::post('users/confirmLogin','Users\UserController@confirmLogin');
 // end User
 Route::get('/test',function() {
-    $users=new \App\Models\Users();
-    $user_cur=$users->find();
-    $user_cur->next();
-    while($user_cur->hasNext()) {
-        var_dump($user_cur->current());
-        $user_cur->next();
-    }
 
 });
 Route::filter('checkSession',function(){
@@ -77,3 +71,4 @@ Route::group(array('before'=>'checkSession'),function(){
 
 // manager data
 Route::get('manager','Users\UserController@manager');
+
