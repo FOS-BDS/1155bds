@@ -54,13 +54,6 @@ Route::get('users/login','Users\UserController@login');
 Route::get('users/register','Users\UserController@viewRegister');
 // end User
 Route::get('/test',function() {
-    $users=new \App\Models\Users();
-    $user_cur=$users->find();
-    $user_cur->next();
-    while($user_cur->hasNext()) {
-        var_dump($user_cur->current());
-        $user_cur->next();
-    }
 
 });
 

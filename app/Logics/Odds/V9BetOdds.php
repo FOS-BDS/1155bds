@@ -32,14 +32,29 @@ class V9BetOdds extends OddServiceBase {
                     $home=floatval($odds[$key][$config['home']]);
                     $away=floatval($odds[$key][$config['away']]);
                     $draw=floatval($odds[$key][$config['draw']]);
-                    $odd_objs[]=Odds::makeObject($matchs[$match_id],$home,$draw,$away,$config['type']);
+                    $odd_obj=Odds::makeObject($matchs[$match_id],$home,$draw,$away,$config['type']);
+                    $odd_objs[$odd_obj->md5]=$odd_obj;
                 }
             }
         }
 
         // insert Odd to table
         $oddModel=new Odds();
-        $oddModel->batchInsert(array_values($odd_objs));
+        $md5s=array_keys($odd_objs);
+        $odd_cur=$oddModel->find(array('md5'=>array('$in'=>$md5s)));
+
+        do {
+            $odd_cur->next();
+            $current_obj=$odd_cur->current();
+            if($current_obj==null) break;
+            $current_obj=(object)$current_obj;
+            unset($odd_objs[$current_obj->md5]);
+
+        } while($odd_cur->hasNext());
+
+        if(count($odd_objs)>0) {
+            $oddModel->batchInsert(array_values($odd_objs));
+        }
     }
 
 }
