@@ -2,6 +2,7 @@
 
 namespace App\Libraries;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
 
 /**
  * Created by PhpStorm.
@@ -77,5 +78,29 @@ class InputHelper
         } else {
             return Constants::SOURCE_NOWGOAL;// default is nowgoal
         }
+    }
+
+    /**
+     * Create conditions
+     */
+    public static function getAllConditions() {
+        return array(
+            '$or' => Lang::get('app.or'),
+            '$and' => Lang::get('app.and'),
+            '$lt' => Lang::get('app.less'),
+            '$lte' => Lang::get('app.less_or_equal'),
+            '$gt' => Lang::get('app.greater'),
+            '$gte' => Lang::get('app.greater_or_equal'),
+            '$eq' => Lang::get('app.equal'),
+            '$ne' => Lang::get('app.not_equal'),
+            '$in' => Lang::get('app.in_array'),
+            '$nin' => Lang::get('app.not_in_array'),
+        );
+    }
+    public static function getConditions() {
+        $conditions = self::getAllConditions();
+        unset($conditions['$or']);
+        unset($conditions['$and']);
+        return $conditions;
     }
 }

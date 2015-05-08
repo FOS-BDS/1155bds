@@ -2,35 +2,35 @@
  * Created by Hieutrieu on 4/22/2015.
  */
 var RuleModule = {
-    urlApi: '/FOS/public/admin/',
-    supplier_id: 0,
-    class_name: '',
-    class_form: '#role_edit_',
-    class_list: '#role_list_',
+    urlApi: '/admin/',
+    class_form: '#role_edit',
+    class_list: '#role_list',
+    type: 'rule',
 
     setUp: function() {
-        //RuleModule.getRules();
+        RuleModule.getRules();
     },
-    getRules: function(myself, supplier_id, class_name, reload_only) {
+    getRules: function(myself, type) {
         var that = this;
-        that.supplier_id = supplier_id;
-        that.class_name = class_name;
+        if(type != undefined) {
+            that.type = type;
+        }
         $(myself).parent().find('a').removeClass('active');
         $.ajax({
             url: that.urlApi + 'rules/getRules',
-            data: {supplier_id:that.supplier_id,class_name:that.class_name},
+            data: {type:that.type},
             dataType: 'html',
             type: "GET",
             beforeSend: function() {
                 $(myself).addClass('active');
-                $(that.class_list+that.supplier_id).prepend('<div class="loading"><i class="fa fa-2x fa-gear fa-spin"></i></div>');
-                if(reload_only === undefined || !reload_only) $(that.class_form+that.supplier_id).slideUp();
+                $(that.class_list).prepend('<div class="loading"><i class="fa fa-2x fa-gear fa-spin"></i></div>');
+                $(that.class_form).slideUp();
             },
             success:function(result) {
-                $(that.class_list+that.supplier_id).html(result);
+                $(that.class_list).html(result);
             },
             error: function(jqXHR){
-                $(that.class_list+that.supplier_id).html(jqXHR);
+                $(that.class_list).html(jqXHR);
             }
         });
     },
@@ -38,48 +38,46 @@ var RuleModule = {
         var that = this;
         $.ajax({
             url: that.urlApi + 'rules/editRule',
-            data: {supplier_id:that.supplier_id,class_name:that.class_name},
+            data: {type:that.type},
             dataType: 'html',
             type: "GET",
             beforeSend: function() {
                 $(myself).addClass('active');
-                $(that.class_form+that.supplier_id).fadeIn();
+                $(that.class_form).fadeIn();
             },
             success:function(result) {
-                $(that.class_form+that.supplier_id).html(result);
+                $(that.class_form).html(result);
             },
             error: function(jqXHR){
-                $(that.class_form+that.supplier_id).html(jqXHR);
+                $(that.class_form).html(jqXHR);
             }
         });
     },
     editRule: function(myself, _id) {
         var that = this;
-        //$('#'+elementId).boxRefresh();
         $.ajax({
             url: that.urlApi + 'rules/editRule',
-            data: {_id:_id,class_name:that.class_name},
+            data: {_id:_id,type:that.type},
             dataType: 'html',
             type: "GET",
             beforeSend: function() {
                 $(myself).addClass('active');
-                $(that.class_form+that.supplier_id).fadeIn();
+                $(that.class_form).fadeIn();
+                //$(that.class_form).boxRefresh();
             },
             success:function(result) {
-                $(that.class_form+that.supplier_id).html(result);
+                $(that.class_form).html(result);
             },
             error: function(jqXHR){
-                $(that.class_form+that.supplier_id).html(jqXHR);
+                $(that.class_form).html(jqXHR);
             }
         });
     },
     deleteRule: function(myself, _id) {
         var that = this;
-        alert(_id);
-        return false;
         $.ajax({
-            url: that.urlApi + 'rules/editRule',
-            data: {_id:_id,class_name:that.class_name},
+            url: that.urlApi + 'rules/deleteRule',
+            data: {_id:_id},
             dataType: 'html',
             type: "GET",
             beforeSend: function() {
@@ -100,7 +98,7 @@ var RuleModule = {
         var formData = new FormData(form);
         console.log(form);
         $.ajax({
-            url: that.urlApi + 'rules/save',
+            url: that.urlApi + 'rules/save?type='+that.type,
             data: formData,
             type: "POST",
             contentType: false,
@@ -110,7 +108,7 @@ var RuleModule = {
             },
             success:function(result) {
                 $(myself).button('reset');
-                that.getRules(myself,that.supplier_id,that.class_name, true)
+                that.getRules(myself)
             },
             error: function(jqXHR){
                 $(myself).button('reset');

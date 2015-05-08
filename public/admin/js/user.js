@@ -3,7 +3,35 @@
  */
 var user={
     login:function(myself,form_id){
-
+        var username    = $('#username').val(),
+            password    = $('#password').val();
+        if(username == '' || password == ''){
+            $('.error_login').show();
+            $('.error_login').text('Vui lòng nhập tài khoản và mật khẩu!');
+            return false;
+        }else{
+            $('.error_login').hide();
+            $.ajax({
+                url:'/users/confirmLogin',
+                data:{username:username,password:password},
+                type:'POST',
+                beforeSend:function(){
+                    $(myself).button('loading');
+                },
+                success:function(result){
+                    if(result.error != false){
+                        $(myself).button('reset');
+                        $('.error_login').show();
+                        $('.error_login').text(result.message);
+                    }else{
+                        location.href = '/users/matchs';
+                    }
+                },
+                error:function(result){
+                    console.log(result.responseText);
+                }
+            })
+        }
     },
     register:function(myself,form_id){
         var username    = $('#username').val(),
@@ -36,7 +64,7 @@ var user={
                             $('.error_register').show();
                             $('.error_register').text(result.message);
                         }else{
-                            $(myself).button('reset');
+                            location.href = '/users/matchs';
                         }
                     },
                     error:function(result){

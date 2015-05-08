@@ -31,6 +31,7 @@ Route::get('home', 'HomeController@index');
 Route::get('admin/rules', 'Admin\RulesController@index');
 Route::get('admin/rules/getRules', 'Admin\RulesController@getRules');
 Route::get('admin/rules/editRule', 'Admin\RulesController@editRule');
+Route::get('admin/rules/getConditionAndRules', 'Admin\RulesController@getConditionAndRules');
 Route::post('admin/rules/save', 'Admin\RulesController@save');
 /* End Admin */
 
@@ -52,8 +53,18 @@ Route::get('users/home','Users\UserController@home');
 Route::post('users/register','Users\UserController@register');
 Route::get('users/login','Users\UserController@login');
 Route::get('users/register','Users\UserController@viewRegister');
+Route::post('users/confirmLogin','Users\UserController@confirmLogin');
 // end User
 Route::get('/test',function() {
 
 });
-
+Route::filter('checkSession',function(){
+    if(!Session::has('username')){
+        return view('users.page.login');
+    }
+});
+// some apis need to login function
+Route::group(array('before'=>'checkSession'),function(){
+    Route::get('users/logout','Users\UserController@logout');
+    Route::get('manager','Users\UserController@manager');
+});
