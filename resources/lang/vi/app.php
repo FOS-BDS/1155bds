@@ -14,6 +14,8 @@ return [
     'choose_operator'       => 'Chon điều kiện liên kết',
 	'choose_operator_condition' => 'Chọn điều kiện',
 	'enter_value' 			=> 'Nhập giá trị',
+	'enter_name' 			=> 'Nhập tên',
+	'enter_description'     => 'Nhập mô tả',
     'field'                 => 'Chấp',
     'and'                   => 'Và',
     'or'                    => 'Hoặc',

@@ -47,7 +47,7 @@ class RulesController extends AdminController {
         $type = $request->get('type', null);
         $params = $request->all();
         if($type == Constants::TYPE_RULE) {
-            $conditions = InputHelper::getConditions();
+            $conditions = InputHelper::getRuleOparators();
             if (isset($params['_id']) && $params['_id']) {
                 $ruleModel = new Rules();
                 $params = $ruleModel->findOne(array('_id' => new MongoId($params['_id'])));
@@ -62,7 +62,7 @@ class RulesController extends AdminController {
             $params['condition_right'] = $conditionRightId . ':' . $conditionRightType;
             return view('admin.rules.rule_form', ['conditions' => $conditions])->with('params', $params)->render();
         } else {
-            $conditions = InputHelper::getConditions();
+            $conditions = InputHelper::getConditionOparators();
             if (isset($params['_id']) && $params['_id']) {
                 $ruleModel = new Rules();
                 $params = $ruleModel->findOne(array('_id' => new MongoId($params['_id'])));
@@ -70,6 +70,7 @@ class RulesController extends AdminController {
             $params['time_type'] = isset($params['time']['type']) ? $params['time']['type'] : Constants::TIME_PRE_MATCH;
             $params['time_value'] = isset($params['time']['value']) ? $params['time']['value'] : Constants::TIME_PRE_MATCH;
             $params['value'] = isset($params['value']) ? $params['value'] : '';
+            $params['condition_values'] = isset($params['condition_values']) ? $params['condition_values'] : array('value_first'=>0,'value_last'=>0);
             return view('admin.rules.condition_form', ['conditions' => $conditions])->with('params', $params)->render();
         }
     }

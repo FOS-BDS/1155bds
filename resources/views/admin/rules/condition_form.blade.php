@@ -33,6 +33,20 @@
                 });
             });
         });
+        $('select[name="operator"]').each(function () {
+            if($(this).val() == '{{Constants::OPERATOR_NIN}}' || $(this).val() == '{{Constants::OPERATOR_IN}}') {
+                $('.condition_value_last').show();
+            } else {
+                $('.condition_value_last').hide();
+            }
+            $(this).on('change', function () {
+                if($(this).val() == '{{Constants::OPERATOR_NIN}}' || $(this).val() == '{{Constants::OPERATOR_IN}}') {
+                    $('.condition_value_last').show();
+                } else {
+                    $('.condition_value_last').hide();
+                }
+            });
+        });
 
         $('#condition_form')
             .formValidation({
@@ -63,11 +77,11 @@
                             }
                         }
                     },
-                    value: {
+                    "condition_values[value_first]": {
                         validators: {
                             between: {
-                                min: 2,
-                                max: 100,
+                                min: -10,
+                                max: 10,
                                 message: 'The number of value must be between %s and %s'
                             },
                             notEmpty: {
@@ -75,11 +89,11 @@
                             }
                         }
                     },
-                    value_2: {
+                    "condition_values[value_last]": {
                         validators: {
                             between: {
-                                min: 'value',
-                                max: 200,
+                                min: 'condition_values[value_first]',
+                                max: 10,
                                 message: 'The number of value must be between %s and %s'
                             },
                             notEmpty: {
@@ -89,10 +103,6 @@
                     }
                 }
             })
-        // Revalidate the floor field when changing the number of floors
-            .on('keyup', '[name="numFloors"]', function(e) {
-                $('#dynamicOptionForm').formValidation('revalidateField', 'floor');
-            });
     });
 </script>
 <div class="box box-solid box-warning" id="rule_form">
@@ -107,15 +117,17 @@
     <div class="box-body">
         <div class="row">
             <div class="col-lg-4">
-                <div class="form-group">
+                <div class="form-group row">
                     <div class="col-lg-12 valid">
                         {!! Form::label('name', Lang::get('app.name'), array('class' => 'control-label')) !!}
-                        {!! Form::text('name',isset($params['name'])?$params['name']:'',array('class' => 'form-control row')) !!}
+                        {!! Form::text('name',isset($params['name'])?$params['name']:'',array('class' => 'form-control', 'placeholder' => Lang::get('app.enter_name'))) !!}
                     </div>
                 </div>
-                <div class="form-group">
-                    {!! Form::label('description', Lang::get('app.description'), array('class' => 'control-label')) !!}
-                    {!! Form::textarea('description',isset($params['description'])?$params['description']:'',array('rows'=>5,'class' => 'form-control')) !!}
+                <div class="form-group row">
+                    <div class="col-lg-12 valid">
+                        {!! Form::label('description', Lang::get('app.description'), array('class' => 'control-label')) !!}
+                        {!! Form::textarea('description',isset($params['description'])?$params['description']:'',array('rows'=>5,'class' => 'form-control', 'placeholder' => Lang::get('app.enter_description'))) !!}
+                    </div>
                 </div>
             </div>
             <div class="col-lg-8">
@@ -129,7 +141,7 @@
                                 <button type="button" value="{{Constants::ODD_OU}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.odd_ou')}}</button>
                             </div>
                         </div>
-                        <div class="col-lg-8">
+                        <div class="col-lg-8 no-padding">
                             {!! Form::label('odd_type', Lang::get('app.firsthalf'), array('class' => 'control-label')) !!}
                             <div class="btn-block btn-group">
                                 <button type="button" value="{{Constants::ODD_1X21ST}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.odd_1x2')}}</button>
@@ -174,18 +186,19 @@
                         </div>
                         {!! Form::hidden('field',isset($params['field'])?$params['field']:Constants::FIELD_HOME,array('class' => 'form-control')) !!}
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg-2 no-padding">
                         {!! Form::label('operator', Lang::get('app.choose_operator_condition'), array('class' => 'control-label')) !!}
-                        {!! Form::select('operator', $conditions, isset($params['operator'])?$params['operator']:'$and',array('class' => 'form-control')) !!}
+                        {!! Form::select('operator', $conditions, isset($params['operator'])?$params['operator']:'',array('class' => 'form-control')) !!}
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            {!! Form::label('value', Lang::get('app.enter_value'), array('class' => 'control-label col-lg-12')) !!}
                             <div class="col-lg-6 valid">
-                                {!! Form::text('value',$params['value'],array('class' => 'form-control row', 'placeholder' => Lang::get('app.enter_value'))) !!}
+                                {!! Form::label('condition_value_first', Lang::get('app.enter_value'), array('class' => 'control-label')) !!}
+                                {!! Form::text('condition_values[value_first]',$params['condition_values']['value_first'],array('class' => 'form-control', 'placeholder' => Lang::get('app.enter_value'))) !!}
                             </div>
-                            <div class="col-lg-6 valid">
-                                {!! Form::text('value_2',$params['value'],array('class' => 'form-control row', 'placeholder' => Lang::get('app.enter_value'))) !!}
+                            <div class="col-lg-6 valid condition_value_last" style="display: none">
+                                {!! Form::label('condition_value_first', Lang::get('app.enter_value'), array('class' => 'control-label')) !!}
+                                {!! Form::text('condition_values[value_last]',$params['condition_values']['value_last'],array('class' => 'form-control', 'placeholder' => Lang::get('app.enter_value'))) !!}
                             </div>
                         </div>
                     </div>
@@ -196,7 +209,7 @@
     </div>
     <div class="box-footer clearfix">
         <div class="pull-right">
-            {!! Form::submit('Save', array('onclick'=>'RuleModule.save(this);return false;', 'class' => 'btn btn-sm btn-small btn-primary', 'data-loading-text' => 'Saving...')) !!}
+            {!! (Form::submit('Save', array('onclick'=>'RuleModule.save(this);return false;', 'class' => 'btn btn-sm btn-small btn-primary', 'data-loading-text' => 'Saving...'))) !!}
         </div>
     </div>
     {!! Form::close() !!}

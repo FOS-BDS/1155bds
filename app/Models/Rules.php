@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Libraries\Constants;
 use App\Models\base\CollectionBase;
+use MongoId;
 
 class Rules extends CollectionBase {
     public function __construct() {
@@ -43,7 +44,7 @@ class Rules extends CollectionBase {
                         'value' => $params['time_type'],
                     );
                 }
-                $rule->value = $params['value'];
+                $rule->condition_values = $params['condition_values'];
                 $rule->odd_type = $params['odd_type'];
             }
             $rule->name = $params['name'];

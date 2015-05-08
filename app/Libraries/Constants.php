@@ -33,4 +33,9 @@ class Constants
     const FIELD_HOME = 'home';
     const FIELD_DRAW = 'draw';
     const FIELD_AWAY = 'away';
+
+    const OPERATOR_IN = '$in';
+    const OPERATOR_NIN = '$nin';
+    const OPERATOR_AND = '$and';
+    const OPERATOR_OR = '$or';
 }
