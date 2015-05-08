@@ -20,6 +20,79 @@
                 }
             });
         });
+        $('div.minutes[data-name]').each(function () {
+            var that = $(this);
+            var name = $(this).attr('data-name');
+            var hidden = $('input[name="' + name + '"]');
+            $('a', that).each(function () {
+                $(this).on('click', function () {
+                    $('a', that).removeClass('label-danger');
+                    hidden.val($(this).text());
+                    $('.at_time').html('{{Lang::get('app.attime')}}' + '<i class="label label-danger">'+$(this).text()+'</i>');
+                    $(this).addClass('label-danger');
+                });
+            });
+        });
+
+        $('#condition_form')
+            .formValidation({
+                framework: 'bootstrap',
+                err: {
+                    container: 'tooltip'
+                },
+                icon: {
+                    valid: 'fa fa-check',
+                    invalid: 'fa fa-times',
+                    validating: 'fa fa-refresh'
+                },
+                row: {
+                    selector: 'div.valid'
+                },
+                fields: {
+                    "description": {
+                        validators: {
+                            notEmpty: {
+                                message: 'The description is required'
+                            }
+                        }
+                    },
+                    "name": {
+                        validators: {
+                            notEmpty: {
+                                message: 'The name is required'
+                            }
+                        }
+                    },
+                    value: {
+                        validators: {
+                            between: {
+                                min: 2,
+                                max: 100,
+                                message: 'The number of value must be between %s and %s'
+                            },
+                            notEmpty: {
+                                message: 'The first name is required'
+                            }
+                        }
+                    },
+                    value_2: {
+                        validators: {
+                            between: {
+                                min: 'value',
+                                max: 200,
+                                message: 'The number of value must be between %s and %s'
+                            },
+                            notEmpty: {
+                                message: 'The last name is required'
+                            }
+                        }
+                    }
+                }
+            })
+        // Revalidate the floor field when changing the number of floors
+            .on('keyup', '[name="numFloors"]', function(e) {
+                $('#dynamicOptionForm').formValidation('revalidateField', 'floor');
+            });
     });
 </script>
 <div class="box box-solid box-warning" id="rule_form">
@@ -35,42 +108,61 @@
         <div class="row">
             <div class="col-lg-4">
                 <div class="form-group">
-                    {!! Form::label('name', Lang::get('app.name'), array('class' => 'control-label')) !!}
-                    {!! Form::text('name',isset($params['name'])?$params['name']:'',array('class' => 'form-control')) !!}
+                    <div class="col-lg-12 valid">
+                        {!! Form::label('name', Lang::get('app.name'), array('class' => 'control-label')) !!}
+                        {!! Form::text('name',isset($params['name'])?$params['name']:'',array('class' => 'form-control row')) !!}
+                    </div>
                 </div>
                 <div class="form-group">
                     {!! Form::label('description', Lang::get('app.description'), array('class' => 'control-label')) !!}
-                    {!! Form::textarea('description',isset($params['description'])?$params['description']:'',array('rows'=>4,'class' => 'form-control')) !!}
+                    {!! Form::textarea('description',isset($params['description'])?$params['description']:'',array('rows'=>5,'class' => 'form-control')) !!}
                 </div>
             </div>
             <div class="col-lg-8">
                 <div class="form-group row">
-                    <div class="col-lg-4">
-                        {!! Form::label('odd_type', Lang::get('app.fulltime'), array('class' => 'control-label')) !!}
-                        <div class="btn-block btn-group" data-toggle-name="odd_type" data-toggle="buttons-radio">
-                            <button type="button" value="{{Constants::ODD_1X2}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.odd_1x2')}}</button>
-                            <button type="button" value="{{Constants::ODD_AH}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.odd_ah')}}</button>
-                            <button type="button" value="{{Constants::ODD_OU}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.odd_ou')}}</button>
+                    <div class="btn-block btn-group" data-toggle-name="odd_type" data-toggle="buttons-radio">
+                        <div class="col-lg-4">
+                            {!! Form::label('odd_type', Lang::get('app.fulltime'), array('class' => 'control-label')) !!}
+                            <div class="btn-block btn-group">
+                                <button type="button" value="{{Constants::ODD_1X2}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.odd_1x2')}}</button>
+                                <button type="button" value="{{Constants::ODD_AH}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.odd_ah')}}</button>
+                                <button type="button" value="{{Constants::ODD_OU}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.odd_ou')}}</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-8">
-                        {!! Form::label('odd_type', Lang::get('app.halftime'), array('class' => 'control-label')) !!}
-                        <div class="btn-block btn-group" data-toggle-name="odd_type" data-toggle="buttons-radio">
-                            <button type="button" value="{{Constants::ODD_1X21ST}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.odd_1x2')}}</button>
-                            <button type="button" value="{{Constants::ODD_AH1ST}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.odd_ah')}}</button>
-                            <button type="button" value="{{Constants::ODD_OU1ST}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.odd_ou')}}</button>
+                        <div class="col-lg-8">
+                            {!! Form::label('odd_type', Lang::get('app.firsthalf'), array('class' => 'control-label')) !!}
+                            <div class="btn-block btn-group">
+                                <button type="button" value="{{Constants::ODD_1X21ST}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.odd_1x2')}}</button>
+                                <button type="button" value="{{Constants::ODD_AH1ST}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.odd_ah')}}</button>
+                                <button type="button" value="{{Constants::ODD_OU1ST}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.odd_ou')}}</button>
+                            </div>
                         </div>
                     </div>
                     {!! Form::hidden('odd_type',isset($params['odd_type'])?$params['odd_type']:Constants::ODD_1X2,array('class' => 'form-control')) !!}
                 </div>
                 <div class="form-group">
-                    {!! Form::label('time', Lang::get('app.time'), array('class' => 'control-label')) !!}
-                    <div class="btn-group btn-block" data-toggle-name="time" data-toggle="buttons-radio">
+                    {!! Form::label('time_type', Lang::get('app.time'), array('class' => 'control-label')) !!}
+                    <div class="btn-group btn-block" data-toggle-name="time_type" data-toggle="buttons-radio">
                         <button type="button" value="{{Constants::TIME_PRE_MATCH}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.beforetime')}}</button>
                         <button type="button" value="{{Constants::TIME_HT}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.halftime')}}</button>
-                        <button type="button" value="{{Constants::TIME_FULL}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.fulltime')}}</button>
+                        <div class="btn-group">
+                            <button type="button" class="at_time btn disabled">{{Lang::get('app.attime')}}{!! ($params['time_type']==Constants::TIME_FULL?'<i class="label label-danger">'.$params['time_value'].'</i>':'')!!}</button>
+                            <button type="button" value="{{Constants::TIME_FULL}}" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu" role="menu" style="min-width: 386px;">
+                                <div class="pull-left minutes" data-name="time_value" style="padding: 5px 10px">
+                                    @for($i=0;$i<=90;$i++)
+                                        <?php $class = (isset($params['time_value']) && $params['time_value'] == $i) ? 'label-danger' : ''; ?>
+                                        <a class="pull-left label {{$class}} label-info" style="width:24px;margin:2px;padding:5px 0;" href="">{{$i}}</a>
+                                    @endfor
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    {!! Form::hidden('time',isset($params['time'])?$params['time']:Constants::TIME_PRE_MATCH,array('class' => 'form-control')) !!}
+                    {!! Form::hidden('time_type',$params['time_type'],array('class' => 'form-control')) !!}
+                    {!! Form::hidden('time_value',$params['time_value'],array('class' => 'form-control')) !!}
                 </div>
                 <div class="form-group row">
                     <div class="col-lg-4">
@@ -82,13 +174,20 @@
                         </div>
                         {!! Form::hidden('field',isset($params['field'])?$params['field']:Constants::FIELD_HOME,array('class' => 'form-control')) !!}
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-2">
                         {!! Form::label('operator', Lang::get('app.choose_operator_condition'), array('class' => 'control-label')) !!}
                         {!! Form::select('operator', $conditions, isset($params['operator'])?$params['operator']:'$and',array('class' => 'form-control')) !!}
                     </div>
-                    <div class="col-lg-4">
-                        {!! Form::label('value', Lang::get('app.enter_value'), array('class' => 'control-label')) !!}
-                        {!! Form::text('value',$params['value'],array('class' => 'form-control value', 'placeholder' => Lang::get('app.enter_value'))) !!}
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            {!! Form::label('value', Lang::get('app.enter_value'), array('class' => 'control-label col-lg-12')) !!}
+                            <div class="col-lg-6 valid">
+                                {!! Form::text('value',$params['value'],array('class' => 'form-control row', 'placeholder' => Lang::get('app.enter_value'))) !!}
+                            </div>
+                            <div class="col-lg-6 valid">
+                                {!! Form::text('value_2',$params['value'],array('class' => 'form-control row', 'placeholder' => Lang::get('app.enter_value'))) !!}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

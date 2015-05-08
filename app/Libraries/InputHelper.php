@@ -83,7 +83,7 @@ class InputHelper
     /**
      * Create conditions
      */
-    public static function getConditions() {
+    public static function getAllConditions() {
         return array(
             '$or' => Lang::get('app.or'),
             '$and' => Lang::get('app.and'),
@@ -96,5 +96,11 @@ class InputHelper
             '$in' => Lang::get('app.in_array'),
             '$nin' => Lang::get('app.not_in_array'),
         );
+    }
+    public static function getConditions() {
+        $conditions = self::getAllConditions();
+        unset($conditions['$or']);
+        unset($conditions['$and']);
+        return $conditions;
     }
 }

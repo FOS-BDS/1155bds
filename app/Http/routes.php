@@ -53,7 +53,7 @@ Route::get('users/home','Users\UserController@home');
 Route::post('users/register','Users\UserController@register');
 Route::get('users/login','Users\UserController@login');
 Route::get('users/register','Users\UserController@viewRegister');
-Route::get('users/logout','Users\UserController@logout');
+Route::post('users/confirmLogin','Users\UserController@confirmLogin');
 // end User
 Route::get('/test',function() {
     $users=new \App\Models\Users();
@@ -65,4 +65,13 @@ Route::get('/test',function() {
     }
 
 });
-
+Route::filter('checkSession',function(){
+    if(!Session::has('username')){
+        return view('users.page.login');
+    }
+});
+// some apis need to login function
+Route::group(array('before'=>'checkSession'),function(){
+    Route::get('users/logout','Users\UserController@logout');
+    Route::get('manager','Users\UserController@manager');
+});

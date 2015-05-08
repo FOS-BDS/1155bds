@@ -15,8 +15,8 @@
         })
     </script>
     <body>
+      @include('users.layouts.banner')
         <div class="container">
-            @include('users.layouts.banner')
             <div id="place_register" class="col-lg-8 col-lg-offset-2">
                 <div class="panel panel-success">
                     <div class="panel-heading text-center"> <span style="font-weight: bold;font-size: 25px;">Đăng ký thành viên </span><span class="fa fa-3x fa-pencil-square-o pull-right"> </span></div>
@@ -54,9 +54,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-lg-offset-4 col-lg-10">
+                                    <div class="col-lg-offset-5 col-lg-10">
                                         <a  class="btn btn-warning" href="/users/home" >Trang chủ</a>
-                                        <a  class="btn btn-primary" data-text-loading="Đang chờ..." onclick="user.register(this,'#form_login');">Đồng ý</a>
+                                        <a  class="btn btn-primary" data-text-loading="Đang chờ..." onclick="user.register(this,'#form_register');">Đồng ý</a>
                                     </div>
                                 </div>
                             </form>

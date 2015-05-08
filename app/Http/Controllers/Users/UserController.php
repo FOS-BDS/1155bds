@@ -8,6 +8,7 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\BaseController;
+use App\Libraries\Constants;
 use App\Libraries\InputHelper;
 use App\Models\Users;
 use Illuminate\Support\Facades\Session;
@@ -21,7 +22,8 @@ class UserController extends BaseController{
             $username       = InputHelper::getInput('username',true);
             $password       = InputHelper::getInput('password',true);
             $repassword     = InputHelper::getInput('repassword',true);
-            $phone          = InputHelper::getInput('phone',true);
+            $phone          = InputHelper::getInput('phone',false,'');
+            $type           = InputHelper::getInput('type',false,'user');
             $email          = InputHelper::getInput('email',true);
            // $avatar       = InputHelper::getFile('avatar');
             $existed_user   = Users::getInstance()->findOne(array('username'=>$username));
@@ -36,10 +38,12 @@ class UserController extends BaseController{
                 return response()->json(array('message'=>'Mật khẩu không giống nhau!','error'=>true));
             }
             $new_user = array(
+                'id'  =>  time() . rand(0, 10000000),
                 'username'  => $username,
                 'password'  => md5($password),
                 'phone'     => $phone,
-                'email'     => $email
+                'email'     => $email,
+                'type'     => $type,
             );
             $user = Users::getInstance()->insert($new_user);
             if($user['ok'] == 1){
@@ -61,5 +65,35 @@ class UserController extends BaseController{
     public function logout(){
         Session::forget('username');
         return view('users.page.login');
+    }
+    public function confirmLogin(){
+        try{
+            $username       = InputHelper::getInput('username',true);
+            $password       = InputHelper::getInput('password',true);
+            $type           = InputHelper::getInput('type',false,'user');
+            $user       = Users::getInstance()->findOne(array(
+                'username'=> $username,
+                'password'=> md5($password),
+                'type'    => $type
+            ));
+           if( $type == Constants::TYPE_USER ){
+               if(count($user)>0){
+                   Session::put('username',$username);
+                   return response()->json(array('message'=>'Đăng nhập thành công!','error'=>false));
+               }else{
+                   return response()->json(array('message'=>'Sai tên đăng nhập hoặc mật khẩu!','error'=>true));
+               }
+           }else{
+                if(count($user)>0){
+                    Session::put('username',$username);
+                    return redirect::to('/manager');
+                }
+           }
+        }catch (\Exception $e){
+            return response()->json(array('message'=>$e->getMessage(),'error'=>$e->getCode()));
+        }
+    }
+    public function manager(){
+        return view('users.page.manager');
     }
 }

@@ -67,6 +67,8 @@ class RulesController extends AdminController {
                 $ruleModel = new Rules();
                 $params = $ruleModel->findOne(array('_id' => new MongoId($params['_id'])));
             }
+            $params['time_type'] = isset($params['time']['type']) ? $params['time']['type'] : Constants::TIME_PRE_MATCH;
+            $params['time_value'] = isset($params['time']['value']) ? $params['time']['value'] : Constants::TIME_PRE_MATCH;
             $params['value'] = isset($params['value']) ? $params['value'] : '';
             return view('admin.rules.condition_form', ['conditions' => $conditions])->with('params', $params)->render();
         }

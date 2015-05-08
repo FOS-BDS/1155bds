@@ -18,12 +18,12 @@ class Rules extends CollectionBase {
                 $conditionLeftData = explode(':', $params['condition_left']);
                 $conditionRightData = explode(':', $params['condition_right']);
                 $data['condition_left'] = array(
-                    'id' => $conditionLeftData[0],
+                    'id' => new MongoId($conditionLeftData[0]),
                     'name' => $params['condition_left_display'],
                     'type' => $conditionLeftData[1],
                 );
                 $data['condition_right'] = array(
-                    'id' => $conditionRightData[0],
+                    'id' => new MongoId($conditionRightData[0]),
                     'name' => $params['condition_right_display'],
                     'type' => $conditionRightData[1],
                 );
@@ -32,7 +32,17 @@ class Rules extends CollectionBase {
                 $rule->condition_right = $data['condition_right'];
             } elseif($params['type'] == Constants::TYPE_CONDITION) {
                 $rule->field = $params['field'];
-                $rule->time = $params['time'];
+                if($params['time_type'] == Constants::TIME_FULL) {
+                    $rule->time = array(
+                        'type' => $params['time_type'],
+                        'value' => $params['time_value'],
+                    );
+                } else {
+                    $rule->time = array(
+                        'type' => $params['time_type'],
+                        'value' => $params['time_type'],
+                    );
+                }
                 $rule->value = $params['value'];
                 $rule->odd_type = $params['odd_type'];
             }
