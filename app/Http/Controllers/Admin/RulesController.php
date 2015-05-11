@@ -47,7 +47,7 @@ class RulesController extends AdminController {
         $type = $request->get('type', null);
         $params = $request->all();
         if($type == Constants::TYPE_RULE) {
-            $conditions = InputHelper::getConditions();
+            $conditions = InputHelper::getRuleOparators();
             if (isset($params['_id']) && $params['_id']) {
                 $ruleModel = new Rules();
                 $params = $ruleModel->findOne(array('_id' => new MongoId($params['_id'])));
@@ -56,13 +56,13 @@ class RulesController extends AdminController {
             $conditionLeftType = isset($params['condition_left']['type']) ? $params['condition_left']['type'] : '';
             $conditionRightId = isset($params['condition_right']['id']) ? $params['condition_right']['id'] : '';
             $conditionRightType = isset($params['condition_right']['type']) ? $params['condition_right']['type'] : '';
-            $params['condition_left_display'] = isset($params['condition_right']['name']) ? $params['condition_right']['name'] : '';
-            $params['condition_left'] = $conditionLeftId . ':' . $conditionLeftType;
-            $params['condition_right_display'] = isset($params['condition_right']['name']) ? $params['condition_right']['name'] : '';
-            $params['condition_right'] = $conditionRightId . ':' . $conditionRightType;
+            $conditionLeft = $conditionLeftId != ''? array($conditionLeftId . ':' . $conditionLeftType):array();
+            $params['condition_left'] = json_encode($conditionLeft);
+            $conditionRight = $conditionLeftId != ''? array($conditionRightId . ':' . $conditionRightType):array();
+            $params['condition_right'] = json_encode($conditionRight);
             return view('admin.rules.rule_form', ['conditions' => $conditions])->with('params', $params)->render();
         } else {
-            $conditions = InputHelper::getConditions();
+            $conditions = InputHelper::getConditionOparators();
             if (isset($params['_id']) && $params['_id']) {
                 $ruleModel = new Rules();
                 $params = $ruleModel->findOne(array('_id' => new MongoId($params['_id'])));
@@ -70,6 +70,7 @@ class RulesController extends AdminController {
             $params['time_type'] = isset($params['time']['type']) ? $params['time']['type'] : Constants::TIME_PRE_MATCH;
             $params['time_value'] = isset($params['time']['value']) ? $params['time']['value'] : Constants::TIME_PRE_MATCH;
             $params['value'] = isset($params['value']) ? $params['value'] : '';
+            $params['condition_values'] = isset($params['condition_values']) ? $params['condition_values'] : array('value_first'=>0,'value_last'=>0);
             return view('admin.rules.condition_form', ['conditions' => $conditions])->with('params', $params)->render();
         }
     }
@@ -77,7 +78,6 @@ class RulesController extends AdminController {
     public function save(Request $request) {
         $params = $request->all();
         $data = Rules::makeObject($params);
-
         $ruleModel = new Rules();
 
         if(isset($params['_id']) && $params['_id']) {
@@ -107,5 +107,28 @@ class RulesController extends AdminController {
             );
         }
         return json_encode($values);
+    }
+
+    public function checkValid(Request $request) {
+        $ruleModel = new Rules();
+        $name = $request->get('name', null);
+        $id = $request->get('id', 0);
+        if($name != null) {
+            if($id != 0) {
+                $data = $ruleModel->findOne(array('_id' => new MongoId($id)));
+                if($data['name'] == $name) {
+                    return json_encode(array('valid' => true));
+                }
+            }
+            $datas = $ruleModel->find(array('name' => $name));
+            $datas = iterator_to_array($datas);
+            if(count($datas) > 0) {
+                return json_encode(array('valid' => false));
+            } else {
+                return json_encode(array('valid' => true));
+            }
+        }
+
+        return json_encode(array('valid' => false));
     }
 }

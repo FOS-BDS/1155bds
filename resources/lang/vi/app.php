@@ -14,6 +14,8 @@ return [
     'choose_operator'       => 'Chon điều kiện liên kết',
 	'choose_operator_condition' => 'Chọn điều kiện',
 	'enter_value' 			=> 'Nhập giá trị',
+	'enter_name' 			=> 'Nhập tên',
+	'enter_description'     => 'Nhập mô tả',
     'field'                 => 'Chấp',
     'and'                   => 'Và',
     'or'                    => 'Hoặc',
@@ -42,4 +44,9 @@ return [
 	'odd_1x2'				=> '1X2',
 	'odd_ah'				=> 'Cược chấp',
 	'odd_ou'				=> 'Trên / Dưới',
+    'edit'                  => 'Sua',
+    'delete'                => 'Xoa',
+    'value'                 => 'Gia tri',
+    'odd_type'              => 'Loai cuoc',
+    'operator'              => 'Điều kiện',
 ];
