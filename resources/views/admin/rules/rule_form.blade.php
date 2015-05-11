@@ -42,7 +42,7 @@
             </div>
         </div>
         <div class="form-group">
-            {!! Form::label('name', Lang::get('app.name'), array('class' => 'control-label')) !!}
+            {!! Form::label('name', Lang::get('app.name').'*', array('class' => 'control-label')) !!}
             {!! Form::text('name',isset($params['name'])?$params['name']:'',array('class' => 'form-control')) !!}
         </div>
         <div class="row form-group">

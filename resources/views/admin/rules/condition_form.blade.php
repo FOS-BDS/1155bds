@@ -87,11 +87,7 @@
                                     id: '{{isset($params['_id'])?$params['_id']:0}}'
                                 },
                                 message: 'The name condition existing in the system'
-                            },
-                            regexp: {
-                                regexp: /^[a-zA-Z0-9_\.]+$/,
-                                message: 'The name can only consist of alphabetical, number, dot and underscore'
-                            },
+                            }
                         }
                     },
                     "condition_values[value_first]": {
@@ -142,13 +138,13 @@
             <div class="col-lg-4 col-md-4">
                 <div class="form-group row">
                     <div class="col-lg-12 valid">
-                        {!! Form::label('name', Lang::get('app.name'), array('class' => 'control-label')) !!}
+                        {!! Form::label('name', Lang::get('app.name').'*', array('class' => 'control-label')) !!}
                         {!! Form::text('name',isset($params['name'])?$params['name']:'',array('class' => 'form-control', 'placeholder' => Lang::get('app.enter_name'))) !!}
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-lg-12 valid">
-                        {!! Form::label('description', Lang::get('app.description'), array('class' => 'control-label')) !!}
+                        {!! Form::label('description', Lang::get('app.description').'*', array('class' => 'control-label')) !!}
                         {!! Form::textarea('description',isset($params['description'])?$params['description']:'',array('rows'=>5,'class' => 'form-control', 'placeholder' => Lang::get('app.enter_description'))) !!}
                     </div>
                 </div>
