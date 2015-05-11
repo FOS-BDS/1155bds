@@ -34,6 +34,7 @@ Route::get('admin/rules/getRules', 'Admin\RulesController@getRules');
 Route::get('admin/rules/editRule', 'Admin\RulesController@editRule');
 Route::get('admin/rules/getConditionAndRules', 'Admin\RulesController@getConditionAndRules');
 Route::post('admin/rules/save', 'Admin\RulesController@save');
+Route::get('admin/rules/validate', 'Admin\RulesController@checkValid');
 /* End Admin */
 
 Route::controllers([

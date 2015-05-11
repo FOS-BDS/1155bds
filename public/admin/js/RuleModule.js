@@ -94,9 +94,8 @@ var RuleModule = {
     },
     save: function(myself) {
         var that = this;
-        var form = $(myself).parent().parent().parent()[0]; // You need to use standart javascript object here
+        var form = $('#condition_form')[0]; // You need to use standart javascript object here
         var formData = new FormData(form);
-        console.log(form);
         $.ajax({
             url: that.urlApi + 'rules/save?type='+that.type,
             data: formData,
@@ -114,6 +113,7 @@ var RuleModule = {
                 $(myself).button('reset');
             }
         });
+        return false;
     }
 };
 $(function() {

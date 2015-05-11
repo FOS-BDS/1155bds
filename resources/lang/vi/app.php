@@ -44,4 +44,9 @@ return [
 	'odd_1x2'				=> '1X2',
 	'odd_ah'				=> 'Cược chấp',
 	'odd_ou'				=> 'Trên / Dưới',
+    'edit'                  => 'Sua',
+    'delete'                => 'Xoa',
+    'value'                 => 'Gia tri',
+    'odd_type'              => 'Loai cuoc',
+    'operator'              => 'Điều kiện',
 ];
