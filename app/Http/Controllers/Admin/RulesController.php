@@ -56,10 +56,10 @@ class RulesController extends AdminController {
             $conditionLeftType = isset($params['condition_left']['type']) ? $params['condition_left']['type'] : '';
             $conditionRightId = isset($params['condition_right']['id']) ? $params['condition_right']['id'] : '';
             $conditionRightType = isset($params['condition_right']['type']) ? $params['condition_right']['type'] : '';
-            $params['condition_left_display'] = isset($params['condition_right']['name']) ? $params['condition_right']['name'] : '';
-            $params['condition_left'] = $conditionLeftId . ':' . $conditionLeftType;
-            $params['condition_right_display'] = isset($params['condition_right']['name']) ? $params['condition_right']['name'] : '';
-            $params['condition_right'] = $conditionRightId . ':' . $conditionRightType;
+            $conditionLeft = $conditionLeftId != ''? array($conditionLeftId . ':' . $conditionLeftType):array();
+            $params['condition_left'] = json_encode($conditionLeft);
+            $conditionRight = $conditionLeftId != ''? array($conditionRightId . ':' . $conditionRightType):array();
+            $params['condition_right'] = json_encode($conditionRight);
             return view('admin.rules.rule_form', ['conditions' => $conditions])->with('params', $params)->render();
         } else {
             $conditions = InputHelper::getConditionOparators();
@@ -78,7 +78,6 @@ class RulesController extends AdminController {
     public function save(Request $request) {
         $params = $request->all();
         $data = Rules::makeObject($params);
-
         $ruleModel = new Rules();
 
         if(isset($params['_id']) && $params['_id']) {

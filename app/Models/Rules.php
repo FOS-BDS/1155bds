@@ -16,16 +16,14 @@ class Rules extends CollectionBase {
         if(isset($params['type'])) {
             // Rules
             if($params['type'] == Constants::TYPE_RULE) {
-                $conditionLeftData = explode(':', $params['condition_left']);
-                $conditionRightData = explode(':', $params['condition_right']);
+                $conditionLeftData = explode(':', $params['conditions'][0]);
+                $conditionRightData = explode(':', $params['conditions'][1]);
                 $data['condition_left'] = array(
                     'id' => new MongoId($conditionLeftData[0]),
-                    'name' => $params['condition_left_display'],
                     'type' => $conditionLeftData[1],
                 );
                 $data['condition_right'] = array(
                     'id' => new MongoId($conditionRightData[0]),
-                    'name' => $params['condition_right_display'],
                     'type' => $conditionRightData[1],
                 );
 
