@@ -28,6 +28,7 @@ var user={
                     }
                 },
                 error:function(result){
+                    $(myself).button('reset');
                     console.log(result.responseText);
                 }
             })
@@ -68,6 +69,7 @@ var user={
                         }
                     },
                     error:function(result){
+                        $(myself).button('reset');
                         console.log(result.responseText);
                     }
                 })

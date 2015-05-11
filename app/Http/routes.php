@@ -13,6 +13,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Session;
 
 Route::get('/', 'WelcomeController@index');
@@ -57,6 +58,11 @@ Route::get('users/register','Users\UserController@viewRegister');
 Route::post('users/confirmLogin','Users\UserController@confirmLogin');
 // end User
 Route::get('/test',function() {
+    try{
+        throw new Exception("dddddd");
+    } catch(Exception $e) {
+        return \App\Libraries\ResponseBuilder::error($e);
+    }
 
 });
 Route::filter('checkSession',function(){
@@ -70,5 +76,25 @@ Route::group(array('before'=>'checkSession'),function(){
 });
 
 // manager data
-Route::get('manager','Users\UserController@manager');
-
+Route::get('manages','LogController@manages');
+Route::get('manages/searchLogs','LogController@searchLogs');
+// logs events
+Log::listen(function($level, $message, $context)
+{
+    $apiName = Request::capture()->path();
+    // Get Error Code
+    preg_match('/ERROR_CODE:\s*(\d+)/', $message, $matches);
+    $startTime = isset($context['start_time']) ? $context['start_time'] : 0;
+    //$endTime = isset($context['end_time']) ? $context['end_time'] : 0;
+    $endTime = microtime(true);
+    $errorCode = isset($matches[1]) ? $matches[1] : 200;
+    Queue::push(function() use ($level, $errorCode, $message, $context, $apiName, $startTime, $endTime) {
+        \App\Models\Log::getInstance()->insert(array(
+            'lever'     =>$level,
+            'errorCode' =>$errorCode,
+            'message'   =>$message,
+            'apiName'   =>$apiName,
+            'create_at' => date('Y-m-d h:i:s')
+        ));
+    });
+});

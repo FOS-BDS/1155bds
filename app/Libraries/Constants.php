@@ -33,4 +33,7 @@ class Constants
     const FIELD_HOME = 'home';
     const FIELD_DRAW = 'draw';
     const FIELD_AWAY = 'away';
+
+    const TYPE_USER = 'user';
+    const TYPE_ADMIN= 'admin';
 }
