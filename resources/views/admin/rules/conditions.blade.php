@@ -10,14 +10,14 @@
     <div class="box-body">
         <table class="table table-striped table-bordered table-responsive">
             <tr class="active" style="background-color: #2a6496;">
-                <td style="text-align: center; width:15%;">{{Lang::get('app.name')}}</td>
-                <td style="width:30%;">{{Lang::get('app.description')}}</td>
-                <td style="text-align: center;">{{Lang::get('app.odd_type')}}</td>
-                <td style="text-align: center;">{{Lang::get('app.time')}}</td>
-                <td style="text-align: center;">{{Lang::get('app.field')}}</td>
-                <td style="text-align: center;">{{Lang::get('app.operator')}}</td>
-                <td style="text-align: center;">{{Lang::get('app.value')}}</td>
-                <td style="text-align: center;min-width:140px;">{{Lang::get('app.action')}}</td>
+                <th style="text-align: center; width:15%;">{{Lang::get('app.name')}}</th>
+                <th style="width:30%;">{{Lang::get('app.description')}}</th>
+                <th style="text-align: center;">{{Lang::get('app.odd_type')}}</th>
+                <th style="text-align: center;">{{Lang::get('app.time')}}</th>
+                <th style="text-align: center;">{{Lang::get('app.field')}}</th>
+                <th style="text-align: center;">{{Lang::get('app.operator')}}</th>
+                <th style="text-align: center;">{{Lang::get('app.value')}}</th>
+                <th style="text-align: center;min-width:140px;">{{Lang::get('app.action')}}</th>
             </tr>
             @foreach($rules as $rule)
                 <tr>

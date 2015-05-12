@@ -9,18 +9,25 @@
     <div class="box-body">
         <table class="table table-striped table-bordered">
             <tr class="active" style="background-color: #2a6496;">
-                <td style="text-align: center; width:20%;">{{Lang::get('app.name')}}</td>
-                <td>{{Lang::get('app.desctiption')}}</td>
-                <td style="text-align: center; width:15%;">{{Lang::get('app.action')}}</td>
+                <th style="width:20%;">{{Lang::get('app.name')}}</th>
+                <th>{{Lang::get('app.description')}}</th>
+                <th style="text-align: center; width:5%;">{{Lang::get('app.color')}}</th>
+                <th style="text-align: center; width:140px;">{{Lang::get('app.action')}}</th>
             </tr>
             @foreach($rules as $rule)
                 <tr>
                     <td style="text-align: left;">{{$rule['name']}}</td>
                     <td style="text-align: left;">{{$rule['description']}}</td>
                     <td style="text-align: center;">
+                        {{isset($rule['rule_color'])?$rule['rule_color']:'#ffffff'}}
+                        <div class="progress xs">
+                            <div class="progress-bar" style="background-color:{{isset($rule['rule_color'])?$rule['rule_color']:'#ffffff'}};width: 100%"></div>
+                        </div>
+                    </td>
+                    <td style="text-align: center;">
                         <div class="btn-group">
-                            <button class="btn btn-xs btn-warning" data-loading-text="Editing..." onclick="RuleModule.editRule(this,'{{$rule['_id']}}');">Edit | <span class="fa fa-edit"></span></button>
-                            <button class="btn btn-xs btn-danger" data-loading-text="Deleting..." onclick="RuleModule.deleteRule(this,'{{$rule['_id']}}');">Delete | <span class="fa fa-trash-o"></span></button>
+                            <button class="btn btn-xs btn-warning" data-loading-text="Editing..." onclick="RuleModule.editRule(this,'{{$rule['_id']}}');">{{Lang::get('app.edit')}} | <span class="fa fa-edit"></span></button>
+                            <button class="btn btn-xs btn-danger" data-loading-text="Deleting..." onclick="RuleModule.deleteRule(this,'{{$rule['_id']}}');">{{Lang::get('app.delete')}} | <span class="fa fa-trash-o"></span></button>
                         </div>
                     </td>
                 </tr>

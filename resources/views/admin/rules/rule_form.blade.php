@@ -1,4 +1,11 @@
-
+<style>
+    .colorpicker-element .input-group-addon i {
+        display: block;
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+    }
+</style>
 <script>
     $(function() {
         $(function() {
@@ -23,6 +30,20 @@
                 placeholder: "{!!Lang::get('app.choose_condition')!!}",
                 value: '<?php echo $params["condition_right"] ?>'
             });
+
+            $(".rule_color").ColorPickerSliders({
+                color: '{{isset($params['rule_color'])?$params['rule_color']:'#ffffff'}}',
+                hsvpanel: false,
+                previewontriggerelement: true,
+                placement: "auto",
+                title: 'Select Color',
+                sliders: false,
+                previewformat: 'hex',
+                size: 'sm',
+                onchange: function(container, color) {
+                    //$('.rule_color_display').css("background-color", color.tiny.toRgbString());
+                }
+            });
         });
     });
 </script>
@@ -34,34 +55,40 @@
             <button class="btn btn-primary btn-xs" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>
         </div>
     </div>
-    {!! Form::open(array('method' => 'POST', 'role' => 'form')) !!}
+    {!! Form::open(array('method' => 'POST', 'role' => 'form', 'id' => 'condition_form')) !!}
     <div class="box-body">
-        <div class="row" >
-            <div class="col-lg-12">
-                <h4 class="form_alert alert-danger"></h4>
-            </div>
-        </div>
         <div class="form-group">
             {!! Form::label('name', Lang::get('app.name').'*', array('class' => 'control-label')) !!}
             {!! Form::text('name',isset($params['name'])?$params['name']:'',array('class' => 'form-control')) !!}
         </div>
         <div class="row form-group">
-            <div class="col-lg-5">
+            <div class="col-lg-5 col-md-4 col-sm-4">
                 {!! Form::label('condition_left', Lang::get('app.choose_condition'), array('class' => 'control-label')) !!}
                 <div class="form-control condition_left"></div>
             </div>
-            <div class="col-lg-2">
+            <div class="col-lg-2 col-md-4 col-sm-4">
                 {!! Form::label('operator', Lang::get('app.choose_operator'), array('class' => 'control-label')) !!}
                 {!! Form::select('operator', $conditions, isset($params['operator'])?$params['operator']:'$and',array('class' => 'form-control')) !!}
             </div>
-            <div class="col-lg-5">
+            <div class="col-lg-5 col-md-4 col-sm-4">
                 {!! Form::label('condition_right', Lang::get('app.choose_condition'), array('class' => 'control-label')) !!}
                 <div class="form-control condition_right"></div>
             </div>
         </div>
-        <div class="form-group">
-            {!! Form::label('description', Lang::get('app.description'), array('class' => 'control-label')) !!}
-            {!! Form::textarea('description',isset($params['description'])?$params['description']:'',array('rows'=>4,'class' => 'form-control')) !!}
+        <div class="form-group row">
+            <div class="col-lg-8 col-md-8 col-sm-6">
+                {!! Form::label('description', Lang::get('app.description'), array('class' => 'control-label')) !!}
+                {!! Form::textarea('description',isset($params['description'])?$params['description']:'',array('rows'=>4,'class' => 'form-control')) !!}
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                {!! Form::label('name', 'Báo màu:', array('class' => 'control-label')) !!}
+                <div class="input-group  colorpicker-element">
+                    {!! Form::text('rule_color','',array('class' => 'form-control rule_color')) !!}
+                    <div class="input-group-addon">
+                        <i class="fa rule_color_display" style="background-color:{{isset($params['rule_color'])?$params['rule_color']:'#ffffff'}};"></i>
+                    </div>
+                </div><!-- /.input group -->
+            </div>
         </div>
         {!! Form::hidden('_id',isset($params['_id'])?$params['_id']:0,array('class' => 'form-control')) !!}
     </div>

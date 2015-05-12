@@ -29,6 +29,7 @@ class Rules extends CollectionBase {
 
                 $rule->condition_left = $data['condition_left'];
                 $rule->condition_right = $data['condition_right'];
+                $rule->rule_color = $params['rule_color'];
             } elseif($params['type'] == Constants::TYPE_CONDITION) {
                 $rule->field = $params['field'];
                 if($params['time_type'] == Constants::TIME_FULL) {
