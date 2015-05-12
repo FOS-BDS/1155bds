@@ -66,6 +66,66 @@
                 }
             });
         });
+        $('#condition_form')
+                .formValidation({
+                    framework: 'bootstrap',
+                    err: {
+                        container: 'tooltip'
+                    },
+                    icon: {
+                        valid: 'fa fa-check',
+                        invalid: 'fa fa-times',
+                        validating: 'fa fa-refresh'
+                    },
+                    row: {
+                        selector: 'div.valid'
+                    },
+                    fields: {
+                        "description": {
+                            validators: {
+                                notEmpty: {
+                                    message: 'The description is required'
+                                }
+                            }
+                        },
+                        "name": {
+                            validators: {
+                                notEmpty: {
+                                    message: 'The name is required'
+                                },
+                                stringLength: {
+                                    min: 1,
+                                    max: 225,
+                                    message: 'The name must be more than 1 and less than 225 characters long'
+                                },
+                                remote: {
+                                    type: 'GET',
+                                    url: RuleModule.urlApi + 'rules/validate',
+                                    data: {
+                                        id: '{{isset($params['_id'])?$params['_id']:0}}'
+                                    },
+                                    message: 'The name condition existing in the system'
+                                }
+                            }
+                        },
+                        "conditions[]": {
+                            validators: {
+                                notEmpty: {
+                                    message: 'The conditions is required'
+                                }
+                            }
+                        }
+                    },
+                    onError: function(e) {
+                    },
+                    onSuccess: function(e) {
+                    }
+                })
+                .on('success.form.fv', function(e) {
+                    // Prevent form submission
+                    e.preventDefault();
+                    RuleModule.save();
+                });
     });
 </script>
 <div class="box box-solid box-info" id="rule_form">
@@ -78,9 +138,11 @@
     </div>
     {!! Form::open(array('method' => 'POST', 'role' => 'form', 'id' => 'condition_form')) !!}
     <div class="box-body">
-        <div class="form-group">
-            {!! Form::label('name', Lang::get('app.name').'*', array('class' => 'control-label')) !!}
-            {!! Form::text('name',isset($params['name'])?$params['name']:'',array('class' => 'form-control')) !!}
+        <div class="form-group row">
+            <div class="col-lg-12 valid">
+                {!! Form::label('name', Lang::get('app.name').'*', array('class' => 'control-label')) !!}
+                {!! Form::text('name',isset($params['name'])?$params['name']:'',array('class' => 'form-control')) !!}
+            </div>
         </div>
         <div class="row form-group">
             <div class="col-lg-5 col-md-4 col-sm-4">
@@ -97,7 +159,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <div class="col-lg-8 col-md-8 col-sm-6">
+            <div class="col-lg-8 col-md-8 col-sm-6 valid">
                 {!! Form::label('description', Lang::get('app.description'), array('class' => 'control-label')) !!}
                 {!! Form::textarea('description',isset($params['description'])?$params['description']:'',array('rows'=>4,'class' => 'form-control')) !!}
             </div>
@@ -123,7 +185,7 @@
     </div>
     <div class="box-footer clearfix">
         <div class="pull-right">
-            {!! Form::submit('Save', array('onclick'=>'RuleModule.save(this);return false;', 'class' => 'btn btn-sm btn-small btn-primary', 'data-loading-text' => 'Saving...')) !!}
+            {!! Form::submit('Save', array('class' => 'btn btn-sm btn-small btn-primary', 'data-loading-text' => 'Saving...')) !!}
         </div>
     </div>
     {!! Form::close() !!}
