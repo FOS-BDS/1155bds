@@ -11,7 +11,7 @@ use App\Http\Controllers\BaseController;
 use App\Libraries\Constants;
 use App\Libraries\InputHelper;
 use App\Libraries\ResponseBuilder;
-use App\Models\Users;
+use App\DAO\Users;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 

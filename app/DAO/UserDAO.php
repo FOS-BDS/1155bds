@@ -1,7 +1,7 @@
 <?php
-namespace App\Models;
+namespace App\DAO;
 
-use App\Models\base\CollectionBase;
+use App\DAO\base\CollectionBase;
 
 class Users extends CollectionBase {
     private static $instance;

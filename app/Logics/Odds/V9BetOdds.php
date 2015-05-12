@@ -11,7 +11,7 @@ namespace App\Logics\Odds;
 
 use App\Libraries\Constants;
 use App\Logics\base\OddServiceBase;
-use App\Models\Odds;
+use App\DAO\Odds;
 
 class V9BetOdds extends OddServiceBase {
     public function processData($matchs=null,$match_odds=null)

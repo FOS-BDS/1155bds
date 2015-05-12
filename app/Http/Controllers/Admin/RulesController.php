@@ -3,7 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Libraries\Constants;
 use App\Libraries\InputHelper;
-use App\Models\Rules;
+use App\DAO\Rules;
 use Illuminate\Http\Request;
 use MongoId;
 use MongoRegex;

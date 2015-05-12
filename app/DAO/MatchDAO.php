@@ -6,10 +6,10 @@
  * Time: 15:03
  */
 
-namespace App\Models;
+namespace App\DAO;
 
 
-use App\Models\base\CollectionBase;
+use App\DAO\base\CollectionBase;
 
 class Matchs extends CollectionBase {
     public function __construct()
