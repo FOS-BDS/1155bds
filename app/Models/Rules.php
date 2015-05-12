@@ -34,10 +34,27 @@ class Rules extends ModelBase {
     public $type;
     public $rule_color;
 
+    /**
+     * @var bool
+     */
     public $needed_update=false;
+    /**
+     * @var array
+     */
     public $parent_rules=array();
+    /**
+     * @var array
+     */
     public $match_matched=array();
+    /**
+     * @var String
+     */
     public $matched_md5;
+
+    /**
+     * @var bool
+     */
+    private $is_loaded_child=false;
 
     public function initFromDBObject($db_object,$load_child_obj=false)
     {
@@ -68,6 +85,7 @@ class Rules extends ModelBase {
         }
     }
     private function loadChildRule() {
+        $this->is_loaded_child=true;
         $ruleDao=new RuleDAO();
 
         // load left condition
@@ -89,6 +107,37 @@ class Rules extends ModelBase {
             $right_condition=null;
         }
         $this->right_condition=$right_condition;
+    }
+
+    /**
+     * @return array
+     */
+    public function process() {
+        if($this->needed_update) {
+            $match_matched=array();
+            if($this->type==Constants::TYPE_CONDITION) {
+
+            } elseif($this->type==Constants::TYPE_RULE) {
+                $left_match_matched=array();
+                if($this->left_condition!=null &&
+                    $this->left_condition->needed_update) {
+                    $left_match_matched=$this->left_condition->process();
+                } else {
+                    $left_match_matched=$this->left_condition->match_matched;
+                }
+                $right_match_matched=array();
+                if($this->right_condition!=null &&
+                    $this->right_condition->needed_update) {
+                    $right_match_matched=$this->right_condition->process();
+                } else {
+                    $right_match_matched=$this->right_condition->match_matched;
+                }
+                $match_matched=array_intersect($left_match_matched,$right_match_matched);
+            }
+        }
+    }
+    public function processWithNewestData() {
+
     }
 
 }
