@@ -94,16 +94,17 @@ class RulesController extends AdminController {
         $values = array();
         if($q != null) {
             $regex = new MongoRegex("/$q/i");
-            $datas = $ruleModel->find(array('name' => $regex));
+            $datas = $ruleModel->find(array('name' => $regex, 'type'=> array('$in'=>array(Constants::TYPE_RULE,Constants::TYPE_CONDITION))));
         } else {
-            $datas = $ruleModel->find();
+            $datas = $ruleModel->find(array('type'=> array('$in'=>array(Constants::TYPE_RULE,Constants::TYPE_CONDITION))));
         }
         $datas = iterator_to_array($datas);
         foreach ($datas as $data) {
             $id = (array) $data['_id'];
+            $description = isset($data['description'])?$data['description']:'';
             $values[] = array(
                 'id' => $id['$id'].':'.Constants::TYPE_RULE,
-                'name' => $data['name'].'('.$data['description'].')',
+                'name' => isset($data['name'])?$data['name']:''.'('.$description.')',
             );
         }
         return json_encode($values);

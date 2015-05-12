@@ -49,4 +49,9 @@ return [
     'value'                 => 'Gia tri',
     'odd_type'              => 'Loai cuoc',
     'operator'              => 'Điều kiện',
+    'status'                => 'Trang thai',
+    'publish'               => 'Cong bo',
+    'unpublish'             => 'Khong cong bo',
+    'main'                 => 'Luat chinh',
+    'intermediate'          => 'Luat trung gian',
 ];

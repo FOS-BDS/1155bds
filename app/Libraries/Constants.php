@@ -27,8 +27,8 @@ class Constants
     const ODD_OU="OU";
     const ODD_OU1ST="OU1ST";
 
-    const TYPE_RULE         = 'rule';
-    const TYPE_CONDITION    = 'condition';
+    const TYPE_RULE         = 'RULE';
+    const TYPE_CONDITION    = 'CONDITION';
 
     const FIELD_HOME = 'home';
     const FIELD_DRAW = 'draw';
@@ -40,4 +40,9 @@ class Constants
     const OPERATOR_NIN = '$nin';
     const OPERATOR_AND = '$and';
     const OPERATOR_OR = '$or';
+
+    const STATUS_PUBLISH = 1;
+    const STATUS_UNPUBLISH = 0;
+    const STATUS_MAIN = 3;
+    const STATUS_INTERMEDIATE = 2;
 }

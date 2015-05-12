@@ -222,6 +222,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    {!! Form::label('status', Lang::get('app.status'), array('class' => 'control-label')) !!}
+                    <div class="btn-group btn-block" data-toggle-name="status" data-toggle="buttons-radio">
+                        <button type="button" value="{{Constants::STATUS_PUBLISH}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.publish')}}</button>
+                        <button type="button" value="{{Constants::STATUS_UNPUBLISH}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.unpublish')}}</button>
+                    </div>
+                    {!! Form::hidden('status',isset($params['status'])?$params['status']:Constants::STATUS_PUBLISH,array('class' => 'form-control')) !!}
+                </div>
             </div>
         </div>
         {!! Form::hidden('_id',isset($params['_id'])?$params['_id']:0,array('class' => 'form-control')) !!}
