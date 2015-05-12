@@ -2,8 +2,8 @@
 namespace App\Http\Controllers;
 
 use App\Libraries\Inputs\InputView;
-use App\Models\Suppliers;
-use App\Models\Users;
+use App\DAO\Suppliers;
+use App\DAO\Users;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller {

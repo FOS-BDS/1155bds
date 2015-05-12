@@ -90,7 +90,7 @@ Log::listen(function($level, $message, $context)
     $endTime = microtime(true);
     $errorCode = isset($matches[1]) ? $matches[1] : 200;
     Queue::push(function() use ($level, $errorCode, $message, $context, $apiName, $startTime, $endTime) {
-        \App\Models\Log::getInstance()->insert(array(
+        \App\DAO\LogDAO::getInstance()->insert(array(
             'lever'     =>$level,
             'errorCode' =>$errorCode,
             'message'   =>$message,

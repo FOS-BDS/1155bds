@@ -6,7 +6,7 @@
  * Time: 2:58 PM
  */
 namespace App\Libraries\Inputs;
-use App\Models\Rules;
+use App\DAO\Rules;
 use ReflectionClass;
 use MongoId;
 

@@ -6,7 +6,7 @@
  * Time: 3:49 AM
  */
 
-namespace App\Models;
+namespace App\DAO;
 
 use App\Libraries\APIException;
 Use App\Libraries\InputHelper;
@@ -14,7 +14,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Session;
 use App\Libraries\DBConnection;
-use App\Models\base\ModelBase;
+use App\DAO\base\ModelBase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;

@@ -12,8 +12,8 @@ namespace App\Logics\Matchs;
 use App\Libraries\Constants;
 use App\Logics\base\MatchDataServiceBase;
 use App\Logics\Odds\V9BetOdds;
-use App\Models\Leagues;
-use App\Models\Matchs;
+use App\DAO\LeagueDAO;
+use App\DAO\Matchs;
 
 class V9BetMatchs extends MatchDataServiceBase {
     public function processData($data=null)
@@ -48,7 +48,7 @@ class V9BetMatchs extends MatchDataServiceBase {
 
         foreach ($egs as $egs_item) {
             $league_c=$egs_item->c;
-            $league_object=Leagues::makeObject($league_c->k,$league_c->k,$league_c->n);
+            $league_object=LeagueDAO::makeObject($league_c->k,$league_c->k,$league_c->n);
             $new_leagues[$league_c->k]=$league_object;
 
             // process to get match info
@@ -70,7 +70,7 @@ class V9BetMatchs extends MatchDataServiceBase {
                 $new_matchs[$match_item->k]=$match_obj;
             }
         }
-        $leagueModel=new Leagues();
+        $leagueModel=new LeagueDAO();
         $league_ids=array_keys($new_leagues);
 
         $league_cur=$leagueModel->find(array('reference_id'=>array('$in'=>$league_ids)));

@@ -6,9 +6,9 @@
  * Time: 15:04
  */
 
-namespace App\Models;
+namespace App\DAO;
 
-use App\Models\base\CollectionBase;
+use App\DAO\base\CollectionBase;
 
 class Odds extends CollectionBase{
     public function __construct()

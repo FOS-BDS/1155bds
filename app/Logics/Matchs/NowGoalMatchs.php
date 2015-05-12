@@ -13,9 +13,9 @@ use App\Libraries\InputHelper;
 use App\Libraries\ResponseBuilder;
 use App\Libraries\StringHelper;
 use App\Logics\base\MatchDataServiceBase;
-use App\Models\Leagues;
-use App\Models\Matchs;
-use App\Models\Teams;
+use App\DAO\LeagueDAO;
+use App\DAO\Matchs;
+use App\DAO\Teams;
 use DateTime;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -97,10 +97,10 @@ class NowGoalMatchs extends MatchDataServiceBase{
         foreach ($leagues as $league_item) {
             if($league_item==null) continue;
             $new_leagues[intval($league_item[0])]
-                =Leagues::makeObject($league_item[0],$league_item[1],$league_item[2],$league_item[5],$league_item[3]);
+                =LeagueDAO::makeObject($league_item[0],$league_item[1],$league_item[2],$league_item[5],$league_item[3]);
         }
 
-        $leagueModel=new Leagues();
+        $leagueModel=new LeagueDAO();
         $league_ids=array_keys($new_leagues);
 
         $league_cur=$leagueModel->find(array('reference_id'=>array('$in'=>$league_ids)));

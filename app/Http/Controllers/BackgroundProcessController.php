@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Factories\providers\MatchServiceProvider;
 use App\Libraries\ResponseBuilder;
 use App\Logics\Matchs\V9BetMatchs;
-use App\Models\BackgroundProcess;
+use App\DAO\BackgroundProcess;
 use Exception;
 
 class BackgroundProcessController extends BaseController {
