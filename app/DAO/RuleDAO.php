@@ -51,7 +51,7 @@ class RuleDAO extends CollectionBase {
             $rule->operator = $params['operator'];
             $rule->description = $params['description'];
             $rule->type = $params['type'];
-
+            $rule->status = $params['status'];
         }
         return $rule;
     }

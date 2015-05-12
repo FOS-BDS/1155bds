@@ -41,7 +41,8 @@ class Constants
     const OPERATOR_AND = '$and';
     const OPERATOR_OR = '$or';
 
+    const STATUS_PUBLISH = 1;
     const STATUS_UNPUBLISH = 0;
-    const STATUS_FINAL = 1;
+    const STATUS_MAIN = 3;
     const STATUS_INTERMEDIATE = 2;
 }

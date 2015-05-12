@@ -109,13 +109,14 @@
                         <i class="fa rule_color_display" style="background-color:{{isset($params['rule_color'])?$params['rule_color']:'#ffffff'}};"></i>
                     </div>
                 </div><!-- /.input group -->
-                    {!! Form::label('status', Lang::get('app.status'), array('class' => 'control-label')) !!}
-                    <div class="btn-group btn-block" data-toggle-name="status" data-toggle="buttons-radio">
-                        <button type="button" value="{{Constants::STATUS_FINAL}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.final')}}</button>
-                        <button type="button" value="{{Constants::STATUS_INTERMEDIATE}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.intermediate')}}</button>
-                        <button type="button" value="{{Constants::STATUS_UNPUBLISH}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.unpublish')}}</button>
-                    </div>
-                    {!! Form::hidden('status',isset($params['status'])?$params['status']:Constants::STATUS_FINAL,array('class' => 'form-control')) !!}
+
+                {!! Form::label('status', Lang::get('app.status'), array('class' => 'control-label')) !!}
+                <div class="btn-group btn-block" data-toggle-name="status" data-toggle="buttons-radio">
+                    <button type="button" value="{{Constants::STATUS_MAIN}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.main')}}</button>
+                    <button type="button" value="{{Constants::STATUS_INTERMEDIATE}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.intermediate')}}</button>
+                    <button type="button" value="{{Constants::STATUS_UNPUBLISH}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.unpublish')}}</button>
+                </div>
+                {!! Form::hidden('status',isset($params['status'])?$params['status']:Constants::STATUS_MAIN,array('class' => 'form-control')) !!}
             </div>
         </div>
         {!! Form::hidden('_id',isset($params['_id'])?$params['_id']:0,array('class' => 'form-control')) !!}
