@@ -451,4 +451,5 @@ $(function() {
         var box = $(this).parents(".box").first();
         box.slideUp();
     });
+
 });

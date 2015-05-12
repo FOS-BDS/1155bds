@@ -28,9 +28,11 @@ var RuleModule = {
             },
             success:function(result) {
                 $(that.class_list).html(result);
+                alertify.success("Load data success.");
             },
             error: function(jqXHR){
                 $(that.class_list).html(jqXHR);
+                alertify.error("Load data Error.");
             }
         });
     },
@@ -50,6 +52,7 @@ var RuleModule = {
             },
             error: function(jqXHR){
                 $(that.class_form).html(jqXHR);
+                alertify.error("Load form Error.");
             }
         });
     },
@@ -70,12 +73,15 @@ var RuleModule = {
             },
             error: function(jqXHR){
                 $(that.class_form).html(jqXHR);
+                alertify.error("Load form Error.");
             }
         });
     },
     deleteRule: function(myself, _id) {
         var that = this;
-        $.ajax({
+        //jConfirm('You sure to delete this record?', 'Thong bao tu he thong.', function(test){alert(test)});
+        alertify.confirm("This is an alert dialog");
+        /*$.ajax({
             url: that.urlApi + 'rules/deleteRule',
             data: {_id:_id},
             dataType: 'html',
@@ -90,7 +96,7 @@ var RuleModule = {
             error: function(jqXHR){
                 $(that.class_form+that.supplier_id).html(jqXHR);
             }
-        });
+        });*/
     },
     save: function(myself) {
         var that = this;
@@ -108,9 +114,11 @@ var RuleModule = {
             success:function(result) {
                 $(myself).button('reset');
                 that.getRules(myself)
+                alertify.success("Saved successfully.");
             },
             error: function(jqXHR){
                 $(myself).button('reset');
+                alertify.error("Save Error.");
             }
         });
         return false;

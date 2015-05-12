@@ -9,6 +9,7 @@
 	<link href="{{ asset('/admin/css/bootstrap.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/admin/css/font-awesome.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/admin/css/ionicons.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('/admin/js/plugins/jquery.alert/alertify.core.css') }}" rel="stylesheet">
 	<link href="{{ asset('/admin/css/app.css') }}" rel="stylesheet">
     @yield('styles')
 </head>
@@ -27,6 +28,7 @@
 	<!-- Scripts -->
 	<script src="{{ asset('/admin/js/jquery.min.js') }}"></script>
 	<script src="{{ asset('/admin/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('/admin/js/plugins/jquery.alert/alertify.min.js') }}"></script>
 	<script src="{{ asset('/admin/js/app.js') }}"></script>
     @yield('scripts')
 </body>
