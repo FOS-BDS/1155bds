@@ -34,6 +34,8 @@ class Constants
     const FIELD_DRAW = 'draw';
     const FIELD_AWAY = 'away';
 
+    const TYPE_USER  = 'user';
+    const TYPE_ADMIN = 'admin';
     const OPERATOR_IN = '$in';
     const OPERATOR_NIN = '$nin';
     const OPERATOR_AND = '$and';
