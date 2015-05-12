@@ -53,6 +53,11 @@ class RuleDAO extends CollectionBase {
             $rule->description = $params['description'];
             $rule->type = $params['type'];
             $rule->status = $params['status'];
+
+            $rule->needed_update=true;
+            $rule->parent_rules=array();
+            $rule->match_matched=array();
+            $rule->matched_md5=md5(json_encode($rule->match_matched));
         }
         return $rule;
     }
