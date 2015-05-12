@@ -14,6 +14,7 @@ class RuleDAO extends CollectionBase {
 
     public static function makeObject($params) {
         $rule = parent::formatObject();
+        $params['type'] = strtoupper($params['type']);
         if(isset($params['type'])) {
             // Rules
             if($params['type'] == Constants::TYPE_RULE) {

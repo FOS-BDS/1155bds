@@ -32,6 +32,7 @@ class RulesController extends AdminController {
 
     public function getRules(Request $request) {
         $type = $request->get('type', null);
+        $type = strtoupper($type);
         $ruleModels = new RuleDAO();
         $rules = $ruleModels->find(array('type' => $type));
         $rules = iterator_to_array($rules);
@@ -45,6 +46,7 @@ class RulesController extends AdminController {
 
     public function editRule(Request $request) {
         $type = $request->get('type', null);
+        $type = strtoupper($type);
         $params = $request->all();
         if($type == Constants::TYPE_RULE) {
             $conditions = InputHelper::getRuleOparators();
