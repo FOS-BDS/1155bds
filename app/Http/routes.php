@@ -59,11 +59,6 @@ Route::get('users/register','Users\UserController@viewRegister');
 Route::post('users/confirmLogin','Users\UserController@confirmLogin');
 // end User
 Route::get('/test',function() {
-    try{
-        throw new Exception("dddddd");
-    } catch(Exception $e) {
-        return \App\Libraries\ResponseBuilder::error($e);
-    }
 
 });
 Route::filter('checkSession',function(){
