@@ -40,4 +40,8 @@ class Constants
     const OPERATOR_NIN = '$nin';
     const OPERATOR_AND = '$and';
     const OPERATOR_OR = '$or';
+
+    const STATUS_UNPUBLISH = 0;
+    const STATUS_FINAL = 1;
+    const STATUS_INTERMEDIATE = 2;
 }

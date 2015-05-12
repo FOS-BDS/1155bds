@@ -1,3 +1,4 @@
+<?php use App\Libraries\Constants; ?>
 <style>
     .colorpicker-element .input-group-addon i {
         display: block;
@@ -45,6 +46,26 @@
                 }
             });
         });
+
+        $('div.btn-group[data-toggle-name]').each(function () {
+            var group = $(this);
+            var form = $('#condition_form').eq(0);
+            var name = group.attr('data-toggle-name');
+            var hidden = $('input[name="' + name + '"]', form);
+            $('button', group).each(function () {
+                var button = $(this);
+                button.on('click', function () {
+                    hidden.val($(this).val());
+                    $('button',group).removeClass('active');
+                    if (button.val() == hidden.val()) {
+                        button.addClass('active');
+                    }
+                });
+                if (button.val() == hidden.val()) {
+                    button.addClass('active');
+                }
+            });
+        });
     });
 </script>
 <div class="box box-solid box-info" id="rule_form">
@@ -88,6 +109,13 @@
                         <i class="fa rule_color_display" style="background-color:{{isset($params['rule_color'])?$params['rule_color']:'#ffffff'}};"></i>
                     </div>
                 </div><!-- /.input group -->
+                    {!! Form::label('status', Lang::get('app.status'), array('class' => 'control-label')) !!}
+                    <div class="btn-group btn-block" data-toggle-name="status" data-toggle="buttons-radio">
+                        <button type="button" value="{{Constants::STATUS_FINAL}}" data-toggle="button" class="btn btn-primary">{{Lang::get('app.final')}}</button>
+                        <button type="button" value="{{Constants::STATUS_INTERMEDIATE}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.intermediate')}}</button>
+                        <button type="button" value="{{Constants::STATUS_UNPUBLISH}}" data-toggle="button"class="btn btn-primary">{{Lang::get('app.unpublish')}}</button>
+                    </div>
+                    {!! Form::hidden('status',isset($params['status'])?$params['status']:Constants::STATUS_FINAL,array('class' => 'form-control')) !!}
             </div>
         </div>
         {!! Form::hidden('_id',isset($params['_id'])?$params['_id']:0,array('class' => 'form-control')) !!}

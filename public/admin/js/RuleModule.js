@@ -28,7 +28,6 @@ var RuleModule = {
             },
             success:function(result) {
                 $(that.class_list).html(result);
-                alertify.success("Load data success.");
             },
             error: function(jqXHR){
                 $(that.class_list).html(jqXHR);
