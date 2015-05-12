@@ -11,7 +11,7 @@ namespace App\Logics\Odds;
 
 use App\Libraries\Constants;
 use App\Logics\base\OddServiceBase;
-use App\DAO\Odds;
+use App\DAO\OddDAO;
 
 class V9BetOdds extends OddServiceBase {
     public function processData($matchs=null,$match_odds=null)
@@ -33,14 +33,14 @@ class V9BetOdds extends OddServiceBase {
                     $away=$this->getOddVal($odds[$key][$config['away']]);
                     $h_draw=$this->getOddVal($odds[$key][$config['h_draw']]);
                     $g_draw=$this->getOddVal($odds[$key][$config['g_draw']]);
-                    $odd_obj=Odds::makeObject($matchs[$match_id],$home,$h_draw,$g_draw,$away,$config['type']);
+                    $odd_obj=OddDAO::makeObject($matchs[$match_id],$home,$h_draw,$g_draw,$away,$config['type']);
                     $odd_objs[$odd_obj->md5]=$odd_obj;
                 }
             }
         }
 
         // insert Odd to table
-        $oddModel=new Odds();
+        $oddModel=new OddDAO();
         $md5s=array_keys($odd_objs);
         $odd_cur=$oddModel->find(array('md5'=>array('$in'=>$md5s)));
 
