@@ -27,8 +27,8 @@
                 </td>
                 <td style="text-align: center;">
                     <div class="btn-group">
-                        <button class="btn btn-xs btn-warning" data-loading-text="Editing..." onclick="RuleModule.editRule(this,'{{$rule['_id']}}');">Edit | <span class="fa fa-edit"></span></button>
-                        <button class="btn btn-xs btn-danger" data-loading-text="Deleting..." onclick="RuleModule.deleteRule(this,'{{$rule['_id']}}');">Delete | <span class="fa fa-trash-o"></span></button>
+                        <button class="btn btn-xs btn-warning" data-loading-text="Editing..." onclick="RuleModule.editRule(this,'{{$rule['_id']}}');">{{Lang::get('app.edit')}} | <span class="fa fa-edit"></span></button>
+                        <button class="btn btn-xs btn-danger" data-loading-text="Deleting..." onclick="RuleModule.deleteRule(this,'{{$rule['_id']}}');">{{Lang::get('app.delete')}} | <span class="fa fa-trash-o"></span></button>
                     </div>
                 </td>
             </tr>

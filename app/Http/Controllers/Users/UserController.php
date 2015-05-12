@@ -10,7 +10,9 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\BaseController;
 use App\Libraries\Constants;
 use App\Libraries\InputHelper;
+use App\Libraries\ResponseBuilder;
 use App\Models\Users;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class UserController extends BaseController{
@@ -48,12 +50,12 @@ class UserController extends BaseController{
             $user = Users::getInstance()->insert($new_user);
             if($user['ok'] == 1){
                 Session::put('username',$username);
-                return response()->json(array('message'=>'Bạn đã đăng ký thành công!','error'=>false));
+                return ResponseBuilder::success(array('message'=>'Bạn đã đăng ký thành công!','error'=>false));
             }else{
-                return response()->json(array('message'=>'Đăng ký không thành công!','error'=>true));
+                return ResponseBuilder::success(array('message'=>'Đăng ký không thành công!','error'=>true));
             }
         }catch (\Exception $e){
-            return response()->json(array('message'=>$e->getMessage(),'error'=>$e->getCode()));
+            return ResponseBuilder::success(array('message'=>$e->getMessage(),'error'=>$e->getCode()));
         }
     }
     public function login(){
@@ -79,21 +81,18 @@ class UserController extends BaseController{
            if( $type == Constants::TYPE_USER ){
                if(count($user)>0){
                    Session::put('username',$username);
-                   return response()->json(array('message'=>'Đăng nhập thành công!','error'=>false));
+                   return ResponseBuilder::success(array('message'=>'Đăng nhập thành công!','error'=>false));
                }else{
-                   return response()->json(array('message'=>'Sai tên đăng nhập hoặc mật khẩu!','error'=>true));
+                   return ResponseBuilder::success(array('message'=>'Sai tên đăng nhập hoặc mật khẩu!','error'=>true));
                }
            }else{
                 if( md5($username) == '21232f297a57a5a743894a0e4a801fc3' && md5($password)== '37b4e2d82900d5e94b8da524fbeb33c0'){
                     Session::put('username',$username);
-                    return redirect::to('/manager');
+                    return redirect::to('/manages');
                 }
            }
         }catch (\Exception $e){
-            return response()->json(array('message'=>$e->getMessage(),'error'=>$e->getCode()));
+            return ResponseBuilder::error(array('message'=>$e->getMessage(),'error'=>$e->getCode()));
         }
-    }
-    public function manager(){
-        return view('manager.content.home');
     }
 }

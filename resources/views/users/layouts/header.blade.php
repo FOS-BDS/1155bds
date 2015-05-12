@@ -8,4 +8,5 @@
     <script src="<?php echo URL::to('/') ?>/admin/js/jquery.min.js"></script>
     <script src="<?php echo URL::to('/') ?>/admin/js/bootstrap.js"></script>
     <script src="<?php echo URL::to('/') ?>/admin/js/user.js"></script>
+    <script src="<?php echo URL::to('/') ?>/admin/js/manage.js"></script>
 </header>

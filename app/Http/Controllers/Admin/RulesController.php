@@ -108,4 +108,27 @@ class RulesController extends AdminController {
         }
         return json_encode($values);
     }
+
+    public function checkValid(Request $request) {
+        $ruleModel = new Rules();
+        $name = $request->get('name', null);
+        $id = $request->get('id', 0);
+        if($name != null) {
+            if($id != 0) {
+                $data = $ruleModel->findOne(array('_id' => new MongoId($id)));
+                if($data['name'] == $name) {
+                    return json_encode(array('valid' => true));
+                }
+            }
+            $datas = $ruleModel->find(array('name' => $name));
+            $datas = iterator_to_array($datas);
+            if(count($datas) > 0) {
+                return json_encode(array('valid' => false));
+            } else {
+                return json_encode(array('valid' => true));
+            }
+        }
+
+        return json_encode(array('valid' => false));
+    }
 }

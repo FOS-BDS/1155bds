@@ -120,7 +120,7 @@ class InputHelper
         switch($oparator) {
             case Constants::OPERATOR_IN:
             case Constants::OPERATOR_NIN:
-                return '['.implode('...', $values).']';
+                return '['.implode(' ... ', $values).']';
             default:
                 return $values['value_first'];
         }
