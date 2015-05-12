@@ -3,7 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Libraries\Constants;
 use App\Libraries\InputHelper;
-use App\DAO\Rules;
+use App\DAO\RuleDAO;
 use Illuminate\Http\Request;
 use MongoId;
 use MongoRegex;
@@ -24,7 +24,7 @@ class RulesController extends AdminController {
 	 * @return Response
 	 */
 	public function index() {
-        $ruleModels = new Rules();
+        $ruleModels = new RuleDAO();
         $rules = $ruleModels->find(array());
         $rules = iterator_to_array($rules);
         return view('admin.rules.index', ['rules' => $rules]);
@@ -32,7 +32,7 @@ class RulesController extends AdminController {
 
     public function getRules(Request $request) {
         $type = $request->get('type', null);
-        $ruleModels = new Rules();
+        $ruleModels = new RuleDAO();
         $rules = $ruleModels->find(array('type' => $type));
         $rules = iterator_to_array($rules);
         if($type == Constants::TYPE_RULE) {
@@ -49,7 +49,7 @@ class RulesController extends AdminController {
         if($type == Constants::TYPE_RULE) {
             $conditions = InputHelper::getRuleOparators();
             if (isset($params['_id']) && $params['_id']) {
-                $ruleModel = new Rules();
+                $ruleModel = new RuleDAO();
                 $params = $ruleModel->findOne(array('_id' => new MongoId($params['_id'])));
             }
             $conditionLeftId = isset($params['condition_left']['id']) ? $params['condition_left']['id'] : '';
@@ -64,7 +64,7 @@ class RulesController extends AdminController {
         } else {
             $conditions = InputHelper::getConditionOparators();
             if (isset($params['_id']) && $params['_id']) {
-                $ruleModel = new Rules();
+                $ruleModel = new RuleDAO();
                 $params = $ruleModel->findOne(array('_id' => new MongoId($params['_id'])));
             }
             $params['time_type'] = isset($params['time']['type']) ? $params['time']['type'] : Constants::TIME_PRE_MATCH;
@@ -77,8 +77,8 @@ class RulesController extends AdminController {
 
     public function save(Request $request) {
         $params = $request->all();
-        $data = Rules::makeObject($params);
-        $ruleModel = new Rules();
+        $data = RuleDAO::makeObject($params);
+        $ruleModel = new RuleDAO();
 
         if(isset($params['_id']) && $params['_id']) {
             $mongoId = new MongoId($params['_id']);
@@ -90,7 +90,7 @@ class RulesController extends AdminController {
 
     public function getConditionAndRules(Request $request) {
         $q = $request->get('q', null);
-        $ruleModel = new Rules();
+        $ruleModel = new RuleDAO();
         $values = array();
         if($q != null) {
             $regex = new MongoRegex("/$q/i");
@@ -110,7 +110,7 @@ class RulesController extends AdminController {
     }
 
     public function checkValid(Request $request) {
-        $ruleModel = new Rules();
+        $ruleModel = new RuleDAO();
         $name = $request->get('name', null);
         $id = $request->get('id', 0);
         if($name != null) {

@@ -2,8 +2,8 @@
 namespace App\Http\Controllers;
 
 use App\Libraries\Inputs\InputView;
-use App\DAO\Suppliers;
-use App\DAO\Users;
+use App\DAO\SupplierDAO;
+use App\DAO\UserDAO;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller {
@@ -47,7 +47,7 @@ class HomeController extends Controller {
             $user->name = $suppli;
             $user->save();
         }*/
-        $supplies = Suppliers::all();
+        $supplies = SupplierDAO::all();
         debug($supplies);
         $inputClass = new InputView($request);
         return view('admin.rules.index');

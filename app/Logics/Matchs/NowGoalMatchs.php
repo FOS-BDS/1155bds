@@ -14,8 +14,8 @@ use App\Libraries\ResponseBuilder;
 use App\Libraries\StringHelper;
 use App\Logics\base\MatchDataServiceBase;
 use App\DAO\LeagueDAO;
-use App\DAO\Matchs;
-use App\DAO\Teams;
+use App\DAO\MatchDAO;
+use App\DAO\TeamDAO;
 use DateTime;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -45,7 +45,7 @@ class NowGoalMatchs extends MatchDataServiceBase{
     }
     private function generateObjects($match,$leagues) {
 
-        $teamModel=new Teams();
+        $teamModel=new TeamDAO();
         $team_objects=array();
         // gen team objects
         $new_teams=array();
@@ -64,9 +64,9 @@ class NowGoalMatchs extends MatchDataServiceBase{
             if($pos>0) {
                 $g_team=substr($g_team,0,$pos);
             }
-            $t1=Teams::makeObject($match_obj[2],$h_team);
+            $t1=TeamDAO::makeObject($match_obj[2],$h_team);
             $new_teams[intval($match_obj[2])]=$t1;
-            $t2=Teams::makeObject($match_obj[3],$g_team);
+            $t2=TeamDAO::makeObject($match_obj[3],$g_team);
             $new_teams[intval($match_obj[3])]=$t2;
         }
 
@@ -167,7 +167,7 @@ class NowGoalMatchs extends MatchDataServiceBase{
                 'odd_link'=>$match[30]=='True'?$link:""
             );
         }
-        $match=new Matchs();
+        $match=new MatchDAO();
         $match->batchInsert($match_objs);
     }
     private function formatData($js_data) {

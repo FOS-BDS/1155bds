@@ -11,7 +11,7 @@ use App\Http\Controllers\BaseController;
 use App\Libraries\Constants;
 use App\Libraries\InputHelper;
 use App\Libraries\ResponseBuilder;
-use App\DAO\Users;
+use App\DAO\UserDAO;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
@@ -28,8 +28,8 @@ class UserController extends BaseController{
             $type           = InputHelper::getInput('type',false,'user');
             $email          = InputHelper::getInput('email',true);
            // $avatar       = InputHelper::getFile('avatar');
-            $existed_user   = Users::getInstance()->findOne(array('username'=>$username));
-            $existed_email  = Users::getInstance()->findOne(array('email'=>$email));
+            $existed_user   = UserDAO::getInstance()->findOne(array('username'=>$username));
+            $existed_email  = UserDAO::getInstance()->findOne(array('email'=>$email));
             if(count($existed_user)>0){
                 return response()->json(array('message'=>'Tài khoản này đã có người sử dụng, hãy chọn một tài khoản khác!','error'=>true));
             }
@@ -47,7 +47,7 @@ class UserController extends BaseController{
                 'email'     => $email,
                 'type'     => $type,
             );
-            $user = Users::getInstance()->insert($new_user);
+            $user = UserDAO::getInstance()->insert($new_user);
             if($user['ok'] == 1){
                 Session::put('username',$username);
                 return ResponseBuilder::success(array('message'=>'Bạn đã đăng ký thành công!','error'=>false));
@@ -73,7 +73,7 @@ class UserController extends BaseController{
             $username       = InputHelper::getInput('username',true);
             $password       = InputHelper::getInput('password',true);
             $type           = InputHelper::getInput('type',false,'user');
-            $user       = Users::getInstance()->findOne(array(
+            $user       = UserDAO::getInstance()->findOne(array(
                 'username'=> $username,
                 'password'=> md5($password),
                 'type'    => $type
