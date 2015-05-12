@@ -1,3 +1,4 @@
+<?php use \App\Libraries\InputHelper; ?>
 <div class="box box-solid box-info">
     <div class="box-header">
         <h3 class="box-title"><i class="fa fa-list"></i> {{Lang::get('app.rules')}}</h3>
@@ -12,7 +13,7 @@
                 <th style="width:20%;">{{Lang::get('app.name')}}</th>
                 <th>{{Lang::get('app.description')}}</th>
                 <th style="text-align: center; width:5%;">{{Lang::get('app.color')}}</th>
-                <th style="text-align: center; width:5%;">{{Lang::get('app.status')}}</th>
+                <th style="text-align: center; width:10%;">{{Lang::get('app.status')}}</th>
                 <th style="text-align: center; width:140px;">{{Lang::get('app.action')}}</th>
             </tr>
             @foreach($rules as $rule)
@@ -25,7 +26,7 @@
                             <div class="progress-bar" style="background-color:{{isset($rule['rule_color'])?$rule['rule_color']:'#ffffff'}};width: 100%"></div>
                         </div>
                     </td>
-                    <td style="text-align: left;">{{$rule['status']}}</td>
+                    <td style="text-align: left;">{!!InputHelper::getStatus($rule['status'])!!}</td>
                     <td style="text-align: center;">
                         <div class="btn-group">
                             <button class="btn btn-xs btn-warning" data-loading-text="Editing..." onclick="RuleModule.editRule(this,'{{$rule['_id']}}');">{{Lang::get('app.edit')}} | <span class="fa fa-edit"></span></button>

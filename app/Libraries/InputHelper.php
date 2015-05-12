@@ -143,6 +143,19 @@ class InputHelper
         }
     }
 
+    public static function getStatus($status) {
+        switch($status) {
+            case Constants::STATUS_MAIN:
+                return Lang::get('app.main');
+            case Constants::STATUS_INTERMEDIATE:
+                return Lang::get('app.intermediate');
+            case Constants::STATUS_PUBLISH:
+                return Lang::get('app.publish');
+            case Constants::STATUS_UNPUBLISH:
+                return Lang::get('app.unpublish');
+        }
+    }
+
     public static function getRuleOparators() {
         $oparators = array(
             Constants::OPERATOR_AND => Lang::get('app.and'),
