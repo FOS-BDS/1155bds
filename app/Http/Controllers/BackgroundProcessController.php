@@ -37,7 +37,7 @@ class BackgroundProcessController extends BaseController {
     }
     public function cronGetMatchData($ontime) {
         $inplay=$ontime==1?"true":"false";
-        $link="http://sb.v9bet.com/vi-vn/OddsService/GetOdds?_=".(time()*1000)."&sportId=1&programmeId=0&pageType=1&uiBetType=am&displayView=2&pageNo=0&oddsType=2&sortBy=1&isFirstLoad=false&MoreBetEvent=null&sportIds=1&versions=19671&version=19671&isInplay=".$inplay;
+        $link="http://sb.v9bet.com/vi-vn/OddsService/GetOdds?_=".(time()*1000)."&sportId=1&programmeId=0&pageType=1&uiBetType=am&displayView=2&pageNo=0&oddsType=2&sortBy=1&isFirstLoad=false&isInplay=".$inplay;
         $result=$this->curlGet($link);
 
         if($result==false) return;
