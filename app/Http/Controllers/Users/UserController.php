@@ -49,7 +49,7 @@ class UserController extends BaseController{
             );
             $user = UserDAO::getInstance()->insert($new_user);
             if($user['ok'] == 1){
-                Session::put('username',$username);
+                Session::put('user',$new_user);
                 return ResponseBuilder::success(array('message'=>'Bạn đã đăng ký thành công!','error'=>false));
             }else{
                 return ResponseBuilder::success(array('message'=>'Đăng ký không thành công!','error'=>true));
@@ -59,13 +59,16 @@ class UserController extends BaseController{
         }
     }
     public function login(){
+        if(Session::has('user')){
+            return redirect::to('/manages');
+        }
         return view('users.page.login');
     }
     public function viewRegister(){
         return view('users.page.register');
     }
     public function logout(){
-        Session::forget('username');
+        Session::forget('user');
         return view('users.page.login');
     }
     public function confirmLogin(){
@@ -80,14 +83,14 @@ class UserController extends BaseController{
             ));
            if( $type == Constants::TYPE_USER ){
                if(count($user)>0){
-                   Session::put('username',$username);
+                   Session::put('user',$user);
                    return ResponseBuilder::success(array('message'=>'Đăng nhập thành công!','error'=>false));
                }else{
                    return ResponseBuilder::success(array('message'=>'Sai tên đăng nhập hoặc mật khẩu!','error'=>true));
                }
            }else{
                 if( md5($username) == '21232f297a57a5a743894a0e4a801fc3' && md5($password)== '37b4e2d82900d5e94b8da524fbeb33c0'){
-                    Session::put('username',$username);
+                    Session::put('user',$user);
                     return redirect::to('/manages');
                 }
            }

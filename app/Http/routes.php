@@ -30,7 +30,8 @@ Route::get('testInput', 'HomeController@testInput');
 Route::get('home', 'HomeController@index');
 
 /* Admin */
-Route::get('admin/rules', 'Admin\RulesController@index');
+Route::get('admin/rules', 'Admin\RulesController@rules');
+Route::get('admin/conditions', 'Admin\RulesController@conditions');
 Route::get('admin/rules/getRules', 'Admin\RulesController@getRules');
 Route::get('admin/rules/editRule', 'Admin\RulesController@editRule');
 Route::get('admin/rules/getConditionAndRules', 'Admin\RulesController@getConditionAndRules');

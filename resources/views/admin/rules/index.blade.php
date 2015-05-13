@@ -6,6 +6,11 @@
     <?php echo Html::script('/admin/js/plugins/validate/bootstrapvalidate.min.js') ?>
     <?php echo Html::script('/admin/js/plugins/tinycolor/tinycolor.min.js') ?>
     <?php echo Html::script('/admin/js/plugins/colorpicker-slider/bootstrap.colorpickersliders.js') ?>
+    <script>
+        $(function() {
+            RuleModule.setUp('{{$type}}');
+        });
+    </script>
 @endsection
 @section('styles')
     <?php echo Html::style('/admin/js/plugins/validate/formValidation.min.css') ?>

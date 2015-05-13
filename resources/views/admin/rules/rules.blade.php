@@ -4,7 +4,6 @@
         <h3 class="box-title"><i class="fa fa-list"></i> {{Lang::get('app.rules')}}</h3>
         <div class="box-tools pull-right" role="group" aria-label="...">
             <button type="button" class="btn btn-sm btn-info" onclick="RuleModule.addRule(this)"><span class="fa fa-plus"></span> {{Lang::get('app.create_rule_new')}}</button>
-            <button type="button" class="btn btn-sm btn-info" onclick="RuleModule.getRules(this,'condition')"><span class="fa fa-building-o"></span> {{Lang::get('app.conditions')}}</button>
         </div>
     </div>
     <div class="box-body">

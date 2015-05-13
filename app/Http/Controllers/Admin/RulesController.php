@@ -5,6 +5,7 @@ use App\Libraries\Constants;
 use App\Libraries\InputHelper;
 use App\DAO\RuleDAO;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use MongoId;
 use MongoRegex;
 
@@ -23,18 +24,26 @@ class RulesController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function index() {
+	public function rules() {
         $ruleModels = new RuleDAO();
-        $rules = $ruleModels->find(array());
+        $type = Constants::TYPE_RULE;
+        $rules = $ruleModels->find(array('type' => $type, 'user_id' => $this->uid));
         $rules = iterator_to_array($rules);
-        return view('admin.rules.index', ['rules' => $rules]);
+        return view('admin.rules.index', ['rules' => $rules, 'type' => $type]);
 	}
+    public function conditions() {
+        $ruleModels = new RuleDAO();
+        $type = Constants::TYPE_CONDITION;
+        $rules = $ruleModels->find(array('type' => $type, 'user_id' => $this->uid));
+        $rules = iterator_to_array($rules);
+        return view('admin.rules.index', ['rules' => $rules, 'type' => $type]);
+    }
 
     public function getRules(Request $request) {
         $type = $request->get('type', null);
         $type = strtoupper($type);
         $ruleModels = new RuleDAO();
-        $rules = $ruleModels->find(array('type' => $type));
+        $rules = $ruleModels->find(array('type' => $type, 'user_id' => $this->uid));
         $rules = iterator_to_array($rules);
         if($type == Constants::TYPE_RULE) {
             $view = 'admin.rules.rules';
@@ -81,13 +90,36 @@ class RulesController extends AdminController {
         $params = $request->all();
         $data = RuleDAO::makeObject($params);
         $ruleModel = new RuleDAO();
-
         if(isset($params['_id']) && $params['_id']) {
             $mongoId = new MongoId($params['_id']);
-            return $ruleModel->update(array('_id' => $mongoId),$data,array("upsert" => true));
+            $dataOld = $ruleModel->findOne(array('_id' => $mongoId));
+
+            if(count($dataOld['parent_rules']) > 0) {
+                $data->parent_rules = array_merge($data->parent_rules, $dataOld['parent_rules']);
+            }
+
+            $ruleModel->update(array('_id' => $mongoId),$data,array("upsert" => true));
         } else {
-            return $ruleModel->insert($data);
+            $ruleModel->insert($data);
+            $mongoId = $data->_id;
         }
+        if(isset($data->condition_left)) {
+            $dataLeft = $ruleModel->findOne(array('_id' => $data->condition_left['id']));
+            if (isset($dataLeft['parent_rules'])) {
+                $dataLeft['parent_rules'] = array_merge($dataLeft['parent_rules'], array($mongoId));
+                $dataLeft['parent_rules'] = array_unique($dataLeft['parent_rules']);
+                $ruleModel->update(array('_id' => $data->condition_left['id']), $dataLeft, array("upsert" => true));
+            }
+        }
+        if(isset($data->condition_right)) {
+            $dataRight = $ruleModel->findOne(array('_id' => $data->condition_right['id']));
+            if (isset($dataRight['parent_rules'])) {
+                $dataRight['parent_rules'] = array_merge($dataRight['parent_rules'], array($mongoId));
+                $dataRight['parent_rules'] = array_unique($dataRight['parent_rules']);
+                $ruleModel->update(array('_id' => $data->condition_right['id']), $dataRight, array("upsert" => true));
+            }
+        }
+
     }
 
     public function getConditionAndRules(Request $request) {
@@ -96,9 +128,9 @@ class RulesController extends AdminController {
         $values = array();
         if($q != null) {
             $regex = new MongoRegex("/$q/i");
-            $datas = $ruleModel->find(array('name' => $regex, 'type'=> array('$in'=>array(Constants::TYPE_RULE,Constants::TYPE_CONDITION))));
+            $datas = $ruleModel->find(array('name' => $regex, 'user_id' => $this->uid, 'type'=> array('$in'=>array(Constants::TYPE_RULE,Constants::TYPE_CONDITION))));
         } else {
-            $datas = $ruleModel->find(array('type'=> array('$in'=>array(Constants::TYPE_RULE,Constants::TYPE_CONDITION))));
+            $datas = $ruleModel->find(array('user_id' => $this->uid, 'type'=> array('$in'=>array(Constants::TYPE_RULE,Constants::TYPE_CONDITION))));
         }
         $datas = iterator_to_array($datas);
         foreach ($datas as $data) {
@@ -131,7 +163,6 @@ class RulesController extends AdminController {
                 return json_encode(array('valid' => true));
             }
         }
-
         return json_encode(array('valid' => false));
     }
 }
