@@ -59,6 +59,9 @@ class UserController extends BaseController{
         }
     }
     public function login(){
+        if(Session::has('user')){
+            return redirect::to('/manages');
+        }
         return view('users.page.login');
     }
     public function viewRegister(){

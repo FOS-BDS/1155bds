@@ -2,6 +2,7 @@
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Session;
 
 class Authenticate {
 
@@ -32,7 +33,10 @@ class Authenticate {
 	 */
 	public function handle($request, Closure $next)
 	{
-		if ($this->auth->guest())
+       if(!Session::has('user')){
+           return redirect()->guest('users/login');
+       }
+		/*if ($this->auth->guest())
 		{
 			if ($request->ajax())
 			{
@@ -40,10 +44,10 @@ class Authenticate {
 			}
 			else
 			{
-				return redirect()->guest('auth/login');
+                return redirect()->guest('auth/login');
 			}
 		}
-
+*/
 		return $next($request);
 	}
 
