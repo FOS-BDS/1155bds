@@ -40,6 +40,13 @@ class Constants
     const OPERATOR_NIN = '$nin';
     const OPERATOR_AND = '$and';
     const OPERATOR_OR = '$or';
+    const OPERATOR_LT = '$lt';
+    const OPERATOR_LTE = '$lte';
+    const OPERATOR_GT = '$gt';
+    const OPERATOR_GTE = '$gte';
+    const OPERATOR_EQ = '$eq';
+    const OPERATOR_NE = '$ne';
+
 
     const STATUS_PUBLISH = 1;
     const STATUS_UNPUBLISH = 0;
