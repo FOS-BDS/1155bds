@@ -5,9 +5,13 @@ var RuleModule = {
     urlApi: '/admin/',
     class_form: '#role_edit',
     class_list: '#role_list',
-    type: 'rule',
+    type: '',
 
-    setUp: function() {
+    setUp: function(type) {
+        var that = this;
+        if(type != undefined) {
+            that.type = type;
+        }
         RuleModule.getRules();
     },
     getRules: function(myself, type) {
@@ -123,6 +127,3 @@ var RuleModule = {
         return false;
     }
 };
-$(function() {
-    new RuleModule.setUp();
-});

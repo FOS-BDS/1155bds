@@ -24,19 +24,26 @@ class RulesController extends AdminController {
 	 *
 	 * @return Response
 	 */
-	public function index() {
-        debug(Session::all());
+	public function rules() {
         $ruleModels = new RuleDAO();
-        $rules = $ruleModels->find(array());
+        $type = Constants::TYPE_RULE;
+        $rules = $ruleModels->find(array('type' => $type, 'user_id' => $this->uid));
         $rules = iterator_to_array($rules);
-        return view('admin.rules.index', ['rules' => $rules]);
+        return view('admin.rules.index', ['rules' => $rules, 'type' => $type]);
 	}
+    public function conditions() {
+        $ruleModels = new RuleDAO();
+        $type = Constants::TYPE_CONDITION;
+        $rules = $ruleModels->find(array('type' => $type, 'user_id' => $this->uid));
+        $rules = iterator_to_array($rules);
+        return view('admin.rules.index', ['rules' => $rules, 'type' => $type]);
+    }
 
     public function getRules(Request $request) {
         $type = $request->get('type', null);
         $type = strtoupper($type);
         $ruleModels = new RuleDAO();
-        $rules = $ruleModels->find(array('type' => $type));
+        $rules = $ruleModels->find(array('type' => $type, 'user_id' => $this->uid));
         $rules = iterator_to_array($rules);
         if($type == Constants::TYPE_RULE) {
             $view = 'admin.rules.rules';

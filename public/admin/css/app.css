@@ -530,7 +530,6 @@ body > .header .logo {
   text-align: center;
   padding: 0 10px;
   width: 220px;
-  font-family: 'Kaushan Script', cursive;
   font-weight: 500;
   height: 50px;
   display: block;
@@ -777,6 +776,7 @@ body > .header .logo .icon {
     Navbar custom dropdown menu
 ------------------------------------
 */
+.navbar-nav > .sub-menu > .dropdown-menu,
 .navbar-nav > .notifications-menu > .dropdown-menu,
 .navbar-nav > .messages-menu > .dropdown-menu,
 .navbar-nav > .tasks-menu > .dropdown-menu {
@@ -789,6 +789,7 @@ body > .header .logo .icon {
   -moz-border-radius: 4px !important;
   border-radius: 4px !important;
 }
+.navbar-nav > .sub-menu > .dropdown-menu > li.header,
 .navbar-nav > .notifications-menu > .dropdown-menu > li.header,
 .navbar-nav > .messages-menu > .dropdown-menu > li.header,
 .navbar-nav > .tasks-menu > .dropdown-menu > li.header {
@@ -809,6 +810,24 @@ body > .header .logo .icon {
   border-bottom: 1px solid #f4f4f4;
   color: #444444;
   font-size: 14px;
+}
+.navbar-nav > .sub-menu > .dropdown-menu > li.header {
+    padding: 0;
+    border-bottom: 0;
+}
+.navbar-nav > .sub-menu > .dropdown-menu > li.header:after {
+    bottom: 100%;
+    left: 20%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(255, 255, 255, 0);
+    border-bottom-color: #ffffff;
+    border-width: 7px;
+    margin-left: -7px;
 }
 .navbar-nav > .notifications-menu > .dropdown-menu > li.header:after,
 .navbar-nav > .messages-menu > .dropdown-menu > li.header:after,
@@ -863,6 +882,7 @@ body > .header .logo .icon {
   list-style: none;
   overflow-x: hidden;
 }
+.navbar-nav > .sub-menu > .menu > li > a,
 .navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a,
 .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a,
 .navbar-nav > .tasks-menu > .dropdown-menu > li .menu > li > a {
@@ -871,6 +891,7 @@ body > .header .logo .icon {
   /* Prevent text from breaking */
   border-bottom: 1px solid #f4f4f4;
 }
+.navbar-nav > .sub-menu > .menu > li > a:hover,
 .navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a:hover,
 .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a:hover,
 .navbar-nav > .tasks-menu > .dropdown-menu > li .menu > li > a:hover {
@@ -915,6 +936,7 @@ body > .header .logo .icon {
 .navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a > .ion.info {
   background: #00c0ef;
 }
+.navbar-nav > .sub-menu > .menu > li > a,
 .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a {
   margin: 0px;
   line-height: 20px;

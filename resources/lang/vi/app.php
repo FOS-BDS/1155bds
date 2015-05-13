@@ -54,4 +54,5 @@ return [
     'unpublish'             => 'Khong cong bo',
     'main'                 => 'Luat chinh',
     'intermediate'          => 'Luat trung gian',
+    'rule_manager'          => 'Quan ly luat',
 ];

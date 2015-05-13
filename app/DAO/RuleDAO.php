@@ -4,6 +4,7 @@ namespace App\DAO;
 
 use App\Libraries\Constants;
 use App\DAO\base\CollectionBase;
+use Illuminate\Support\Facades\Session;
 use MongoId;
 
 class RuleDAO extends CollectionBase {
@@ -49,6 +50,7 @@ class RuleDAO extends CollectionBase {
                 $rule->odd_type = $params['odd_type'];
             }
             $rule->name = $params['name'];
+            $rule->user_id = Session::get('user.id');
             $rule->operator = $params['operator'];
             $rule->description = $params['description'];
             $rule->type = $params['type'];
