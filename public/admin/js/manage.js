@@ -15,10 +15,10 @@ var manage = {
             },
             success:function(result){
                 $(myself).button('reset');
-                $('#tableLog').html(result);
+                $('#dataAndpage').html(result);
             },
             error:function(result){
-                $('#tableLog').html(result);
+                $('#dataAndpage').html(result);
             }
         })
     },

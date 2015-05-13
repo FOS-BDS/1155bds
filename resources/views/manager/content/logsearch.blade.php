@@ -26,3 +26,8 @@
        @endif
     @endforeach
 </table>
+     <div style="text-align: center">
+        @for($i=1;$i<=$number_page;$i++)
+            <a href="#" onclick="manage.searchPage(this,'{{$i}}');"><span class="badge page_{{$i}}" style="background-color:#9D928C;">{{$i}}</span></a>
+        @endfor
+     </div>
