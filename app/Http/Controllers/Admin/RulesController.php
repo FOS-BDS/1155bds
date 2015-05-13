@@ -5,6 +5,7 @@ use App\Libraries\Constants;
 use App\Libraries\InputHelper;
 use App\DAO\RuleDAO;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use MongoId;
 use MongoRegex;
 
@@ -24,6 +25,7 @@ class RulesController extends AdminController {
 	 * @return Response
 	 */
 	public function index() {
+        debug(Session::all());
         $ruleModels = new RuleDAO();
         $rules = $ruleModels->find(array());
         $rules = iterator_to_array($rules);
