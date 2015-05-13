@@ -120,7 +120,7 @@ class InputHelper
         switch($oparator) {
             case Constants::OPERATOR_IN:
             case Constants::OPERATOR_NIN:
-                return '['.implode('...', $values).']';
+                return '['.implode(' ... ', $values).']';
             default:
                 return $values['value_first'];
         }
@@ -140,6 +140,19 @@ class InputHelper
                 return Lang::get('app.firsthalf').':'.Lang::get('app.odd_ah');
             case Constants::ODD_OU1ST:
                 return Lang::get('app.firsthalf').':'.Lang::get('app.odd_ou');
+        }
+    }
+
+    public static function getStatus($status) {
+        switch($status) {
+            case Constants::STATUS_MAIN:
+                return Lang::get('app.main');
+            case Constants::STATUS_INTERMEDIATE:
+                return Lang::get('app.intermediate');
+            case Constants::STATUS_PUBLISH:
+                return Lang::get('app.publish');
+            case Constants::STATUS_UNPUBLISH:
+                return Lang::get('app.unpublish');
         }
     }
 

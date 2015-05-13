@@ -12,8 +12,8 @@ namespace App\Logics\Matchs;
 use App\Libraries\Constants;
 use App\Logics\base\MatchDataServiceBase;
 use App\Logics\Odds\V9BetOdds;
-use App\Models\Leagues;
-use App\Models\Matchs;
+use App\DAO\LeagueDAO;
+use App\DAO\MatchDAO;
 
 class V9BetMatchs extends MatchDataServiceBase {
     public function processData($data=null)
@@ -48,7 +48,7 @@ class V9BetMatchs extends MatchDataServiceBase {
 
         foreach ($egs as $egs_item) {
             $league_c=$egs_item->c;
-            $league_object=Leagues::makeObject($league_c->k,$league_c->k,$league_c->n);
+            $league_object=LeagueDAO::makeObject($league_c->k,$league_c->k,$league_c->n);
             $new_leagues[$league_c->k]=$league_object;
 
             // process to get match info
@@ -65,12 +65,12 @@ class V9BetMatchs extends MatchDataServiceBase {
 
                 // get match info
                 $info=$match_item->i;
-                $match_obj=Matchs::makeObject($match_item->k,$info[0],$info[1],$info[4],
+                $match_obj=MatchDAO::makeObject($match_item->k,$info[0],$info[1],$info[4],
                     $this->getMatchTime($is_ontime,$info[5],$info[12]),$info[10],$info[11],0,0,$info[8],$info[9],$is_ontime);
                 $new_matchs[$match_item->k]=$match_obj;
             }
         }
-        $leagueModel=new Leagues();
+        $leagueModel=new LeagueDAO();
         $league_ids=array_keys($new_leagues);
 
         $league_cur=$leagueModel->find(array('reference_id'=>array('$in'=>$league_ids)));
@@ -101,7 +101,7 @@ class V9BetMatchs extends MatchDataServiceBase {
         }
 
         // insert new matchs
-        $match_model=new Matchs();
+        $match_model=new MatchDAO();
         $match_ids=array_keys($new_matchs);
 
         $match_cur=$match_model->find(array('reference_id'=>array('$in'=>$match_ids)));

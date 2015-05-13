@@ -11,35 +11,36 @@ namespace App\Logics\Odds;
 
 use App\Libraries\Constants;
 use App\Logics\base\OddServiceBase;
-use App\Models\Odds;
+use App\DAO\OddDAO;
 
 class V9BetOdds extends OddServiceBase {
     public function processData($matchs=null,$match_odds=null)
     {
         $odd_types=array(
-            '1x2'   =>array('home'=>1,'draw'=>5,'away'=>3,'type'=>Constants::ODD_1X2),
-            '1x21st'=>array('home'=>1,'draw'=>5,'away'=>3,'type'=>Constants::ODD_1X21ST),
-            'ah'    =>array('home'=>5,'draw'=>3,'away'=>7,'type'=>Constants::ODD_AH),
-            'ah1st' =>array('home'=>5,'draw'=>3,'away'=>7,'type'=>Constants::ODD_AH1ST),
-            'ou'    =>array('home'=>5,'draw'=>3,'away'=>7,'type'=>Constants::ODD_OU),
-            'ou1st' =>array('home'=>5,'draw'=>3,'away'=>7,'type'=>Constants::ODD_OU1ST),
+            '1x2'   =>array('home'=>1,'h_draw'=>5,'g_draw'=>5,'away'=>3,'type'=>Constants::ODD_1X2),
+            '1x21st'=>array('home'=>1,'h_draw'=>5,'g_draw'=>5,'away'=>3,'type'=>Constants::ODD_1X21ST),
+            'ah'    =>array('home'=>5,'h_draw'=>1,'g_draw'=>3,'away'=>7,'type'=>Constants::ODD_AH),
+            'ah1st' =>array('home'=>5,'h_draw'=>1,'g_draw'=>3,'away'=>7,'type'=>Constants::ODD_AH1ST),
+            'ou'    =>array('home'=>5,'h_draw'=>1,'g_draw'=>3,'away'=>7,'type'=>Constants::ODD_OU),
+            'ou1st' =>array('home'=>5,'h_draw'=>1,'g_draw'=>3,'away'=>7,'type'=>Constants::ODD_OU1ST),
         );
         $odd_objs=array();
         foreach ($match_odds as $match_id=> $odds) {
             if(!is_array($odds)) $odds=(array)$odds;
             foreach ($odd_types as $key=> $config) {
                 if(isset($odds[$key])) {
-                    $home=floatval($odds[$key][$config['home']]);
-                    $away=floatval($odds[$key][$config['away']]);
-                    $draw=floatval($odds[$key][$config['draw']]);
-                    $odd_obj=Odds::makeObject($matchs[$match_id],$home,$draw,$away,$config['type']);
+                    $home=$this->getOddVal($odds[$key][$config['home']]);
+                    $away=$this->getOddVal($odds[$key][$config['away']]);
+                    $h_draw=$this->getOddVal($odds[$key][$config['h_draw']]);
+                    $g_draw=$this->getOddVal($odds[$key][$config['g_draw']]);
+                    $odd_obj=OddDAO::makeObject($matchs[$match_id],$home,$h_draw,$g_draw,$away,$config['type']);
                     $odd_objs[$odd_obj->md5]=$odd_obj;
                 }
             }
         }
 
         // insert Odd to table
-        $oddModel=new Odds();
+        $oddModel=new OddDAO();
         $md5s=array_keys($odd_objs);
         $odd_cur=$oddModel->find(array('md5'=>array('$in'=>$md5s)));
 
@@ -54,6 +55,28 @@ class V9BetOdds extends OddServiceBase {
 
         if(count($odd_objs)>0) {
             $oddModel->batchInsert(array_values($odd_objs));
+        }
+    }
+    private function getOddVal($str_val) {
+        if(strpos($str_val,"/")!==false) {
+            // exist
+
+            if(strpos($str_val,"-")!==false) {
+                $pre=-1;
+            } else {
+                $pre=1;
+            }
+
+            $splits=explode("/",$str_val);
+
+            $first=floatval($splits[0]);
+            $second=floatval($splits[1]);
+
+            $val=$pre*((abs($first)+abs($second))/2);
+            return $val;
+        } else {
+            //not exist
+            return floatval($str_val);
         }
     }
 

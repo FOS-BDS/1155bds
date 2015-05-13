@@ -6,7 +6,7 @@
  * Time: 2:58 PM
  */
 namespace App\Libraries\Inputs;
-use App\Models\Rules;
+use App\DAO\RuleDAO;
 use ReflectionClass;
 use MongoId;
 
@@ -33,7 +33,7 @@ abstract class InputBase {
      */
     public function renderView(){
         try {
-            $ruleModels = new Rules();
+            $ruleModels = new RuleDAO();
             $className = $this->getName();
             $supplierId = $this->_attributes['supplier_id'];
             $rules = $ruleModels->find(array('class_name'=>$className,'supplier_id'=>$supplierId));
@@ -50,7 +50,7 @@ abstract class InputBase {
     public function renderForm(){
         try {
             if(isset($this->_attributes['_id']) && $this->_attributes['_id']) {
-                $ruleModel = new Rules();
+                $ruleModel = new RuleDAO();
                 $this->_attributes = $ruleModel->findOne(array('_id' => new MongoId($this->_attributes['_id'])));
             }
             $className = $this->getName();
@@ -61,7 +61,7 @@ abstract class InputBase {
     }
 
     public function save() {
-        $ruleModel = new Rules();
+        $ruleModel = new RuleDAO();
         if(isset($this->_attributes['_id']) && $this->_attributes['_id']) {
             $mongoId = new MongoId($this->_attributes['_id']);
             unset($this->_attributes['_id']);

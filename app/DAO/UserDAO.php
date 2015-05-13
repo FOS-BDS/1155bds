@@ -1,14 +1,14 @@
 <?php
-namespace App\Models;
+namespace App\DAO;
 
-use App\Models\base\CollectionBase;
+use App\DAO\base\CollectionBase;
 
-class Users extends CollectionBase {
+class UserDAO extends CollectionBase {
     private static $instance;
     public static function getInstance()
     {
         if(self::$instance==null) {
-            self::$instance=new Users();
+            self::$instance=new UserDAO();
         }
         return self::$instance;
     }

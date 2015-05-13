@@ -13,9 +13,9 @@ use App\Libraries\InputHelper;
 use App\Libraries\ResponseBuilder;
 use App\Libraries\StringHelper;
 use App\Logics\base\MatchDataServiceBase;
-use App\Models\Leagues;
-use App\Models\Matchs;
-use App\Models\Teams;
+use App\DAO\LeagueDAO;
+use App\DAO\MatchDAO;
+use App\DAO\TeamDAO;
 use DateTime;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -45,7 +45,7 @@ class NowGoalMatchs extends MatchDataServiceBase{
     }
     private function generateObjects($match,$leagues) {
 
-        $teamModel=new Teams();
+        $teamModel=new TeamDAO();
         $team_objects=array();
         // gen team objects
         $new_teams=array();
@@ -64,9 +64,9 @@ class NowGoalMatchs extends MatchDataServiceBase{
             if($pos>0) {
                 $g_team=substr($g_team,0,$pos);
             }
-            $t1=Teams::makeObject($match_obj[2],$h_team);
+            $t1=TeamDAO::makeObject($match_obj[2],$h_team);
             $new_teams[intval($match_obj[2])]=$t1;
-            $t2=Teams::makeObject($match_obj[3],$g_team);
+            $t2=TeamDAO::makeObject($match_obj[3],$g_team);
             $new_teams[intval($match_obj[3])]=$t2;
         }
 
@@ -97,10 +97,10 @@ class NowGoalMatchs extends MatchDataServiceBase{
         foreach ($leagues as $league_item) {
             if($league_item==null) continue;
             $new_leagues[intval($league_item[0])]
-                =Leagues::makeObject($league_item[0],$league_item[1],$league_item[2],$league_item[5],$league_item[3]);
+                =LeagueDAO::makeObject($league_item[0],$league_item[1],$league_item[2],$league_item[5],$league_item[3]);
         }
 
-        $leagueModel=new Leagues();
+        $leagueModel=new LeagueDAO();
         $league_ids=array_keys($new_leagues);
 
         $league_cur=$leagueModel->find(array('reference_id'=>array('$in'=>$league_ids)));
@@ -167,7 +167,7 @@ class NowGoalMatchs extends MatchDataServiceBase{
                 'odd_link'=>$match[30]=='True'?$link:""
             );
         }
-        $match=new Matchs();
+        $match=new MatchDAO();
         $match->batchInsert($match_objs);
     }
     private function formatData($js_data) {

@@ -5,16 +5,16 @@
  * Date: 5/8/2015
  * Time: 3:11 PM
  */
-namespace App\Models;
+namespace App\DAO;
 
-use App\Models\base\CollectionBase;
+use App\DAO\base\CollectionBase;
 
-class Log extends CollectionBase {
+class LogDAO extends CollectionBase {
     private static $instance;
     public static function getInstance()
     {
         if(self::$instance==null) {
-            self::$instance=new Log();
+            self::$instance=new LogDAO();
         }
         return self::$instance;
     }

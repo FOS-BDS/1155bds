@@ -6,7 +6,7 @@
  * Time: 17:30
  */
 
-namespace App\Models\base;
+namespace App\DAO\base;
 
 use App\Libraries\DBConnection;
 use MongoDB;
