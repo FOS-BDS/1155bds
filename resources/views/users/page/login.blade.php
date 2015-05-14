@@ -25,7 +25,7 @@
                                 <div class="form-group">
                                     <div class="col-lg-offset-5 col-lg-10">
                                         <a  class="btn btn-info" href="/users/home" >Trang chủ</a>
-                                        <a  class="btn btn-primary" data-text-loading="Đang đăng nhập..." onclick="user.login(this,'#form_login');">Đăng nhập</a>
+                                        <a  class="btn btn-primary login_btn" data-text-loading="Đang đăng nhập..." onclick="user.login(this,'#form_login');">Đăng nhập</a>
                                     </div>
                                 </div>
                             </form>
@@ -34,4 +34,42 @@
             </div>
         </div>
     </body>
+    <script type="text/javascript">
+        $(document).ready(function(){
+             $(document).bind('keypress', function(e){
+                  if(e.which === 13) { // return
+                     var username    = $('#username').val(),
+                            password    = $('#password').val();
+                        if(username == '' || password == ''){
+                            $('.error_login').show();
+                            $('.error_login').text('Vui lòng nhập tài khoản và mật khẩu!');
+                            return false;
+                        }else{
+                            $('.error_login').hide();
+                            $.ajax({
+                                url:'/users/confirmLogin',
+                                data:{username:username,password:password},
+                                type:'POST',
+                                beforeSend:function(){
+                                    $('.login_btn').button('loading');
+                                },
+                                success:function(result){
+                                    if(result.error != false){
+                                        $('.login_btn').button('reset');
+                                        $('.error_login').show();
+                                        $('.error_login').text(result.message);
+                                    }else{
+                                        location.href = '/users/matchs';
+                                    }
+                                },
+                                error:function(result){
+                                    $('.login_btn').button('reset');
+                                    console.log(result.responseText);
+                                }
+                            })
+                        }
+                  }
+            });
+        });
+    </script>
 </html>
