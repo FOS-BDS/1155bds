@@ -61,6 +61,26 @@ Route::post('users/confirmLogin','Users\UserController@confirmLogin');
 // end User
 Route::get('/test',function() {
 
+    $rules=array();
+
+    $ruleDAO=new \App\DAO\RuleDAO();
+    $rulecur=$ruleDAO->find();
+    $rulecur->next();
+    do
+    {
+        $current=$rulecur->current();
+        $rule=new \App\Models\Rules();
+        $rule->initFromDBObject($current);
+
+        $rules[]=$rule;
+        $rulecur->next();
+    } while($rulecur->hasNext());
+
+    foreach ($rules as $rule) {
+        $rule->process();
+    }
+
+
 });
 Route::filter('checkSession',function(){
     if(!Session::has('username')){

@@ -41,5 +41,25 @@ var manage = {
                 $('#tableLog').html(result);
             }
         })
+    },
+    searchPaging:function(number_page,apiname,type_log,message_log){
+        $('span').css('background-color','#9D928C');
+        $('.page_'+number_page).css('background-color','red');
+        $.ajax({
+            url:'/manages/searchLogs',
+            data:{page:number_page,apiname:apiname,type_log:type_log,message_log:message_log},
+            type:'GET',
+            beforeSend:function(){
+                $('#loading').show();
+            },
+            success:function(result){
+                $('#loading').hide();
+                $('#tableLogs').html(result);
+            },
+            error:function(result){
+                $('#loading').hide();
+                $('#tableLogs').html(result);
+            }
+        })
     }
 }

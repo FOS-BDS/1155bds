@@ -56,7 +56,7 @@ class UserController extends BaseController{
                 return ResponseBuilder::success(array('message'=>'Đăng ký không thành công!','error'=>true));
             }
         }catch (\Exception $e){
-            return ResponseBuilder::success(array('message'=>$e->getMessage(),'error'=>$e->getCode()));
+            return ResponseBuilder::error($e);
         }
     }
     public function login(){
@@ -100,7 +100,7 @@ class UserController extends BaseController{
                 }
            }
         }catch (\Exception $e){
-            return ResponseBuilder::error(array('message'=>$e->getMessage(),'error'=>$e->getCode()));
+            return ResponseBuilder::error($e);
         }
     }
 }

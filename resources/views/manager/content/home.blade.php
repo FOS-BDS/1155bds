@@ -3,24 +3,24 @@
     <div id="body" class="col-lg-12 col-md-12">
     <!-- Filter form -->
         <div class="col-lg-12 col-md-12 no-padding">
-            <form class="form-horizontal" action="#">
+            <form class="form-horizontal" action="/manages/searchLogs" method="GET">
                 <div class="form-group col-lg-3 col-md-3" >
-                    <input type="text" class="form-control" id="apiname" placeholder="Api name...">
+                    <input type="text" class="form-control" id="apiname" name="apiname" placeholder="Api name...">
                 </div>
                 <div class="form-group col-lg-3 col-md-3">
                     <label class="control-label col-lg-2 col-md-2">Type:</label>
                     <div class="col-lg-10">
-                        <select class="form-control" id="type_log" >
+                        <select name="type_log" class="form-control" id="type_log" >
                             <option value="error" >Error</option>
                             <option value="info" >Infor</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group col-lg-4 col-md-4">
-                    <input type="text" class="form-control" id="message_log" placeholder="Message...">
+                    <input type="text" class="form-control" name="message_log" id="message_log" placeholder="Message...">
                 </div>
                 <div class="form-group col-lg-2 col-md-2">
-                    <a href="#" class="btn btn-success" data-text-loading="Filtering.." onclick="manage.searchLog();">Search</a>
+                    <button type="submit" class="btn btn-success" data-text-loading="Filtering..">Search</button>
                     <a href="#" class="btn btn-danger" data-text-loading="Filtering..">Delete All</a>
                 </div>
             </form>

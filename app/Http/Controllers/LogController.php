@@ -20,8 +20,10 @@ namespace App\Http\Controllers;
             $logs->limit(20);
             if($page != 0){
                 $logs->skip(($page-1)*20);
-                return view('manager.content.logsearch',array('logs'=>iterator_to_array($logs)));
+                $logs->sort(array('create_at'=>-1));
+                return view('manager.content.logpage',array('logs'=>iterator_to_array($logs)));
             }
+            $logs->sort(array('create_at'=>-1));
             return view('manager.content.home',array('all_log'=>iterator_to_array($logs),'number_page'=>$number_page));
         }
         /**
@@ -49,12 +51,16 @@ namespace App\Http\Controllers;
                 }
                 $logs       = LogDAO::getInstance()->find($where);
                 $number     = count(iterator_to_array($logs));
+                $logss       = LogDAO::getInstance()->find($where);
+                $logss->limit(20);
                 $number_page = (int)($number/20)+1;
                 if($page != 0){
-                    $logs->skip(($page-1)*20);
-                    return view('manager.content.logsearch',array('logs'=>iterator_to_array($logs)));
+                    $logss->skip(($page-1)*20);
+                    $logss->sort(array('create_at'=>-1));
+                    return view('manager.content.logsearchpage',array('logs'=>iterator_to_array($logss)));
                 }
-                return view('manager.content.logsearch',array('logs'=>iterator_to_array($logs),'number_page'=>$number_page));
+                $logss->sort(array('create_at'=>-1));
+                return view('manager.content.logsearch',array('logs'=>iterator_to_array($logs),'number_page'=>$number_page,'apiname'=>$apiname,'type_log'=>$type_log,'message_log'=>$message_log));
             }catch (\Exception $e){
                 throw new \Exception($e->getMessage());
             }

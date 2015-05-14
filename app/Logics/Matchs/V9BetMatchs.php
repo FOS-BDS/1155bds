@@ -9,11 +9,13 @@
 namespace App\Logics\Matchs;
 
 
+use App\DAO\RuleDAO;
 use App\Libraries\Constants;
 use App\Logics\base\MatchDataServiceBase;
 use App\Logics\Odds\V9BetOdds;
 use App\DAO\LeagueDAO;
 use App\DAO\MatchDAO;
+use App\Models\Rules;
 
 class V9BetMatchs extends MatchDataServiceBase {
     public function processData($data=null)
@@ -156,5 +158,22 @@ class V9BetMatchs extends MatchDataServiceBase {
         } else {
             return $time;
         }
+    }
+
+    public function getMatchedMatch() {
+        // get all finale edited data
+        $ruleDao=new RuleDAO();
+        $final_rule_cur=$ruleDao->find(array('needed_update'=>true,'status'=>Constants::STATUS_MAIN));
+        $final_rule_cur->next();
+        do {
+            $current=$final_rule_cur->current();
+            if($current==null) break;
+            $current=(object)$current;
+            $rule=new Rules();
+            $rule->initFromDBObject($current);
+            $rule->process();
+
+            $final_rule_cur->next();
+        } while($final_rule_cur->hasNext());
     }
 }
