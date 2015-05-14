@@ -73,8 +73,7 @@ class UserController extends BaseController{
     }
     public function logout(){
         Session::forget('user');
-        return Redirect::to('user/login');
-        return view('users.page.login');
+        return Redirect::to('users/login');
     }
     public function confirmLogin(){
         try{
