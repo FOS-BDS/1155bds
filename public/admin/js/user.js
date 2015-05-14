@@ -9,7 +9,7 @@ var user={
             $('.error_login').show();
             $('.error_login').text('Vui lòng nhập tài khoản và mật khẩu!');
             return false;
-        }else{
+        } else {
             $('.error_login').hide();
             $.ajax({
                 url:'/users/confirmLogin',
@@ -23,13 +23,14 @@ var user={
                         $(myself).button('reset');
                         $('.error_login').show();
                         $('.error_login').text(result.message);
-                    }else{
+                    } else {
                         location.href = '/users/matchs';
                     }
                 },
                 error:function(result){
                     $(myself).button('reset');
-                    console.log(result.responseText);
+                    $('.error_login').show();
+                    $('.error_login').html(result.responseText);
                 }
             })
         }

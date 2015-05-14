@@ -13,6 +13,7 @@ use App\Libraries\InputHelper;
 use App\Libraries\ResponseBuilder;
 use App\DAO\UserDAO;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
 class UserController extends BaseController{
@@ -55,20 +56,24 @@ class UserController extends BaseController{
                 return ResponseBuilder::success(array('message'=>'Đăng ký không thành công!','error'=>true));
             }
         }catch (\Exception $e){
-            return ResponseBuilder::success(array('message'=>$e->getMessage(),'error'=>$e->getCode()));
+            return ResponseBuilder::error($e);
         }
     }
     public function login(){
         if(Session::has('user')){
-            return redirect::to('/manages');
+            return Redirect::to('/manages');
         }
         return view('users.page.login');
     }
     public function viewRegister(){
+        if(Session::has('user')){
+            return Redirect::to('/manages');
+        }
         return view('users.page.register');
     }
     public function logout(){
         Session::forget('user');
+        return Redirect::to('user/login');
         return view('users.page.login');
     }
     public function confirmLogin(){
@@ -95,7 +100,7 @@ class UserController extends BaseController{
                 }
            }
         }catch (\Exception $e){
-            return ResponseBuilder::error(array('message'=>$e->getMessage(),'error'=>$e->getCode()));
+            return ResponseBuilder::error($e);
         }
     }
 }

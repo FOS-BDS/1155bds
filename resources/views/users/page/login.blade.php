@@ -1,37 +1,31 @@
-<!DOCTYPE html>
-<html>
-    @include('users.layouts.header')
-    <body>
-     @include('users.layouts.banner')
-        <div class="container">
-            <div id="place_login" class="col-lg-8 col-lg-offset-2">
-                <div class="panel panel-info">
-                    <div class="panel-heading text-center"><img src="<?php echo URL::to('/') ?>/img/img_soccer.gif"style="width: 40px;height: 40px; float: right"> <span style="font-weight: bold;font-size: 25px;">Đăng nhập </span></div>
-                        <div class="panel-body">
-                        <h4 class="alert alert-danger error_login" style="display: none;text-align: center"></h4>
-                            <form class="form-horizontal" id="form_login">
-                                <div class="form-group">
-                                     <label for="username" class="fa fa-user col-lg-1 control-label fa-2x"></label>
-                                    <div class="col-lg-10">
-                                        <input type="text" class="form-control" id="username" name="username" placeholder="Nhập tên tài khoản...">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password" class="fa fa-lock fa-2x col-lg-1 control-label"></label>
-                                    <div class="col-lg-10">
-                                        <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu...">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-lg-offset-5 col-lg-10">
-                                        <a  class="btn btn-info" href="/users/home" >Trang chủ</a>
-                                        <a  class="btn btn-primary" data-text-loading="Đang đăng nhập..." onclick="user.login(this,'#form_login');">Đăng nhập</a>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+@extends('admin.layouts.login')
+@section('content')
+    <div class="form-box" id="login-box">
+        <div class="header">Đăng nhập<img src="<?php echo URL::to('/') ?>/img/img_soccer.gif"style="width: 40px;height: 40px; float: right"></div>
+        <form id="form_login">
+            <div class="body bg-gray">
+                <div class="callout callout-danger error_login" style="display: none"></div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Nhập tên tài khoản...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" name="remember_me"/> Remember me
                 </div>
             </div>
-        </div>
-    </body>
-</html>
+            <div class="footer">
+                <button type="submit" class="btn bg-olive btn-block" data-text-loading="Đang đăng nhập..." onclick="user.login(this,'#form_login');return false;">Đăng nhập</button>
+                <p><a href="{{URL::to('users/forgotpassword')}}">I forgot my password</a></p>
+                <a href="{{URL::to('users/register')}}" class="text-center">Register a new member</a>
+            </div>
+        </form>
+    </div>
+@endsection
