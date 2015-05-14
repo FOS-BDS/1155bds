@@ -9,6 +9,7 @@
 namespace App\Logics\Odds;
 
 
+use App\DAO\RuleDAO;
 use App\Libraries\Constants;
 use App\Logics\base\OddServiceBase;
 use App\DAO\OddDAO;
@@ -56,6 +57,9 @@ class V9BetOdds extends OddServiceBase {
         if(count($odd_objs)>0) {
             $oddModel->batchInsert(array_values($odd_objs));
         }
+
+        // get matched match
+        $this->getMatchedMatchWithNewOdds($odd_objs);
     }
     private function getOddVal($str_val) {
         if(strpos($str_val,"/")!==false) {
@@ -79,5 +83,8 @@ class V9BetOdds extends OddServiceBase {
             return floatval($str_val);
         }
     }
-
+    private function getMatchedMatchWithNewOdds($new_odds) {
+        $ruleDao=new RuleDAO();
+        $condition_cur=$ruleDao->find(array());
+    }
 }

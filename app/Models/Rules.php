@@ -1,11 +1,16 @@
 <?php
 namespace App\Models;
 
+use App\DAO\OddDAO;
 use App\DAO\RuleDAO;
 use App\Libraries\Constants;
 use MongoId;
 
 class Rules extends ModelBase {
+    /**
+     * @var MongoId $id
+     */
+    public $id;
     public $field;
     public $operator;
     public $name;
@@ -56,12 +61,18 @@ class Rules extends ModelBase {
      */
     private $is_loaded_child=false;
 
+    public function initFromID($id,$paraent_rules) {
+        $this->id=$id;
+        $this->parent_rules=$paraent_rules;
+    }
+
     public function initFromDBObject($db_object,$load_child_obj=false)
     {
         if(!is_object($db_object)) $db_object=(object)$db_object;
 
         $this->name=$db_object->name;
         $this->description=$db_object->description;
+        $this->type=$db_object->type;
         $this->status=$db_object->status;
         $this->operator=$db_object->operator;
         $this->needed_update=$db_object->needed_update;
@@ -71,11 +82,22 @@ class Rules extends ModelBase {
 
         if($db_object->type==Constants::TYPE_CONDITION) {
             $this->field=$db_object->field;
-            $this->first_value=$db_object->condition_values->first_value;
-            $this->second_value=$db_object->condition_values->second_value;
+
+            $db_object->time=(object)$db_object->time;
+            $db_object->condition_values=(object)$db_object->condition_values;
+
+            $this->first_value=$db_object->condition_values->value_first;
+            $this->second_value=$db_object->condition_values->value_last;
             $this->time=$db_object->time->value;
+
+            $this->odd_type=$db_object->odd_type;
+
         } elseif($db_object->type==Constants::TYPE_RULE) {
             $this->rule_color=$db_object->rule_color;
+
+            $db_object->condition_left=(object)$db_object->condition_left;
+            $db_object->condition_right=(object)$db_object->condition_right;
+
             $this->left_condition_id=$db_object->condition_left->id;
             $this->right_condition_id=$db_object->condition_right->id;
 
@@ -90,7 +112,7 @@ class Rules extends ModelBase {
 
         // load left condition
         $left_condition=new Rules();
-        $left_cond_obj=$ruleDao->findOne(array('id'=>$this->left_condition_id));
+        $left_cond_obj=$ruleDao->findOne(array('_id'=>$this->left_condition_id));
         if($left_cond_obj!=null) {
             $left_condition->initFromDBObject((object)$left_cond_obj);
         } else {
@@ -100,7 +122,7 @@ class Rules extends ModelBase {
 
         // load right condition
         $right_condition=new Rules();
-        $right_cond_obj=$ruleDao->findOne(array('id'=>$this->right_condition_id));
+        $right_cond_obj=$ruleDao->findOne(array('_id'=>$this->right_condition_id));
         if($left_cond_obj!=null) {
             $right_condition->initFromDBObject((object)$right_cond_obj);
         } else {
@@ -112,12 +134,32 @@ class Rules extends ModelBase {
     /**
      * @return array
      */
-    public function process() {
+    public function process($newest_odds=array(),$update_parent=false) {
+
         if($this->needed_update) {
+            $oddDAO=new OddDAO();
             $match_matched=array();
             if($this->type==Constants::TYPE_CONDITION) {
 
+                $query=$this->buildQuery($newest_odds);
+                if($query==null) return array();
+                $matched_cur=$oddDAO->find($query,array('match_id'));
+                $matched_cur->next();
+
+                do {
+                    $current=$matched_cur->current();
+                    if($current==null) break;
+                    $current=(object)$current;
+                    $match_matched[]=$current->match_id->__toString();
+                    $matched_cur->next();
+                } while($matched_cur->hasNext());
+
             } elseif($this->type==Constants::TYPE_RULE) {
+
+                if(!$this->is_loaded_child) {
+                    $this->loadChildRule();
+                }
+
                 $left_match_matched=array();
                 if($this->left_condition!=null &&
                     $this->left_condition->needed_update) {
@@ -134,10 +176,74 @@ class Rules extends ModelBase {
                 }
                 $match_matched=array_intersect($left_match_matched,$right_match_matched);
             }
+            asort($match_matched);
+            asort($this->match_matched);
+            if(md5(json_encode($this->match_matched))!=md5(json_encode($match_matched))) {
+                // value changed
+                //1- update this object
+                $ruleDao=new RuleDAO();
+                $ruleDao->update(array('_id'=>$this->id),array('needed_update'=>false,'match_matched'=>$match_matched));
+                // update for all parent
+                if($update_parent) {
+                    $this->notifyChangeParent();
+                }
+            }
+            return $match_matched;
+
+        } else {
+            return $this->match_matched;
         }
     }
-    public function processWithNewestData() {
+    public function notifyChangeParent() {
+        $ruleDao=new RuleDAO();
+        $ruleDao->update(array('_id'=>array('$in'=>$this->parent_rules)),array('needed_update'=>true));
+
+        $parent_curs=$ruleDao->find(array('_id'=>array('$in'=>$this->parent_rules)));
+        $parent_curs->next();
+
+        do {
+            $current=$parent_curs->current();
+            if($current==null)  break;
+            $current=(object)$current;
+
+            $ruleObj=new Rules();
+            $ruleObj->initFromID($current->id,$current->parent_rules);
+            $ruleObj->notifyChangeParent();
+
+            $parent_curs->next();
+        } while($parent_curs->hasNext());
+    }
+    private function buildQuery($newest_odds=array()) {
+        $result=array('time'=>intval($this->time),
+                      'type'=>strval($this->odd_type));
+        if($newest_odds!=null && count($newest_odds)>0) {
+            $result['_id']=array('$in'=>$newest_odds);
+        }
+        switch($this->operator) {
+            case Constants::OPERATOR_NE:
+            case Constants::OPERATOR_EQ:
+            case Constants::OPERATOR_LT:
+            case Constants::OPERATOR_LTE:
+            case Constants::OPERATOR_GT:
+            case Constants::OPERATOR_GTE:
+                $result[$this->field]=array($this->operator=>floatval($this->first_value));
+                break;
+            case Constants::OPERATOR_NIN:
+                $result[Constants::OPERATOR_OR]=array(
+                    array($this->field=>array(Constants::OPERATOR_LT=>floatval($this->first_value))),
+                    array($this->field=>array(Constants::OPERATOR_GT=>floatval($this->second_value)))
+                );
+                break;
+            case Constants::OPERATOR_IN:
+                $result[Constants::OPERATOR_AND]=array(
+                    array($this->field=>array(Constants::OPERATOR_GTE=>floatval($this->first_value))),
+                    array($this->field=>array(Constants::OPERATOR_LTE=>floatval($this->second_value)))
+                );
+                break;
+            default:
+                return null;
+        }
+        return $result;
 
     }
-
 }

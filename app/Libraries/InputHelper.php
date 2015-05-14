@@ -85,15 +85,15 @@ class InputHelper
      */
     public static function getAllOpearators() {
         return array(
-            '$or' => Lang::get('app.or'),
-            '$and' => Lang::get('app.and'),
-            '$lt' => Lang::get('app.less'),
-            '$lte' => Lang::get('app.less_or_equal'),
-            '$gt' => Lang::get('app.greater'),
-            '$gte' => Lang::get('app.greater_or_equal'),
-            '$eq' => Lang::get('app.equal'),
-            '$ne' => Lang::get('app.not_equal'),
-            Constants::OPERATOR_IN => Lang::get('app.in_array'),
+            Constants::OPERATOR_OR  => Lang::get('app.or'),
+            Constants::OPERATOR_AND => Lang::get('app.and'),
+            Constants::OPERATOR_LT  => Lang::get('app.less'),
+            Constants::OPERATOR_LTE => Lang::get('app.less_or_equal'),
+            Constants::OPERATOR_GT  => Lang::get('app.greater'),
+            Constants::OPERATOR_GTE => Lang::get('app.greater_or_equal'),
+            Constants::OPERATOR_EQ  => Lang::get('app.equal'),
+            Constants::OPERATOR_NE  => Lang::get('app.not_equal'),
+            Constants::OPERATOR_IN  => Lang::get('app.in_array'),
             Constants::OPERATOR_NIN => Lang::get('app.not_in_array'),
         );
     }
@@ -165,8 +165,8 @@ class InputHelper
     }
     public static function getConditionOparators() {
         $oparators = self::getAllOpearators();
-        unset($oparators['$or']);
-        unset($oparators['$and']);
+        unset($oparators[Constants::OPERATOR_AND]);
+        unset($oparators[Constants::OPERATOR_OR]);
         return $oparators;
     }
 

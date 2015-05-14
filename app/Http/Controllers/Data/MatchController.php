@@ -16,4 +16,7 @@ class MatchController extends BaseController{
     public function postMatchs() {
         MatchServiceProvider::getInstance()->getServiceInstance()->processData();
     }
+    public function getMatchedMatch() {
+        MatchServiceProvider::getInstance()->getServiceInstance()->getMatchedMatch();
+    }
 }
