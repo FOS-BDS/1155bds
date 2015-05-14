@@ -50,7 +50,11 @@ class BackgroundProcess extends CollectionBase
 
             $r = $this->findOne(array('_id' => $process_id));
             if (isset($r) && $r['status'] == Constants::PROCESS_WAITING) {
-                $this->update(array('_id' => $process_id), array('$set'=>array('process' => Constants::PROCESS_PROCESSING)));
+
+                $this->update(
+                    array('_id' => $process_id),
+                    array('$set'=>array('status' => Constants::PROCESS_PROCESSING)));
+
                 $this->run($r['process']);
 
                 $this->remove(array('_id' => $process_id));
@@ -86,7 +90,10 @@ class BackgroundProcess extends CollectionBase
      */
     public function countActiveProcess()
     {
-        $cur = $this->find(array('status' => Constants::PROCESS_PROCESSING, 'started_at' => array('$lt' => 1000 * (time() - 2 * 60))));
+        $cur = $this->find(
+            array('status' => Constants::PROCESS_PROCESSING,
+                'started_at' => array('$lt' => 1000 * (time() - 2 * 60)))
+        );
         return $cur->count();
     }
 
@@ -124,7 +131,9 @@ class BackgroundProcess extends CollectionBase
     }
 
     public function getBatchProcess($limit) {
-        $cur=$this->find(array('status'=>Constants::PROCESS_WAITING))->sort(array('priority'=>-1))->limit($limit);
+        $cur=$this->find(
+            array('status'=>Constants::PROCESS_WAITING)
+        )->sort(array('priority'=>-1))->limit($limit);
         return $cur;
     }
 }

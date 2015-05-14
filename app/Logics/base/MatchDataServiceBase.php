@@ -12,4 +12,5 @@ namespace App\Logics\base;
 abstract class MatchDataServiceBase {
     public abstract function processData($data=null);
     public abstract function getMatchedMatch();
+    public abstract function getMatchedMatchFromNewOdd();
 }

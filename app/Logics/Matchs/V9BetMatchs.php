@@ -9,8 +9,10 @@
 namespace App\Logics\Matchs;
 
 
+use App\DAO\CacheDAO;
 use App\DAO\RuleDAO;
 use App\Libraries\Constants;
+use App\Libraries\InputHelper;
 use App\Logics\base\MatchDataServiceBase;
 use App\Logics\Odds\V9BetOdds;
 use App\DAO\LeagueDAO;
@@ -172,6 +174,38 @@ class V9BetMatchs extends MatchDataServiceBase {
             $rule=new Rules();
             $rule->initFromDBObject($current);
             $rule->process();
+
+            $final_rule_cur->next();
+        } while($final_rule_cur->hasNext());
+    }
+    public function getMatchedMatchFromNewOdd() {
+        $cache_id=InputHelper::getInput("cache_id",true);
+        $mongo_id=new \MongoId($cache_id);
+
+        $cacheDao=new CacheDAO();
+
+        $cache_obj=$cacheDao->findOneObjectById($mongo_id);
+        if($cache_obj==null) return;
+
+        if(!isset($cache_obj['newest_odds'])) return;
+
+        $new_odd_ids=$cache_obj['newest_odds'];
+
+        $new_odd_Mongoids=array();
+        foreach ($new_odd_ids as $id) {
+            $new_odd_Mongoids[]=new \MongoId($id);
+        }
+        // get all Condition
+        $ruleDao=new RuleDAO();
+        $final_rule_cur=$ruleDao->find(array('type'=>Constants::TYPE_CONDITION,'status'=>Constants::STATUS_PUBLISH));
+        $final_rule_cur->next();
+        do {
+            $current=$final_rule_cur->current();
+            if($current==null) break;
+            $current=(object)$current;
+            $rule=new Rules();
+            $rule->initFromDBObject($current);
+            $rule->process($new_odd_Mongoids,true);
 
             $final_rule_cur->next();
         } while($final_rule_cur->hasNext());
