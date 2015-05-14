@@ -9,6 +9,8 @@
 namespace App\Logics\Odds;
 
 
+use App\DAO\BackgroundProcess;
+use App\DAO\CacheDAO;
 use App\DAO\RuleDAO;
 use App\Libraries\Constants;
 use App\Logics\base\OddServiceBase;
@@ -58,8 +60,13 @@ class V9BetOdds extends OddServiceBase {
             $oddModel->batchInsert(array_values($odd_objs));
         }
 
-        // get matched match
-        $this->getMatchedMatchWithNewOdds($odd_objs);
+        $cacheDao=new CacheDAO();
+        $data=array('newest_odds'=>array_keys($odd_objs),'type'=>Constants::CACHE_NEWEST_ODDS);
+        $cacheDao->insert($data);
+
+        $background=new BackgroundProcess();
+        $background->throwProcess("/cron/match/newest_odds",array('cache_id'=>$data['_id']->__toString()));
+
     }
     private function getOddVal($str_val) {
         if(strpos($str_val,"/")!==false) {

@@ -24,20 +24,23 @@ class BackgroundProcessController extends BaseController {
     public function cron()
     {
         try {
-            // Run batch process
-            //$runTime['start_time'] = microtime(true);
-            $processBatch = BackgroundProcess::getBatchProcess(self::NUMBER_RECORD);
-            foreach ($processBatch as $process) {
-                $this->process($process->id);
-            }
+            $processCur = BackgroundProcess::getInstance()->getBatchProcess(self::NUMBER_RECORD);
+            $processCur->next();
+            do {
+                $current = $processCur->current();
+                if($current!=null && isset($current["_id"])) {
+                    $this->process($current['_id']);
+                }
+                $processCur->next();
+            } while($processCur->hasNext());
         } catch (Exception $e) {
             return ResponseBuilder::error($e);
         }
-        return;
     }
     public function cronGetMatchData($ontime) {
         $inplay=$ontime==1?"true":"false";
-        $link="http://sb.v9bet.com/vi-vn/OddsService/GetOdds?_=".(time()*1000)."&sportId=1&programmeId=0&pageType=1&uiBetType=am&displayView=2&pageNo=0&oddsType=2&sortBy=1&isFirstLoad=false&isInplay=".$inplay;
+        //$link="http://sb.v9bet.com/vi-vn/OddsService/GetOdds?_=".(time()*1000)."&sportId=1&programmeId=0&pageType=1&uiBetType=am&displayView=2&pageNo=0&oddsType=2&sortBy=1&isFirstLoad=false&isInplay=".$inplay;
+        $link="http://sb.v9bet.com/vi-vn/OddsService/GetOdds?_=".(time()*1000)."&sportId=1&programmeId=0&pageType=1&uiBetType=am&displayView=2&oddsType=2&sortBy=1&isFirstLoad=false&MoreBetEvent=null&sportIds=1&versions=645747&version=645747&isInplay=".$inplay;
         $result=$this->curlGet($link);
 
         if($result==false) return;

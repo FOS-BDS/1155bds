@@ -52,4 +52,12 @@ class Constants
     const STATUS_UNPUBLISH = 0;
     const STATUS_MAIN = 3;
     const STATUS_INTERMEDIATE = 2;
+
+    const CACHE_NEWEST_ODDS="NEWEST_ODD";
+
+    const PRIORITY_HIGHT    =3;
+    const PRIORITY_MIDDLE   =2;
+    const PEIORITY_SLOW     =1;
+    const PROCESS_WAITING=  'waiting';
+    const PROCESS_PROCESSING="processing";
 }
