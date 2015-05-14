@@ -10,6 +10,8 @@ namespace App\DAO\base;
 
 use App\Libraries\DBConnection;
 use MongoDB;
+use MongoCursor;
+use MongoId;
 
 class CollectionBase extends \MongoCollection {
     protected $collection_name;
@@ -24,5 +26,20 @@ class CollectionBase extends \MongoCollection {
         $new_obj->created_at=new \MongoDate();
         $new_obj->updated_at=new \MongoDate();
         return $new_obj;
+    }
+
+    /**
+     * @param MongoId $id
+     * @return MongoCursor
+     */
+    public function findObjectsById($id) {
+        return $this->find(array('_id'=>$id));
+    }
+    /**
+     * @param MongoId $id
+     * @return array|null
+     */
+    public function findOneObjectById($id) {
+        return $this->findOne(array('_id'=>$id));
     }
 }

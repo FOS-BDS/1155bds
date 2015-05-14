@@ -182,7 +182,7 @@ class Rules extends ModelBase {
                 // value changed
                 //1- update this object
                 $ruleDao=new RuleDAO();
-                $ruleDao->update(array('_id'=>$this->id),array('needed_update'=>false,'match_matched'=>$match_matched));
+                $ruleDao->update(array('_id'=>$this->id),array('$set'=>array('needed_update'=>false,'match_matched'=>$match_matched)));
                 // update for all parent
                 if($update_parent) {
                     $this->notifyChangeParent();
@@ -196,7 +196,7 @@ class Rules extends ModelBase {
     }
     public function notifyChangeParent() {
         $ruleDao=new RuleDAO();
-        $ruleDao->update(array('_id'=>array('$in'=>$this->parent_rules)),array('needed_update'=>true));
+        $ruleDao->update(array('_id'=>array('$in'=>$this->parent_rules)),array('$set'=>array('needed_update'=>true)));
 
         $parent_curs=$ruleDao->find(array('_id'=>array('$in'=>$this->parent_rules)));
         $parent_curs->next();
