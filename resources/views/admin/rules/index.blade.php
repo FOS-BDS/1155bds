@@ -1,4 +1,4 @@
-@extends('app')
+@extends('admin.layouts.app')
 @section('scripts')
     <?php echo Html::script('/admin/js/RuleModule.js') ?>
     <?php echo Html::script('/admin/js/plugins/magicsuggest/magicsuggest-min.js') ?>

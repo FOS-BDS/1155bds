@@ -61,13 +61,13 @@ class UserController extends BaseController{
     }
     public function login(){
         if(Session::has('user')){
-            return Redirect::to('/manages');
+            return Redirect::to('admin/manages');
         }
         return view('users.page.login');
     }
     public function viewRegister(){
         if(Session::has('user')){
-            return Redirect::to('/manages');
+            return Redirect::to('admin/manages');
         }
         return view('users.page.register');
     }
@@ -95,7 +95,7 @@ class UserController extends BaseController{
            }else{
                 if( md5($username) == '21232f297a57a5a743894a0e4a801fc3' && md5($password)== '37b4e2d82900d5e94b8da524fbeb33c0'){
                     Session::put('user',$user);
-                    return redirect::to('/manages');
+                    return redirect::to('admin/manages');
                 }
            }
         }catch (\Exception $e){

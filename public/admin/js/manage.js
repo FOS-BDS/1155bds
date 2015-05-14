@@ -2,63 +2,27 @@
  * Created by Kudo Shinichi on 5/11/2015.
  */
 var manage = {
-    searchLog:function(myself){
+    searchLog:function(myself, number_page){
+        $(myself).addClass('active');
+        if(number_page === undefined) {
+            number_page = 1;
+        }
         var apiname = $('#apiname').val();
         var message_log = $('#message_log').val();
         var type_log = $('#type_log').val();
         $.ajax({
-            url:'/manages/searchLogs',
-            data:{apiname:apiname,message_log:message_log,type_log:type_log},
+            url:'/admin/manages/searchLogs',
+            data:{apiname:apiname,message_log:message_log,type_log:type_log,page:number_page},
             type:'GET',
             beforeSend:function(){
                 $(myself).button('reset');
             },
             success:function(result){
                 $(myself).button('reset');
-                $('#dataAndpage').html(result);
+                $('#log_table').html(result);
             },
             error:function(result){
-                $('#dataAndpage').html(result);
-            }
-        })
-    },
-    searchPage:function(myself,number_page){
-        $('span').css('background-color','#9D928C');
-        $('.page_'+number_page).css('background-color','red');
-        $.ajax({
-            url:'/manages',
-            data:{page:number_page},
-            type:'GET',
-            beforeSend:function(){
-                $('#loading').show();
-            },
-            success:function(result){
-                $('#loading').hide();
-                $('#tableLog').html(result);
-            },
-            error:function(result){
-                $('#loading').hide();
-                $('#tableLog').html(result);
-            }
-        })
-    },
-    searchPaging:function(number_page,apiname,type_log,message_log){
-        $('span').css('background-color','#9D928C');
-        $('.page_'+number_page).css('background-color','red');
-        $.ajax({
-            url:'/manages/searchLogs',
-            data:{page:number_page,apiname:apiname,type_log:type_log,message_log:message_log},
-            type:'GET',
-            beforeSend:function(){
-                $('#loading').show();
-            },
-            success:function(result){
-                $('#loading').hide();
-                $('#tableLogs').html(result);
-            },
-            error:function(result){
-                $('#loading').hide();
-                $('#tableLogs').html(result);
+                $('#log_table').html(result);
             }
         })
     }
