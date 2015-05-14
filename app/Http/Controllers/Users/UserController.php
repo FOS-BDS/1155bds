@@ -13,6 +13,7 @@ use App\Libraries\InputHelper;
 use App\Libraries\ResponseBuilder;
 use App\DAO\UserDAO;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
 class UserController extends BaseController{
@@ -60,15 +61,19 @@ class UserController extends BaseController{
     }
     public function login(){
         if(Session::has('user')){
-            return redirect::to('/manages');
+            return Redirect::to('/manages');
         }
         return view('users.page.login');
     }
     public function viewRegister(){
+        if(Session::has('user')){
+            return Redirect::to('/manages');
+        }
         return view('users.page.register');
     }
     public function logout(){
         Session::forget('user');
+        return Redirect::to('user/login');
         return view('users.page.login');
     }
     public function confirmLogin(){
