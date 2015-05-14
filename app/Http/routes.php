@@ -83,7 +83,7 @@ Route::get('/test',function() {
 
 });
 Route::filter('checkSession',function(){
-    if(!Session::has('username')){
+    if(!Session::has('user')){
         return view('users.page.login');
     }
 });
