@@ -50,7 +50,7 @@ class RuleDAO extends CollectionBase {
                 $rule->odd_type = $params['odd_type'];
             }
             $rule->name = $params['name'];
-            $rule->user_id = Session::get('user.id');
+            $rule->user_id = Session::get('user._id');
             $rule->operator = $params['operator'];
             $rule->description = $params['description'];
             $rule->type = $params['type'];

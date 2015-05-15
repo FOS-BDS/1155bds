@@ -15,18 +15,20 @@ use MongoRegex;
 
 class LogController extends AdminController {
     public function manages(Request $request){
-        Log::info('test - '.time());
-        Log::error('test - '.time());
-        $page = InputHelper::getInput('page', false, 1);
-        $all_logs   = LogDAO::getInstance()->find();
-        $all_log    = iterator_to_array($all_logs);
-        $all_record = count($all_log);
-        $number_page= (int)($all_record/Constants::LIMIT_PERPAGE)+1;
-        $logs = LogDAO::getInstance()->find()->sort(array('create_at' => -1))->limit(20);
-        if(intval($page) > 0){
-            $logs->skip(($page-1)*Constants::LIMIT_PERPAGE);
+        try {
+            //Log::info('test - '.time());
+            //Log::error('test - '.time());
+            $page = InputHelper::getInput('page', false, 1);
+            $numberRecords = LogDAO::getInstance()->count(array());
+            $numberPage = ceil($numberRecords / Constants::LIMIT_PERPAGE);
+            $logs = LogDAO::getInstance()->find()->sort(array('create_at' => -1))->limit(Constants::LIMIT_PERPAGE);
+            if (intval($page) > 0) {
+                $logs->skip(($page - 1) * Constants::LIMIT_PERPAGE);
+            }
+            return view('admin.logs.index', array('logs' => iterator_to_array($logs), 'number_page' => $numberPage, 'page' => intval($page)));
+        } catch (\Exception $e){
+            throw new \Exception($e->getMessage());
         }
-        return view('admin.logs.index',array('logs'=>iterator_to_array($logs),'number_page'=>$number_page,'page'=>intval($page)));
     }
     /**
      * @return \Illuminate\View\View
@@ -55,22 +57,20 @@ class LogController extends AdminController {
             } else {
                 $conditions = $where;
             }
-
-            $logCounter     = LogDAO::getInstance()->find($conditions);
-            $number         = count(iterator_to_array($logCounter));
+            $numberRecords = LogDAO::getInstance()->count($conditions);
+            $numberPage = ceil($numberRecords/Constants::LIMIT_PERPAGE);
             $logData        = LogDAO::getInstance()->find($conditions)->sort(array('create_at' => -1))->limit(Constants::LIMIT_PERPAGE);
-            $number_page    = (int)($number/Constants::LIMIT_PERPAGE)+1;
             if(intval($page) > 0){
                 $logData->skip(($page-1)*Constants::LIMIT_PERPAGE);
             }
-            return view('admin.logs.logs',array('logs'=>iterator_to_array($logData),'number_page'=>$number_page,'page'=>intval($page)))->render();
+            return view('admin.logs.logs',array('logs'=>iterator_to_array($logData),'number_page'=>$numberPage,'page'=>intval($page)))->render();
         } catch (\Exception $e){
             throw new \Exception($e->getMessage());
         }
     }
     public function deleteLogs(Request $request) {
         try {
-            $log = LogDAO::getInstance()->remove(array());
+            LogDAO::getInstance()->remove(array());
             return view('admin.logs.logs',array('logs'=>array(),'number_page'=>1,'page'=>1))->render();
         } catch (\Exception $e){
             throw new \Exception($e->getMessage());
