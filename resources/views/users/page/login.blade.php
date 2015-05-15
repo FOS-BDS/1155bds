@@ -1,7 +1,7 @@
 @extends('admin.layouts.login')
 @section('content')
     <div class="form-box" id="login-box">
-        <div class="header">Đăng nhập<img src="<?php echo URL::to('/') ?>/img/img_soccer.gif"style="width: 40px;height: 40px; float: right"></div>
+        <div class="header bg-primary">Đăng nhập<img src="<?php echo URL::to('/') ?>/img/img_soccer.gif"style="width: 40px;height: 40px; float: right"></div>
         <form id="form_login">
             <div class="body bg-gray">
                 <div class="callout callout-danger error_login" style="display: none"></div>
@@ -18,13 +18,13 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="checkbox" name="remember_me"/> Remember me
+                    <input type="checkbox" name="remember_me"/> {!!Lang::get('app.remember_me')!!}
                 </div>
             </div>
             <div class="footer">
-                <button type="submit" class="btn bg-olive btn-block" data-text-loading="Đang đăng nhập..." onclick="user.login(this,'#form_login');return false;">Đăng nhập</button>
-                <p><a href="{{URL::to('users/forgotpassword')}}">I forgot my password</a></p>
-                <a href="{{URL::to('users/register')}}" class="text-center">Register a new member</a>
+                <button type="submit" class="btn bg-green btn-block" data-text-loading="Đang đăng nhập..." onclick="user.login(this,'#form_login');return false;">Đăng nhập</button>
+                <p><a href="{{URL::to('users/forgotpassword')}}">{!!Lang::get('app.i_forgot_my_password')!!}</a></p>
+                <a href="{{URL::to('users/register')}}" class="text-center">{!!Lang::get('app.register_a_new_member')!!}</a>
             </div>
         </form>
     </div>

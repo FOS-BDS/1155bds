@@ -1,6 +1,23 @@
 @extends('admin.layouts.app')
 @section('scripts')
     <?php echo Html::script('/admin/js/manage.js') ?>
+    <?php echo Html::script('/admin/js/plugins/pagination/jquery.twbsPagination.min.js') ?>
+    <script>
+        $(function(){
+            $('#pagination').twbsPagination({
+                totalPages: <?php echo $number_page ?>,
+                startPage: <?php echo $page ?>,
+                visiblePages: 10,
+                first: "{{Lang::get('app.first')}}",
+                last: "{{Lang::get('app.last')}}",
+                next: "{{Lang::get('app.next')}}",
+                prev: "{{Lang::get('app.prev')}}",
+                onPageClick: function (event, page) {
+                    manage.searchLog(this,page);
+                }
+            });
+        });
+    </script>
 @endsection
 @section('content')
     <div class="box box-warning">
@@ -75,15 +92,7 @@
                     </tfoot>
                 </table>
                 <div class="dataTables_paginate paging_bootstrap text-right">
-                    <ul class="pagination">
-                        <li class="prev disabled">
-                            <a href="#">← Previous</a>
-                        </li>
-                        @for($i=1;$i<=$number_page;$i++)
-                            <li class="{{$page==$i?'active':''}}" onclick="manage.searchLog(this,'{{$i}}');"><a href="#">{{$i}}</a></li>
-                        @endfor
-                        <li class="next"><a href="#">Next → </a></li>
-                    </ul>
+                    <ul id="pagination" class="pagination-sm"></ul>
                 </div>
             </div>
         </div>
