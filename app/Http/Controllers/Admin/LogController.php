@@ -25,7 +25,7 @@ class LogController extends AdminController{
             if(intval($page) > 0){
                 $logs->skip(($page-1)*Constants::LIMIT_PERPAGE);
             }
-            return view('admin.logs.index',array('all_log'=>iterator_to_array($logs),'number_page'=>$number_page,'page'=>intval($page)));
+            return view('admin.logs.index',array('logs'=>iterator_to_array($logs),'number_page'=>$number_page,'page'=>intval($page)));
         }
         /**
          * @return \Illuminate\View\View
