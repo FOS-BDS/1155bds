@@ -54,6 +54,7 @@ class Constants
     const STATUS_INTERMEDIATE = 2;
 
     const CACHE_NEWEST_ODDS="NEWEST_ODD";
+    const CACHE_ODDS_VERSION="ODD_VERSION";
 
     const PRIORITY_HIGHT    =3;
     const PRIORITY_MIDDLE   =2;
