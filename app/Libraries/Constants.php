@@ -59,6 +59,8 @@ class Constants
     const PRIORITY_HIGHT    =3;
     const PRIORITY_MIDDLE   =2;
     const PEIORITY_SLOW     =1;
-    const PROCESS_WAITING=  'waiting';
-    const PROCESS_PROCESSING="processing";
+    const PROCESS_WAITING = 'waiting';
+    const PROCESS_PROCESSING = "processing";
+
+    const LIMIT_PERPAGE = 20;
 }

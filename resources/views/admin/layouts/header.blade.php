@@ -9,21 +9,27 @@
         </button>
         <div class="collapsed navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
+                <li>
+                    <a href="{{URL::to('admin/manages')}}">
+                        <i class="fa fa-bug"></i>
+                        <span>{!!Lang::get('app.logs')!!}</span>
+                    </a>
+                </li>
                 <li class="dropdown sub-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-tasks"></i>
+                        <i class="fa fa-th-list"></i>
                         <span>{!!Lang::get('app.rule_manager')!!} <i class="caret"></i></span>
                     </a>
                     <ul class="menu dropdown-menu">
                         <li class="header">
                             <a href="{{url('admin/conditions')}}">
-                                <i class="fa fa-tasks"></i>
+                                <i class="fa fa-list-ul"></i>
                                 {!!Lang::get('app.conditions')!!}
                             </a>
                         </li>
                         <li>
                             <a href="{{url('admin/rules')}}">
-                                <i class="fa fa-tasks"></i>
+                                <i class="fa fa-list-ul"></i>
                                 {!!Lang::get('app.rules')!!}
                             </a>
                         </li>
@@ -40,7 +46,7 @@
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header bg-light-blue">
-                                <img src="img/avatar3.png" class="img-circle" alt="User Image" />
+                                <img src="{{URL::to('/')}}/admin/img/avatar3.png" class="img-circle" alt="User Image" />
                                 <p>
                                     {!!Session::get('user.email')!!}
                                     <small>Member since Nov. 2014</small>

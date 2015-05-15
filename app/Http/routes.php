@@ -38,6 +38,11 @@ Route::get('admin/rules/editRule', 'Admin\RulesController@editRule');
 Route::get('admin/rules/getConditionAndRules', 'Admin\RulesController@getConditionAndRules');
 Route::post('admin/rules/save', 'Admin\RulesController@save');
 Route::get('admin/rules/validate', 'Admin\RulesController@checkValid');
+
+// Logs
+Route::get('admin/manages','Admin\LogController@manages');
+Route::get('admin/manages/searchLogs','Admin\LogController@searchLogs');
+
 /* End Admin */
 
 Route::controllers([
@@ -92,9 +97,6 @@ Route::group(array('before'=>'checkSession'),function(){
     Route::get('users/logout','Users\UserController@logout');
 });
 
-// manager data
-Route::get('manages','LogController@manages');
-Route::get('manages/searchLogs','LogController@searchLogs');
 // logs events
 Log::listen(function($level, $message, $context)
 {

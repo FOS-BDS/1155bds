@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Lang;
  */
 class InputHelper
 {
-    private static $input;
+    private static $input = array();
     private static $access_token;
     public static function setInputArray( $input ) {
         self::$input = $input;
