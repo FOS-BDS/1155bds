@@ -1,0 +1,25 @@
+.o-time {
+    background-color:#808080;
+    color: #ffffff;
+}
+.comp-title {
+    background-color: darkgray !important;
+    color: #ffffff;
+    font-weight: bold;
+}
+.h_team {
+    font-weight: bold;
+}
+.g_team {
+    font-weight: bold;
+}
+.draw {
+    font-weight: bold;
+}
+.team-better {
+    color: #ba0303 !important;
+}
+.bold-text {
+    font-weight: bold;
+    color: #000000;
+}

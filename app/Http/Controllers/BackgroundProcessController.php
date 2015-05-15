@@ -8,6 +8,7 @@ use App\Libraries\ResponseBuilder;
 use App\Logics\Matchs\V9BetMatchs;
 use App\DAO\BackgroundProcess;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class BackgroundProcessController extends BaseController {
     const NUMBER_RECORD = 30;
@@ -39,35 +40,41 @@ class BackgroundProcessController extends BaseController {
         }
     }
     public function cronGetMatchData($ontime) {
-        $cache_dao=new CacheDAO();
-        $version_cache=$cache_dao->findOne(array('type'=>Constants::CACHE_ODDS_VERSION));
-        if($version_cache==null) {
-            // call first time
-            $this->getFirstTimeVersion();
+        Log::info("Run Get Match data cron");
+        try {
+            $cache_dao=new CacheDAO();
+            $version_cache=$cache_dao->findOne(array('type'=>Constants::CACHE_ODDS_VERSION));
+            if($version_cache==null) {
+                // call first time
+                $this->getFirstTimeVersion();
 
-        } else {
-            // call follow $ontime param
-            $in_v=intval($version_cache["intime_v"]);
-            $off_v=intval($version_cache["offtime_v"]);
+            } else {
+                // call follow $ontime param
+                $in_v=intval($version_cache["intime_v"]);
+                $off_v=intval($version_cache["offtime_v"]);
 
-            $inplay=$ontime==1?"true":"false";
-            $link="http://sb.v9bet.com/vi-vn/OddsService/GetOdds?_=".(time()*1000)."&sportId=1&programmeId=0&pageType=1&uiBetType=am&displayView=2&oddsType=2&sortBy=1&isFirstLoad=false&MoreBetEvent=null&sportIds=1&versions=".$in_v."&version=".$off_v."&isInplay=".$inplay;
+                $inplay=$ontime==1?"true":"false";
+                $link="http://sb.v9bet.com/vi-vn/OddsService/GetOdds?_=".(time()*1000)."&sportId=1&programmeId=0&pageType=1&uiBetType=am&displayView=2&oddsType=2&sortBy=1&isFirstLoad=false&MoreBetEvent=null&sportIds=1&versions=".$in_v."&version=".$off_v."&isInplay=".$inplay;
 
-            $result=$this->curlGet($link);
+                $result=$this->curlGet($link);
 
-            if($result==false) return;
+                if($result==false) return;
 
-            $v9betMatch=new V9BetMatchs();
-            $version=$v9betMatch->processData($result);
-            if($version!=-1) {
-                if($ontime) {
-                    $version_cache['intime_v']=$version;
-                } else {
-                    $version_cache['offtime_v']=$version;
+                $v9betMatch=new V9BetMatchs();
+                $version=$v9betMatch->processData($result);
+                if($version!=-1) {
+                    if($ontime) {
+                        $version_cache['intime_v']=$version;
+                    } else {
+                        $version_cache['offtime_v']=$version;
+                    }
+                    $cache_dao->update(array('_id'=>$version_cache['_id']),$version_cache);
                 }
-                $cache_dao->update(array('_id'=>$version_cache['_id']),$version_cache);
             }
+        } catch(Exception $e) {
+            return ResponseBuilder::error($e);
         }
+
     }
     private function getFirstTimeVersion() {
         $link="http://sb.v9bet.com/vi-vn/OddsService/GetOdds?_=".(time()*1000)."&sportId=1&programmeId=0&pageType=1&uiBetType=am&displayView=2&oddsType=2&sortBy=1&isFirstLoad=true&MoreBetEvent=null";

@@ -12,7 +12,7 @@
                     <div class="col-lg-10">
                         <select name="type_log" class="form-control" id="type_log" >
                             <option value="error" >Error</option>
-                            <option value="info" >Infor</option>
+                            <option value="info" >Info</option>
                         </select>
                     </div>
                 </div>
