@@ -39,6 +39,10 @@ Route::get('admin/rules/getConditionAndRules', 'Admin\RulesController@getConditi
 Route::post('admin/rules/save', 'Admin\RulesController@save');
 Route::get('admin/rules/validate', 'Admin\RulesController@checkValid');
 
+
+/* Match */
+Route::get('match','Data\MatchController@getMatchView');
+
 // Logs
 Route::get('admin/manages','Admin\LogController@manages');
 Route::get('admin/manages/searchLogs','Admin\LogController@searchLogs');

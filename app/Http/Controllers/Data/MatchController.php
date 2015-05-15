@@ -35,4 +35,7 @@ class MatchController extends BaseController{
             return ResponseBuilder::error($e);
         }
     }
+    public function getMatchView() {
+        return View("admin.match.index");
+    }
 }
