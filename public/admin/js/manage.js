@@ -25,5 +25,9 @@ var manage = {
                 $('#log_table').html(result);
             }
         })
+    },
+    deleteLogs: function(myself) {
+        var that = this;
+        that.searchLog();
     }
 }
