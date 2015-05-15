@@ -64,4 +64,5 @@ return [
 	'last' 					=> 'Cuối trang',
 	'next' 					=> 'Tiếp',
 	'prev' 					=> 'Lùi',
+	'action'				=> 'Công cụ',
 ];
