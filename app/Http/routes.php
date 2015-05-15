@@ -66,15 +66,14 @@ Route::get('/test',function() {
 
     $ruleDAO=new \App\DAO\RuleDAO();
     $rulecur=$ruleDAO->find();
-    $rulecur->next();
     do
     {
+        $rulecur->next();
         $current=$rulecur->current();
         $rule=new \App\Models\Rules();
         $rule->initFromDBObject($current);
 
         $rules[]=$rule;
-        $rulecur->next();
     } while($rulecur->hasNext());
 
     foreach ($rules as $rule) {

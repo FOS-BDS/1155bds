@@ -4,6 +4,7 @@ namespace App\Models;
 use App\DAO\OddDAO;
 use App\DAO\RuleDAO;
 use App\Libraries\Constants;
+use Illuminate\Support\Facades\Log;
 use MongoId;
 
 class Rules extends ModelBase {
@@ -70,6 +71,7 @@ class Rules extends ModelBase {
     {
         if(!is_object($db_object)) $db_object=(object)$db_object;
 
+        $this->id=$db_object->_id;
         $this->name=$db_object->name;
         $this->description=$db_object->description;
         $this->type=$db_object->type;
@@ -135,7 +137,7 @@ class Rules extends ModelBase {
      * @return array
      */
     public function process($newest_odds=array(),$update_parent=false) {
-
+        Log::info("Run Process");
         if($this->needed_update) {
             $oddDAO=new OddDAO();
             $match_matched=array();
@@ -144,14 +146,12 @@ class Rules extends ModelBase {
                 $query=$this->buildQuery($newest_odds);
                 if($query==null) return array();
                 $matched_cur=$oddDAO->find($query,array('match_id'));
-                $matched_cur->next();
-
                 do {
+                    $matched_cur->next();
                     $current=$matched_cur->current();
                     if($current==null) break;
                     $current=(object)$current;
                     $match_matched[]=$current->match_id->__toString();
-                    $matched_cur->next();
                 } while($matched_cur->hasNext());
 
             } elseif($this->type==Constants::TYPE_RULE) {
@@ -182,7 +182,7 @@ class Rules extends ModelBase {
                 // value changed
                 //1- update this object
                 $ruleDao=new RuleDAO();
-                $ruleDao->update(array('_id'=>$this->id),array('$set'=>array('needed_update'=>false,'match_matched'=>$match_matched)));
+                $ruleDao->update(array('_id'=>$this->id),array('$set'=>array('needed_update'=>false,'match_matched'=>array_values($match_matched))));
                 // update for all parent
                 if($update_parent) {
                     $this->notifyChangeParent();
@@ -199,9 +199,10 @@ class Rules extends ModelBase {
         $ruleDao->update(array('_id'=>array('$in'=>$this->parent_rules)),array('$set'=>array('needed_update'=>true)));
 
         $parent_curs=$ruleDao->find(array('_id'=>array('$in'=>$this->parent_rules)));
-        $parent_curs->next();
+
 
         do {
+            $parent_curs->next();
             $current=$parent_curs->current();
             if($current==null)  break;
             $current=(object)$current;
@@ -209,8 +210,6 @@ class Rules extends ModelBase {
             $ruleObj=new Rules();
             $ruleObj->initFromID($current->id,$current->parent_rules);
             $ruleObj->notifyChangeParent();
-
-            $parent_curs->next();
         } while($parent_curs->hasNext());
     }
     private function buildQuery($newest_odds=array()) {

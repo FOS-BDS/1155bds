@@ -25,6 +25,7 @@ class V9BetMatchs extends MatchDataServiceBase {
         $data_json=json_decode($data);
         $data_json=(array)$data_json;
         $is_ontime=true;
+        $version=-1;
         if(array_key_exists(Constants::ONTIME_KEY,$data_json)) {
             $match_data=$data_json[Constants::ONTIME_KEY];
 
@@ -33,11 +34,13 @@ class V9BetMatchs extends MatchDataServiceBase {
             }
             $match_data=$match_data[0];
             $is_ontime=true;
+            $version=$match_data->v;
         } elseif(array_key_exists(Constants::OFFTIME_KEY,$data_json)) {
             $match_data=$data_json[Constants::OFFTIME_KEY];
             $is_ontime=false;
+            $version=$match_data->v;
         }
-        if(!isset($match_data->egs)) return;
+        if(!isset($match_data)||!isset($match_data->egs)) return $version;
 
         // match data processing
 
@@ -138,6 +141,8 @@ class V9BetMatchs extends MatchDataServiceBase {
         $v9betOdd=new V9BetOdds();
         $v9betOdd->processData($matchs,$match_odds);
 
+        return $version;
+
     }
     private function getMatchTime($is_ontime,$time,$match_haft) {
 
@@ -166,8 +171,9 @@ class V9BetMatchs extends MatchDataServiceBase {
         // get all finale edited data
         $ruleDao=new RuleDAO();
         $final_rule_cur=$ruleDao->find(array('needed_update'=>true,'status'=>Constants::STATUS_MAIN));
-        $final_rule_cur->next();
+
         do {
+            $final_rule_cur->next();
             $current=$final_rule_cur->current();
             if($current==null) break;
             $current=(object)$current;
@@ -175,7 +181,6 @@ class V9BetMatchs extends MatchDataServiceBase {
             $rule->initFromDBObject($current);
             $rule->process();
 
-            $final_rule_cur->next();
         } while($final_rule_cur->hasNext());
     }
     public function getMatchedMatchFromNewOdd() {
@@ -198,8 +203,10 @@ class V9BetMatchs extends MatchDataServiceBase {
         // get all Condition
         $ruleDao=new RuleDAO();
         $final_rule_cur=$ruleDao->find(array('type'=>Constants::TYPE_CONDITION,'status'=>Constants::STATUS_PUBLISH));
-        $final_rule_cur->next();
+
         do {
+            $final_rule_cur->next();
+
             $current=$final_rule_cur->current();
             if($current==null) break;
             $current=(object)$current;
@@ -207,7 +214,6 @@ class V9BetMatchs extends MatchDataServiceBase {
             $rule->initFromDBObject($current);
             $rule->process($new_odd_Mongoids,true);
 
-            $final_rule_cur->next();
         } while($final_rule_cur->hasNext());
     }
 }
