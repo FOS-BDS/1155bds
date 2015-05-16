@@ -41,7 +41,7 @@ Route::get('admin/rules/validate', 'Admin\RulesController@checkValid');
 
 
 /* Match */
-Route::get('match','Data\MatchController@getMatchView');
+Route::get('/users/matchs','Data\MatchController@getMatchView');
 
 // Logs
 Route::get('admin/manages','Admin\LogController@manages');

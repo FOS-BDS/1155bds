@@ -10,6 +10,12 @@
         <div class="collapsed navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li>
+                    <a href="{{URL::to('/users/matchs')}}">
+                        <i class="fa fa-android"></i>
+                        <span>DS Tran Dau</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{URL::to('admin/manages')}}">
                         <i class="fa fa-bug"></i>
                         <span>{!!Lang::get('app.logs')!!}</span>

@@ -13,23 +13,8 @@
     <?php echo Html::style('/admin/js/plugins/colorpicker-slider/bootstrap.colorpickersliders.css') ?>
 @endsection
 @section('content')
-    <div id="match_list">
+    <div id="match_list" class="table-responsive">
         <table cellpadding="0" cellspacing="0" class="table table-striped table-bordered" sid="s1">
-            <colgroup>
-                <col width="40">
-                <col width="255">
-                <col width="50">
-                <col width="37">
-                <col width="53">
-                <col width="37">
-                <col width="53">
-                <col width="50">
-                <col width="37">
-                <col width="53">
-                <col width="37">
-                <col width="53">
-                <col width="45">
-            </colgroup>
             <thead class="o-time">
             <tr>
                 <th rowspan="2" class="n-inplay-title clear-l-bdr" colspan="2"><h3>Hôm Nay</h3></th>

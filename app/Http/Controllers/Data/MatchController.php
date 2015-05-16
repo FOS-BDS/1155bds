@@ -36,6 +36,8 @@ class MatchController extends BaseController{
         }
     }
     public function getMatchView() {
+        //get match data
+
         return View("admin.match.index");
     }
 }
