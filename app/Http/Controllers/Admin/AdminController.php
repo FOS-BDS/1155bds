@@ -21,7 +21,6 @@ abstract class AdminController extends BaseController {
             }
         }
         $this->middleware('auth');
-        $this->uid = Session::get('user.id');
-
+        $this->uid = Session::get('user._id');
     }
 }

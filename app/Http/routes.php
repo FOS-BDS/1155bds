@@ -46,6 +46,7 @@ Route::get('/users/matchs','Data\MatchController@getMatchView');
 // Logs
 Route::get('admin/manages','Admin\LogController@manages');
 Route::get('admin/manages/searchLogs','Admin\LogController@searchLogs');
+Route::post('admin/manages/deleteLogs','Admin\LogController@deleteLogs');
 
 /* End Admin */
 

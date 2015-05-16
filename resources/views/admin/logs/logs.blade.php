@@ -9,7 +9,7 @@
             next: "{{Lang::get('app.next')}}",
             prev: "{{Lang::get('app.prev')}}",
             onPageClick: function (event, page) {
-                manage.searchLog(this,page);
+                manage.searchLog(null,page);
             }
         });
     });
