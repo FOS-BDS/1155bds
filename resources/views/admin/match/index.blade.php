@@ -33,12 +33,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @if(count($today)==0)
+                    @if(count($in_play)==0)
                         <tr>
                             <td colspan="13">{{Lang::get('match.no_match')}}</td>
                         </tr>
                     @else
-                        @foreach($today as $match)
+                        @foreach($in_play as $match)
                             @foreach($match as $league_id =>$league_matchs)
                                 <tr>
                                     <td colspan="13" class="bg-yellow"><span class="fl tle-txt">{{$leagues[$league_id]->name}}</span></td>
@@ -423,13 +423,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @if(count($today)==0)
+                    @if(count($finished)==0)
                         <tr>
                             <td colspan="13">{{Lang::get('match.no_match')}}</td>
                         </tr>
                     @else
 
-                        @foreach($today as $match)
+                        @foreach($finished as $match)
                             @foreach($match as $league_id =>$league_matchs)
                                 <tr>
                                     <td colspan="13" class="bg-light-blue"><span
