@@ -1,10 +1,12 @@
 .o-time {
     background-color:#808080;
     color: #ffffff;
+    font-size: 12px;
 }
 .i-time {
     background-color: #0089db;
     color: #ffffff;
+    font-size: 12px;
 }
 .comp-title {
     background-color: darkgray !important;
@@ -13,12 +15,15 @@
 }
 .h_team {
     font-weight: bold;
+    font-size: 12px;
 }
 .g_team {
     font-weight: bold;
+    font-size: 12px;
 }
 .draw {
     font-weight: bold;
+    font-size: 12px;
 }
 .team-better {
     color: #ba0303 !important;
@@ -26,4 +31,5 @@
 .bold-text {
     font-weight: bold;
     color: #000000;
+    font-size: 12px;
 }

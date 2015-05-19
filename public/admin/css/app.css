@@ -3693,6 +3693,7 @@ fieldset[disabled] .btn-vk.active {
 
 .widget-table .widget-content {
     padding: 0;
+    border: 0;
 }
 
 .widget-table .table {
