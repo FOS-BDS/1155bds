@@ -17,35 +17,33 @@
         <table cellpadding="0" cellspacing="0" class="table table-striped table-bordered" sid="s1">
             <thead class="o-time">
             <tr>
-                <th rowspan="2" class="n-inplay-title clear-l-bdr" colspan="2"><h3>Hôm Nay</h3></th>
-                <th colspan="5" style="text-align: center;">Cả Trận</th>
-                <th colspan="5" style="text-align: center;">Hiệp 1</th>
+                <th rowspan="2" class="n-inplay-title clear-l-bdr" colspan="2"><h3>{{Lang::get('match.today')}}</h3></th>
+                <th colspan="5" style="text-align: center;">{{Lang::get('match.full_time')}}</th>
+                <th colspan="5" style="text-align: center;">{{Lang::get('match.haft_time')}}</th>
                 <th rowspan="2"></th>
             </tr>
             <tr class="top-bdr">
                 <th>1x2</th>
-                <th colspan="2">Cược Chấp</th>
-                <th colspan="2">Trên / Dưới</th>
+                <th colspan="2">{{Lang::get('match.handicap')}}</th>
+                <th colspan="2">{{Lang::get('match.over_under')}}</th>
                 <th>1x2</th>
-                <th colspan="2">Cược Chấp</th>
-                <th colspan="2">Trên / Dưới</th>
+                <th colspan="2">{{Lang::get('match.handicap')}}</th>
+                <th colspan="2">{{Lang::get('match.over_under')}}</th>
             </tr>
             </thead>
             <tbody>
             @if(count($matchs)==0)
                 <tr>
-                    <td colspan="13">{{"khong co tran dau nao!"}}</td>
+                    <td colspan="13">{{Lang::get('match.no_match')}}</td>
                 </tr>
             @else
 
                 @foreach($matchs as $match)
                     @foreach($match as $league_id =>$league_matchs)
                         <tr>
-                            <td colspan="13" class="comp-title" title="Cập Nhật"><span
+                            <td colspan="13" class="comp-title"><span
                                         class="fl tle-txt"
-                                        >{{$leagues[$league_id]->name}}</span><a
-                                        class="fr btn-ref-sm" title="Cập Nhật"
-                                        href="javascript:void(0)"></a>
+                                        >{{$leagues[$league_id]->name}}</span>
                             </td>
                         </tr>
                         @foreach($league_matchs as $match_info)
@@ -63,7 +61,7 @@
                                         <div><span class="g_team"
                                                    title="Brentford">{{$match_info->g_name}}</span>
                                         </div>
-                                        <div><span class="draw" title="Hòa">Hòa</span></div>
+                                        <div><span class="draw" title="{{Lang::get('match.draw')}}">{{Lang::get('match.draw')}}</span></div>
                                     </div>
                                 </td>
                                 @if(isset($match_info->lastest_odd))
@@ -73,11 +71,11 @@
                                     <td>
 
                                         @if(isset($lastest_odd['1x2']))
-                                            <div title="Chủ"
+                                            <div title="{{Lang::get('match.home')}}"
                                                  class="bold-text">{{$lastest_odd['1x2']['home']}}</div>
-                                            <div title="Chủ"
+                                            <div title="{{Lang::get('match.away')}}"
                                                  class="bold-text">{{$lastest_odd['1x2']['away']}}</div>
-                                            <div title="Chủ"
+                                            <div title="{{Lang::get('match.draw')}}"
                                                  class="bold-text">{{$lastest_odd['1x2']['draw']}}</div>
                                         @else
                                             <div>&nbsp;</div>
@@ -101,9 +99,9 @@
                                     </td>
                                     <td>
                                         @if(isset($lastest_odd['ah']))
-                                            <div title="Chủ"
+                                            <div title="{{Lang::get('match.home')}}"
                                                  class="bold-text">{{$lastest_odd['ah']['home']}}</div>
-                                            <div title="Chủ"
+                                            <div title="{{Lang::get('match.away')}}"
                                                  class="bold-text">{{$lastest_odd['ah']['away']}}</div>
                                             <div>&nbsp;</div>
                                         @else
@@ -114,8 +112,8 @@
                                     </td>
                                     <td>
                                         @if(isset($lastest_odd['ou']))
-                                            <div title="Chủ">{{$lastest_odd['ou']['draw']}}</div>
-                                            <div title="Chủ"
+                                            <div title="{{Lang::get('match.total_score')}}">{{$lastest_odd['ou']['draw']}}</div>
+                                            <div title="{{Lang::get('match.total_score')}}"
                                                  class="hide">{{$lastest_odd['ou']['draw']}}</div>
                                             <div>&nbsp;</div>
                                         @else
@@ -126,9 +124,9 @@
                                     </td>
                                     <td>
                                         @if(isset($lastest_odd['ou']))
-                                            <div title="Chủ"
+                                            <div title="{{Lang::get('match.over')}}"
                                                  class="bold-text">{{$lastest_odd['ou']['home']}}</div>
-                                            <div title="Chủ"
+                                            <div title="{{Lang::get('match.under')}}"
                                                  class="bold-text">{{$lastest_odd['ou']['away']}}</div>
                                             <div>&nbsp;</div>
                                         @else
@@ -139,11 +137,11 @@
                                     </td>
                                     <td>
                                         @if(isset($lastest_odd['1x21st']))
-                                            <div title="Chủ"
+                                            <div title="{{Lang::get('match.home')}}"
                                                  class="bold-text">{{$lastest_odd['1x21st']['home']}}</div>
-                                            <div title="Chủ"
+                                            <div title="{{Lang::get('match.away')}}"
                                                  class="bold-text">{{$lastest_odd['1x21st']['away']}}</div>
-                                            <div title="Chủ"
+                                            <div title="{{Lang::get('match.draw')}}"
                                                  class="bold-text">{{$lastest_odd['1x21st']['draw']}}</div>
                                         @else
                                             <div>&nbsp;</div>
@@ -166,9 +164,9 @@
                                     </td>
                                     <td>
                                         @if(isset($lastest_odd['ah1st']))
-                                            <div title="Chủ"
+                                            <div title="{{Lang::get('match.home')}}"
                                                  class="bold-text">{{$lastest_odd['ah1st']['home']}}</div>
-                                            <div title="Chủ"
+                                            <div title="{{Lang::get('match.away')}}"
                                                  class="bold-text">{{$lastest_odd['ah1st']['away']}}</div>
                                             <div>&nbsp;</div>
                                         @else
@@ -179,8 +177,8 @@
                                     </td>
                                     <td>
                                         @if(isset($lastest_odd['ou1st']))
-                                            <div title="Chủ">{{$lastest_odd['ou1st']['draw']}}</div>
-                                            <div title="Chủ"
+                                            <div title="{{Lang::get('match.total_score')}}">{{$lastest_odd['ou1st']['draw']}}</div>
+                                            <div title="{{Lang::get('match.total_score')}}"
                                                  class="hide">{{$lastest_odd['ou1st']['draw']}}</div>
                                             <div>&nbsp;</div>
                                         @else
@@ -191,9 +189,9 @@
                                     </td>
                                     <td>
                                         @if(isset($lastest_odd['ou1st']))
-                                            <div title="Chủ"
+                                            <div title="{{Lang::get('match.over')}}"
                                                  class="bold-text">{{$lastest_odd['ou1st']['home']}}</div>
-                                            <div title="Chủ"
+                                            <div title="{{Lang::get('match.under')}}"
                                                  class="bold-text">{{$lastest_odd['ou1st']['away']}}</div>
                                             <div>&nbsp;</div>
                                         @else
