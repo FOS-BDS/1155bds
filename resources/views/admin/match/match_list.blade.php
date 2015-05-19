@@ -37,7 +37,14 @@
                     <tr>
                         <td style="width: 80px;">
                             <div class="text-center bold-text">{{$match_info->h_goal}} - {{$match_info->g_goal}}</div>
-                            <div class="text-center bold-text">{{$match_info->time}}<image src="{{URL::to('/')}}/img/in.gif" border="0"/></div>
+                            @if($match_info->time==-2)
+                                <div class="text-center bold-text">HT</div>
+                            @elseif($match_info->time==-3)
+                                <div class="text-center bold-text">FT</div>
+                            @else
+                                <div class="text-center bold-text">{{$match_info->time}}<image src="{{URL::to('/')}}/img/in.gif" border="0"/></div>
+                            @endif
+
                             <!--Hide Date when it is Today-->
                         </td>
                         <td class="evt-col r-bdr">
