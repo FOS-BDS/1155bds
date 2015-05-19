@@ -33,7 +33,9 @@
             </thead>
             <tbody>
             @if(count($matchs)==0)
-                {{"khong co tram dau nao!"}}
+                <tr>
+                    <td colspan="13">{{"khong co tran dau nao!"}}</td>
+                </tr>
             @else
 
                 @foreach($matchs as $match)
@@ -208,11 +210,10 @@
                         @endforeach
                     @endforeach
                 @endforeach
+                <tr>
+                    <td colspan="13"></td>
+                </tr>
             @endif
-
-            <tr>
-                <td colspan="13"></td>
-            </tr>
             </tbody>
         </table>
     </div>
