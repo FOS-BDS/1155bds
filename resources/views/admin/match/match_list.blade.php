@@ -1,7 +1,7 @@
 <table class="table table-striped table-bordered table-hover table-responsive">
     <thead class="bg-olive">
     <tr>
-        <th rowspan="2" colspan="2" style="width:20%;max-width:20%;">
+        <th rowspan="2" colspan="2" style="width:30%;max-width:30%;">
             <h3>{{Lang::get('match.inplay')}}</h3>
         </th>
         <th colspan="5" class="text-center">
@@ -205,7 +205,7 @@
 <table class="table table-striped table-bordered table-hover table-responsive">
     <thead class="bg-light-blue">
     <tr>
-        <th rowspan="2" colspan="2" style="width:20%;max-width:20%;"><h3>{{Lang::get('match.today')}}</h3></th>
+        <th rowspan="2" colspan="2" style="width:30%;max-width:30%;"><h3>{{Lang::get('match.today')}}</h3></th>
         <th colspan="5" class="text-center">{{Lang::get('match.full_time')}}</th>
         <th colspan="5" class="text-center">{{Lang::get('match.haft_time')}}</th>
         <th rowspan="2"></th>
@@ -405,7 +405,7 @@
 <table class="table table-striped table-bordered table-hover table-responsive">
     <thead class="bg-orange">
     <tr>
-        <th rowspan="2" colspan="2" style="width:20%;max-width:20%;"><h3>{{Lang::get('match.finished')}}</h3></th>
+        <th rowspan="2" colspan="2" style="width:30%;max-width:30%;"><h3>{{Lang::get('match.finished')}}</h3></th>
         <th colspan="5" style="text-align: center;">{{Lang::get('match.full_time')}}</th>
         <th colspan="5" style="text-align: center;">{{Lang::get('match.haft_time')}}</th>
         <th rowspan="2"></th>
