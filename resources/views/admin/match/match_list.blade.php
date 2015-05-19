@@ -35,7 +35,7 @@
                 </tr>
                 @foreach($league_matchs as $match_info)
                     <tr>
-                        <td style="width: 30px;">
+                        <td style="width: 80px;">
                             <div class="text-center bold-text">{{$match_info->h_goal}} - {{$match_info->g_goal}}</div>
                             <div class="text-center bold-text">{{$match_info->time}}<image src="{{URL::to('/')}}/img/in.gif" border="0"/></div>
                             <!--Hide Date when it is Today-->
@@ -229,7 +229,7 @@
                 </tr>
                 @foreach($league_matchs as $match_info)
                     <tr>
-                        <td class="d-t">
+                        <td style="width: 80px;">
                             <div class="text-center bold-text">{{$match_info->start_date}}</div>
                             <div class="text-center bold-text">{{$match_info->time}}</div>
                             <!--Hide Date when it is Today-->
@@ -429,7 +429,7 @@
                 </tr>
                 @foreach($league_matchs as $match_info)
                     <tr>
-                        <td class="d-t">
+                        <td style="width: 80px;">
                             <div class="text-center bold-text">{{$match_info->start_date}}</div>
                             <div class="text-center bold-text">{{$match_info->time}}</div>
                             <!--Hide Date when it is Today-->
