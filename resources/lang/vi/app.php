@@ -65,4 +65,5 @@ return [
 	'next' 					=> 'Tiếp',
 	'prev' 					=> 'Lùi',
 	'action'				=> 'Công cụ',
+    'color'                 => 'Màu báo'
 ];

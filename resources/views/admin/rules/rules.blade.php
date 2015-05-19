@@ -1,17 +1,17 @@
 <?php use \App\Libraries\InputHelper; ?>
-<div class="box box-solid box-info">
+<div class="box box-solid box-info widget-table">
     <div class="box-header">
         <h3 class="box-title"><i class="fa fa-list"></i> {{Lang::get('app.rules')}}</h3>
         <div class="box-tools pull-right" role="group" aria-label="...">
             <button type="button" class="btn btn-sm btn-info" onclick="RuleModule.addRule(this)"><span class="fa fa-plus"></span> {{Lang::get('app.create_rule_new')}}</button>
         </div>
     </div>
-    <div class="box-body">
-        <table class="table table-striped table-bordered">
+    <div class="box-body widget-content">
+        <table class="table table-striped table-bordered table-hover table-responsive">
             <tr class="active" style="background-color: #2a6496;">
                 <th style="width:20%;">{{Lang::get('app.name')}}</th>
                 <th>{{Lang::get('app.description')}}</th>
-                <th style="text-align: center; width:5%;">{{Lang::get('app.color')}}</th>
+                <th style="text-align: center; width:8%;">{{Lang::get('app.color')}}</th>
                 <th style="text-align: center; width:10%;">{{Lang::get('app.status')}}</th>
                 <th style="text-align: center; width:140px;">{{Lang::get('app.action')}}</th>
             </tr>

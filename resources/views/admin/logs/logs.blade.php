@@ -14,7 +14,7 @@
         });
     });
 </script>
-<table class="table table-bordered table-striped table-responsive">
+<table class="table table-bordered table-striped table-hover table-responsive">
     <thead>
         <tr>
             <th class="text-center">Tên API</th>
@@ -32,7 +32,7 @@
         @endif
         @foreach($logs as $log)
             <tr class="info" >
-                <td class="text-center">{{$log['apiName']}}</td>
+                <td class="text-left" style="font-style: italic">{{$log['apiName']}}</td>
                 <td class="text-center"><span class="label {!!$log['lever'] == 'info'?'label-success':'label-danger'!!}">{{$log['errorCode']}}</span></td>
                 <td class="text-center"><span class="label {!!$log['lever'] == 'info'?'label-success':'label-danger'!!}">{{$log['lever']}}</span></td>
                 <td style="width: 50%;"><p style="max-width: 700px; word-wrap: break-word;">{{$log['message']}}</p></td>
