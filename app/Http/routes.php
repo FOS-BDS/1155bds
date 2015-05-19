@@ -70,28 +70,7 @@ Route::get('users/login','Users\UserController@login');
 Route::get('users/register','Users\UserController@viewRegister');
 Route::post('users/confirmLogin','Users\UserController@confirmLogin');
 // end User
-Route::get('/test',function() {
-
-    $rules=array();
-
-    $ruleDAO=new \App\DAO\RuleDAO();
-    $rulecur=$ruleDAO->find();
-    do
-    {
-        $rulecur->next();
-        $current=$rulecur->current();
-        $rule=new \App\Models\Rules();
-        $rule->initFromDBObject($current);
-
-        $rules[]=$rule;
-    } while($rulecur->hasNext());
-
-    foreach ($rules as $rule) {
-        $rule->process();
-    }
-
-
-});
+Route::get('/test','BackgroundProcessController@testCurl');
 Route::filter('checkSession',function(){
     if(!Session::has('user')){
         return view('users.page.login');
