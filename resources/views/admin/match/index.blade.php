@@ -18,7 +18,7 @@
             <thead class="i-time">
             <tr>
                 <th rowspan="2" class="n-inplay-title clear-l-bdr" colspan="2">
-                    <h3>{{Lang::get('match.today')}}</h3>
+                    <h3>{{Lang::get('match.inplay')}}</h3>
                 </th>
                 <th colspan="5" style="text-align: center;">
                     {{Lang::get('match.full_time')}}
@@ -423,7 +423,7 @@
         <table cellpadding="0" cellspacing="0" class="table table-striped table-bordered" sid="s1">
             <thead class="o-time">
             <tr>
-                <th rowspan="2" class="n-inplay-title clear-l-bdr" colspan="2"><h3>{{Lang::get('match.today')}}</h3></th>
+                <th rowspan="2" class="n-inplay-title clear-l-bdr" colspan="2"><h3>{{Lang::get('match.finished')}}</h3></th>
                 <th colspan="5" style="text-align: center;">{{Lang::get('match.full_time')}}</th>
                 <th colspan="5" style="text-align: center;">{{Lang::get('match.haft_time')}}</th>
                 <th rowspan="2"></th>
