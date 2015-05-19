@@ -125,7 +125,7 @@ class BackgroundProcessController extends BaseController {
             'Content-Type: application/json',
             'Connection: Keep-Alive'
         ));
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         /* if you want to force to ipv6, uncomment the following line */
         //curl_setopt( $ch , CURLOPT_IPRESOLVE , 'CURLOPT_IPRESOLVE_V6');
