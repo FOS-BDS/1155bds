@@ -29,9 +29,9 @@ class V9BetOdds extends OddServiceBase {
             'ou1st' =>array('home'=>5,'h_draw'=>1,'g_draw'=>3,'away'=>7,'type'=>Constants::ODD_OU1ST),
         );
         $matchDao=new MatchDAO();
-        $lastest_odd=array();
         $odd_objs=array();
         foreach ($match_odds as $match_id=> $odds) {
+            $lastest_odd=array();
             if(!is_array($odds)) $odds=(array)$odds;
             foreach ($odd_types as $key=> $config) {
                 if(isset($odds[$key])) {
