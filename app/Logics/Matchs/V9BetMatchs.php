@@ -22,6 +22,7 @@ use App\Models\Rules;
 class V9BetMatchs extends MatchDataServiceBase {
     public function processData($data=null)
     {
+        $this->getOntimecache();
         $data_json=json_decode($data);
         $data_json=(array)$data_json;
         $is_ontime=true;
@@ -30,7 +31,8 @@ class V9BetMatchs extends MatchDataServiceBase {
             $match_data=$data_json[Constants::ONTIME_KEY];
 
             if(count($match_data)==0) {
-                return;
+                //$cache_dao->update(array('type'=>Constants::CACHE_ONTIME_MATCH),$intime_matchs,array('upsert'=>true));
+                return $version;
             }
             $match_data=$match_data[0];
             $is_ontime=true;
@@ -40,7 +42,13 @@ class V9BetMatchs extends MatchDataServiceBase {
             $is_ontime=false;
             $version=$match_data->v;
         }
-        if(!isset($match_data)||!isset($match_data->egs)) return $version;
+        if(!isset($match_data)||!isset($match_data->egs))
+        {
+            /*$cache_dao->update(array(
+                    'type'=>Constants::CACHE_ONTIME_MATCH),
+                    $intime_matchs,array('upsert'=>true));*/
+            return $version;
+        }
 
         // match data processing
 
@@ -72,8 +80,14 @@ class V9BetMatchs extends MatchDataServiceBase {
 
                 // get match info
                 $info=$match_item->i;
-                $match_obj=MatchDAO::makeObject($match_item->k,$info[0],$info[1],$info[4],
-                    $this->getMatchTime($is_ontime,$info[5],$info[12]),$info[10],$info[11],0,0,$info[8],$info[9],$is_ontime);
+
+                $match_obj=MatchDAO::makeObject(
+                    $match_item->k,$info[0],$info[1],
+                    $this->getMatchStartTime($is_ontime,$info[4],$info[5]),
+                    $this->getMatchTime($is_ontime,$info[5],$info[12]),
+                    $info[10],$info[11],
+                    0,0,$info[8],$info[9],$is_ontime);
+
                 $new_matchs[$match_item->k]=$match_obj;
             }
         }
@@ -120,6 +134,10 @@ class V9BetMatchs extends MatchDataServiceBase {
             $match_obj=(object)$match_obj;
 
             $new_match_obj=$new_matchs[$match_obj->reference_id];
+            if($is_ontime==true) {
+                // skip start date when match is running
+                $new_match_obj->start_date=$match_obj->start_date;
+            }
 
             $match_model->update(array('reference_id'=>$match_obj->reference_id),$new_match_obj);
 
@@ -137,12 +155,43 @@ class V9BetMatchs extends MatchDataServiceBase {
             }
         }
 
+        // update FT match status
+
+
         // processing Odd data
         $v9betOdd=new V9BetOdds();
         $v9betOdd->processData($matchs,$match_odds);
 
         return $version;
 
+    }
+    private function getOntimecache() {
+        $cache_dao=new CacheDAO();
+        $intime_matchs=$cache_dao->findOne(array('type'=>Constants::CACHE_ONTIME_MATCH));
+        if($intime_matchs==null) {
+            $intime_matchs=array('type'=>Constants::CACHE_ONTIME_MATCH,'matchs'=>array());
+        }
+    }
+    private function updateOntimeCache() {
+
+    }
+    private function getMatchStartTime($is_ontime,$start_date,$match_time) {
+        if($is_ontime==true) {
+            $mongoDate=new \MongoDate();
+            return $mongoDate;// do not care this case
+        } else {
+            // only care this case
+            $dates=explode("/",$start_date);
+            $time=explode(":",$match_time);
+            $current_time=new \DateTime();
+            $year=$current_time->format("Y");
+
+            $current_time->setDate(intval($year),intval($dates[1]),intval($dates[0]));
+            $current_time->setTime(intval($time[0]),intval($time[1]));
+
+            $timestamp=$current_time->getTimestamp();
+            return new \MongoDate($timestamp);
+        }
     }
     private function getMatchTime($is_ontime,$time,$match_haft) {
 
@@ -170,7 +219,8 @@ class V9BetMatchs extends MatchDataServiceBase {
     public function getMatchedMatch() {
         // get all finale edited data
         $ruleDao=new RuleDAO();
-        $final_rule_cur=$ruleDao->find(array('needed_update'=>true,'status'=>Constants::STATUS_MAIN));
+        $final_rule_cur=$ruleDao->find(
+            array('needed_update'=>true,'status'=>Constants::STATUS_MAIN));
 
         do {
             $final_rule_cur->next();
@@ -202,7 +252,8 @@ class V9BetMatchs extends MatchDataServiceBase {
         }
         // get all Condition
         $ruleDao=new RuleDAO();
-        $final_rule_cur=$ruleDao->find(array('type'=>Constants::TYPE_CONDITION,'status'=>Constants::STATUS_PUBLISH));
+        $final_rule_cur=$ruleDao->find(
+            array('type'=>Constants::TYPE_CONDITION,'status'=>Constants::STATUS_PUBLISH));
 
         do {
             $final_rule_cur->next();

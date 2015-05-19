@@ -56,6 +56,9 @@ class BackgroundProcessController extends BaseController {
                 $inplay=$ontime==1?"true":"false";
                 $link="http://sb.v9bet.com/vi-vn/OddsService/GetOdds?_=".(time()*1000)."&sportId=1&programmeId=0&pageType=1&uiBetType=am&displayView=2&oddsType=2&sortBy=1&isFirstLoad=false&MoreBetEvent=null&sportIds=1&versions=".$in_v."&version=".$off_v."&isInplay=".$inplay;
 
+                //http://sb.v9bet.com/vi-vn/OddsService/GetOdds?_=1431933424000&sportId=1&programmeId=0&pageType=1&uiBetType=am&displayView=2&oddsType=2&sortBy=1&isFirstLoad=false&MoreBetEvent=null&sportIds=1&versions=0&version=4911&isInplay=false
+                //http://sb.v9bet.com/vi-vn/OddsService/GetOdds?_=1431933450036&sportId=1&programmeId=0&pageType=1&uiBetType=am&displayView=2&oddsType=2&sortBy=1&isFirstLoad=false&MoreBetEvent=null&sportIds=1&versions=0&version=4749&isInplay=false
+
                 $result=$this->curlGet($link);
 
                 if($result==false) return;
