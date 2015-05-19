@@ -96,7 +96,7 @@ class MatchController extends BaseController{
             $leagues[$current_league->_id->__toString()]=$current_league;
         } while($league_cur->hasNext());
 
-        return View("admin.match.match_list",array('in_play'=>$today_match,'today'=>$today_match,'finished'=>$finished_match,'leagues'=>$leagues));
+        return View("admin.match.match_list",array('in_play'=>$inplay_match,'today'=>$today_match,'finished'=>$finished_match,'leagues'=>$leagues));
 
     }
 }
