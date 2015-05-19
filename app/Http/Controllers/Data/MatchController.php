@@ -41,11 +41,33 @@ class MatchController extends BaseController{
         //get match data include running, not started yet, finished
         $matchDao=new MatchDAO();
 
-       // $running=$matchDao->find(array('status'=>1))->sort('time',1);
-
-        $matchcur=$matchDao->find()->sort(array('status'=>-1,'start_date'=>1));
-
         $league_ids=array();
+
+        $inplay_cur=$matchDao->find(array('status'=>1))->sort(array('time'=>-1));
+
+        $today_match_cur=$matchDao->find(array('status'=>0))->sort(array('start_date'=>1));
+
+        $finished_match_cur=$matchDao->find(array('status'=>-1))->sort(array('start_date'=>-1));
+
+        $inplay_match=$this->formatMatch($inplay_cur,$league_ids);
+        $today_match=$this->formatMatch($today_match_cur,$league_ids);
+        $finished_match=$this->formatMatch($finished_match_cur,$league_ids);
+
+        $league_dao=new LeagueDAO();
+
+        $league_cur=$league_dao->find(array('_id'=>array('$in'=>array_values($league_ids))));
+        $leagues=array();
+        do {
+            $league_cur->next();
+            $current_league=$league_cur->current();
+            if($current_league==null) break;
+            $current_league=(object)$current_league;
+            $leagues[$current_league->_id->__toString()]=$current_league;
+        } while($league_cur->hasNext());
+
+        return View("admin.match.index",array('in_play'=>$inplay_match,'today'=>$today_match,'finished'=>$finished_match,'leagues'=>$leagues));
+    }
+    private function formatMatch($matchcur,&$league_ids) {
         $final=array();
         $current_league_id="";
         $current_league=null;
@@ -71,19 +93,6 @@ class MatchController extends BaseController{
             $final[$index]=$current_league;
 
         } while($matchcur->hasNext());
-
-        $league_dao=new LeagueDAO();
-
-        $league_cur=$league_dao->find(array('_id'=>array('$in'=>array_values($league_ids))));
-        $leagues=array();
-        do {
-            $league_cur->next();
-            $current_league=$league_cur->current();
-            if($current_league==null) break;
-            $current_league=(object)$current_league;
-            $leagues[$current_league->_id->__toString()]=$current_league;
-        } while($league_cur->hasNext());
-
-        return View("admin.match.index",array('matchs'=>$final,'leagues'=>$leagues));
+        return $final;
     }
 }
