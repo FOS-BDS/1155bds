@@ -6,11 +6,11 @@
 @endsection
 @section('content')
     <div class="box box-primary box-solid widget-table">
-        <div class="box-header"><h3 class="box-title">Danh sach cac tran dau</h3></div>
+        <div class="box-header"><h3 class="box-title">{{Lang::get('match.match_list')}}</h3></div>
         <div class="box-body widget-content">
             <div id="match_list" class="table-responsive">
-                <table class="table table-striped table-bordered table-hover table-responsive" sid="s1">
-                    <thead class="bg-orange">
+                <table class="table table-striped table-bordered table-hover table-responsive">
+                    <thead class="bg-olive">
                         <tr>
                             <th rowspan="2" colspan="2" style="width:20%;max-width:20%;">
                                 <h3>{{Lang::get('match.inplay')}}</h3>
@@ -41,7 +41,7 @@
                         @foreach($in_play as $match)
                             @foreach($match as $league_id =>$league_matchs)
                                 <tr>
-                                    <td colspan="13" class="bg-yellow"><span class="fl tle-txt">{{$leagues[$league_id]->name}}</span></td>
+                                    <td colspan="13" class="bg-olive"><span class="fl tle-txt">{{$leagues[$league_id]->name}}</span></td>
                                 </tr>
                                 @foreach($league_matchs as $match_info)
                                     <tr>
@@ -205,8 +205,8 @@
                     @endif
                     </tbody>
                 </table>
-                <table class="table table-striped table-bordered table-hover table-responsive" sid="s1">
-                    <thead class="bg-green">
+                <table class="table table-striped table-bordered table-hover table-responsive">
+                    <thead class="bg-light-blue">
                     <tr>
                         <th rowspan="2" colspan="2" style="width:20%;max-width:20%;"><h3>{{Lang::get('match.today')}}</h3></th>
                         <th colspan="5" class="text-center">{{Lang::get('match.full_time')}}</th>
@@ -232,7 +232,7 @@
                         @foreach($today as $match)
                             @foreach($match as $league_id =>$league_matchs)
                                 <tr>
-                                    <td colspan="13" class="bg-lime"><span
+                                    <td colspan="13" class="bg-light-blue"><span
                                                 class="fl tle-txt"
                                                 >{{$leagues[$league_id]->name}}</span>
                                     </td>
@@ -405,8 +405,8 @@
                     @endif
                     </tbody>
                 </table>
-                <table cellpadding="0" cellspacing="0" class="table table-striped table-bordered" sid="s1">
-                    <thead class="bg-light-blue">
+                <table class="table table-striped table-bordered table-hover table-responsive">
+                    <thead class="bg-orange">
                     <tr>
                         <th rowspan="2" colspan="2" style="width:20%;max-width:20%;"><h3>{{Lang::get('match.finished')}}</h3></th>
                         <th colspan="5" style="text-align: center;">{{Lang::get('match.full_time')}}</th>
@@ -432,7 +432,7 @@
                         @foreach($finished as $match)
                             @foreach($match as $league_id =>$league_matchs)
                                 <tr>
-                                    <td colspan="13" class="bg-light-blue"><span
+                                    <td colspan="13" class="bg-orange"><span
                                                 class="fl tle-txt"
                                                 >{{$leagues[$league_id]->name}}</span>
                                     </td>
