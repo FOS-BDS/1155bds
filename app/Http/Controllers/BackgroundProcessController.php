@@ -84,6 +84,8 @@ class BackgroundProcessController extends BaseController {
         Log::info($link);
         $result=$this->curlGet($link);
 
+        Log::info("Result:".$result);
+
         $intime_version=0;
         $offtime_version=0;
 
