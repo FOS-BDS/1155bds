@@ -54,6 +54,7 @@ class MatchController extends BaseController{
         do {
             $matchcur->next();
             $current=(object)$matchcur->current();
+            if($current==null) break;
             $start_time=new \DateTime();
             $start_time->setTimestamp($current->start_date->sec);
             $current->start_date=$start_time->format("d/m");
@@ -77,6 +78,7 @@ class MatchController extends BaseController{
         do {
             $league_cur->next();
             $current_league=(object)$league_cur->current();
+            if($current_league==null) break;
             $leagues[$current_league->_id->__toString()]=$current_league;
         } while($league_cur->hasNext());
 
