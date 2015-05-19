@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\DAO\CacheDAO;
 use App\Factories\providers\MatchServiceProvider;
 use App\Libraries\Constants;
+use App\Libraries\InputHelper;
 use App\Libraries\ResponseBuilder;
 use App\Logics\Matchs\V9BetMatchs;
 use App\DAO\BackgroundProcess;
@@ -132,5 +133,9 @@ class BackgroundProcessController extends BaseController {
         $tmp = curl_exec( $ch );
         curl_close( $ch );
         return $tmp;
+    }
+    public function testCurl() {
+        $link=InputHelper::getInput('link',true);
+        echo $this->curlGet($link);
     }
 }
