@@ -19,7 +19,7 @@
                 }
             });
 
-            setTimeout("refresh()",1000*60);
+            setTimeout("refresh()",1000*30);
         }
     </script>
 @endsection
