@@ -11,6 +11,7 @@ namespace App\Logics\Odds;
 
 use App\DAO\BackgroundProcess;
 use App\DAO\CacheDAO;
+use App\DAO\MatchDAO;
 use App\DAO\RuleDAO;
 use App\Libraries\Constants;
 use App\Logics\base\OddServiceBase;
@@ -27,6 +28,8 @@ class V9BetOdds extends OddServiceBase {
             'ou'    =>array('home'=>5,'h_draw'=>1,'g_draw'=>3,'away'=>7,'type'=>Constants::ODD_OU),
             'ou1st' =>array('home'=>5,'h_draw'=>1,'g_draw'=>3,'away'=>7,'type'=>Constants::ODD_OU1ST),
         );
+        $matchDao=new MatchDAO();
+        $lastest_odd=array();
         $odd_objs=array();
         foreach ($match_odds as $match_id=> $odds) {
             if(!is_array($odds)) $odds=(array)$odds;
@@ -38,9 +41,14 @@ class V9BetOdds extends OddServiceBase {
                     $g_draw=$this->getOddVal($odds[$key][$config['g_draw']]);
                     $odd_obj=OddDAO::makeObject($matchs[$match_id],$home,$h_draw,$g_draw,$away,$config['type']);
                     $odd_objs[$odd_obj->md5]=$odd_obj;
+                    $lastest_odd[$key]=$odd_obj;
                 }
             }
+
+            $matchDao->update(array('reference_id'=>$match_id),array('$set'=>array('lastest_odd'=>$lastest_odd)));
         }
+
+
 
         // insert Odd to table
         $oddModel=new OddDAO();

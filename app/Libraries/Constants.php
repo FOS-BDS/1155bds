@@ -56,6 +56,8 @@ class Constants
     const CACHE_NEWEST_ODDS="NEWEST_ODD";
     const CACHE_ODDS_VERSION="ODD_VERSION";
 
+    const  CACHE_ONTIME_MATCH="ONTIME_MATCH";
+
     const PRIORITY_HIGHT    =3;
     const PRIORITY_MIDDLE   =2;
     const PEIORITY_SLOW     =1;
@@ -63,4 +65,8 @@ class Constants
     const PROCESS_PROCESSING = "processing";
 
     const LIMIT_PERPAGE = 20;
+
+    const MATCH_STATUS_RUNNING=1;
+    const MATCH_STATUS_NOT_STARTED=0;
+    const MATCH_STATUS_FT=-1;
 }

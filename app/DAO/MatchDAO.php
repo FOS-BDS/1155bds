@@ -10,6 +10,7 @@ namespace App\DAO;
 
 
 use App\DAO\base\CollectionBase;
+use App\Libraries\Constants;
 
 class MatchDAO extends CollectionBase {
     public function __construct()
@@ -30,7 +31,7 @@ class MatchDAO extends CollectionBase {
         $new_obj->g_yellow=$g_yellow==""?0:intval($g_yellow);
         $new_obj->h_red=$h_red==""?0:intval($h_red);
         $new_obj->g_red=$g_red==""?0:intval($g_red);
-        $new_obj->started=intval($started);
+        $new_obj->status=$started==true?Constants::MATCH_STATUS_RUNNING:Constants::MATCH_STATUS_NOT_STARTED;
 
         return $new_obj;
     }
