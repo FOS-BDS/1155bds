@@ -29,10 +29,12 @@
     @else
         @foreach($in_play as $match)
             @foreach($match as $league_id =>$league_matchs)
+
                 <tr>
                     <td colspan="13" class="bg-olive"><span class="fl tle-txt">{{$leagues[$league_id]->name}}</span></td>
                 </tr>
                 @foreach($league_matchs as $match_info)
+                    {{var_dump($match_info); exit;}}
                     <tr>
                         <td style="width: 30px;">
                             <div class="text-center bold-text">{{$match_info->h_goal}} - {{$match_info->g_goal}}</div>
