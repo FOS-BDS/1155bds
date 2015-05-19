@@ -35,8 +35,8 @@
                 @foreach($league_matchs as $match_info)
                     <tr>
                         <td class="d-t">
-                            <div class="text-center bold-text">{{$match_info->start_date}}</div>
-                            <div class="text-center bold-text">{{$match_info->time}}</div>
+                            <div class="text-center bold-text">{{$match_info->h_goal}} - {{$match_info->g_goal}}</div>
+                            <div class="text-center bold-text">{{$match_info->time}}<image src="http://www.nowgoal.com/images/in.gif" border="0"/></div>
                             <!--Hide Date when it is Today-->
                         </td>
                         <td class="evt-col r-bdr">
