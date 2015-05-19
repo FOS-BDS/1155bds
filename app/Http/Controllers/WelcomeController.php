@@ -1,5 +1,9 @@
 <?php namespace App\Http\Controllers;
 
+use App\DAO\RuleDAO;
+use App\Libraries\Constants;
+use App\Libraries\OutputHelper;
+
 class WelcomeController extends Controller {
 
 	/*
@@ -30,7 +34,11 @@ class WelcomeController extends Controller {
 	 */
 	public function index()
 	{
-		return view('welcome');
+        $ruleModel = new RuleDAO();
+        $data = $ruleModel->find(array('status'=>Constants::STATUS_MAIN));
+        $data = iterator_to_array($data);
+		OutputHelper::getInstance()->setData($data);
+		OutputHelper::getInstance()->getData();
 	}
 
 }

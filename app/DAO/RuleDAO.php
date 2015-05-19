@@ -54,7 +54,7 @@ class RuleDAO extends CollectionBase {
             $rule->operator = $params['operator'];
             $rule->description = $params['description'];
             $rule->type = $params['type'];
-            $rule->status = $params['status'];
+            $rule->status = intval($params['status']);
             $rule->needed_update=true;
             $rule->parent_rules=array();
             $rule->match_matched=array();
