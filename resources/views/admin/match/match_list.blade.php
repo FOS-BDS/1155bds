@@ -34,7 +34,6 @@
                     <td colspan="13" class="bg-olive"><span class="fl tle-txt">{{$leagues[$league_id]->name}}</span></td>
                 </tr>
                 @foreach($league_matchs as $match_info)
-                    <?php var_dump($match_info); exit;?>
                     <tr>
                         <td style="width: 30px;">
                             <div class="text-center bold-text">{{$match_info->h_goal}} - {{$match_info->g_goal}}</div>
