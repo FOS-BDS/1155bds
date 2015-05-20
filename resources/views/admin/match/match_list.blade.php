@@ -35,7 +35,7 @@
                 </tr>
                 @foreach($league_matchs as $match_info)
                     <tr id="{{$match_info->reference_id}}">
-                        <td style="width: 80px;">
+                        <td style="width: 30px;">
                             <div class="text-center bold-text text-green">{{$match_info->h_goal}} - {{$match_info->g_goal}}</div>
                             @if($match_info->time!=-2 && $match_info->time!=-3)
                                 <div class="text-center">{{$match_info->haft}}</div>
@@ -253,7 +253,7 @@
                 </tr>
                 @foreach($league_matchs as $match_info)
                     <tr id="{{$match_info->reference_id}}">
-                        <td style="width: 80px;">
+                        <td style="width: 30px;">
                             <div class="text-center bold-text">{{$match_info->start_date}}</div>
                             <div class="text-center">{{$match_info->time}}</div>
                             <!--Hide Date when it is Today-->
@@ -453,7 +453,7 @@
                 </tr>
                 @foreach($league_matchs as $match_info)
                     <tr id="{{$match_info->reference_id}}">
-                        <td style="width: 80px;">
+                        <td style="width: 30px;">
                             <div class="text-center bold-text text-green">{{$match_info->h_goal}} - {{$match_info->g_goal}}</div>
                             <div class="text-center">FT</div>
                             <!--Hide Date when it is Today-->
