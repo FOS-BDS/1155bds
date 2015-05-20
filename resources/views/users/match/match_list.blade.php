@@ -215,7 +215,8 @@
                             </td>
                         @endif
                         <td>
-                            <img src="{{URL::to('/')}}/img/inplay.gif" width="10px" height="10px">
+                            <a href="{{URL::to('/')}}/matchs/{{$match_info->reference_id}}/odd/fulltime" target="_blank"><img src="/img/inplay.gif" height="10" width="10" title="Odd Ca tran"></a>
+                            <a href="{{URL::to('/')}}/matchs/{{$match_info->reference_id}}/odd/hafttime" target="_blank"><img src="/img/today.gif" height="10" width="10" title="Odd Hiep 1"></a>
                         </td>
                     </tr>
                 @endforeach
@@ -420,7 +421,8 @@
                             </td>
                         @endif
                         <td>
-                            <img src="{{URL::to('/')}}/img/today.gif" width="10px" height="10px">
+                            <a href="{{URL::to('/')}}/matchs/{{$match_info->reference_id}}/odd/fulltime" target="_blank"><img src="/img/inplay.gif" height="10" width="10" title="Odd Ca tran"></a>
+                            <a href="{{URL::to('/')}}/matchs/{{$match_info->reference_id}}/odd/hafttime" target="_blank"><img src="/img/today.gif" height="10" width="10" title="Odd Hiep 1"></a>
                         </td>
                     </tr>
                 @endforeach
@@ -568,7 +570,8 @@
                         </td>
 
                         <td>
-                            <img src="{{URL::to('/')}}/img/today.gif" width="10px" height="10px">
+                            <a href="{{URL::to('/')}}/matchs/{{$match_info->reference_id}}/odd/fulltime" target="_blank"><img src="/img/inplay.gif" height="10" width="10" title="Odd Ca tran"></a>
+                            <a href="{{URL::to('/')}}/matchs/{{$match_info->reference_id}}/odd/hafttime" target="_blank"><img src="/img/today.gif" height="10" width="10" title="Odd Hiep 1"></a>
                         </td>
                     </tr>
                 @endforeach

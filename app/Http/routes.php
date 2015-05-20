@@ -41,8 +41,11 @@ Route::get('admin/rules/validate', 'Admin\RulesController@checkValid');
 
 
 /* Match */
-Route::get('/users/matchs','Data\MatchController@getMatchView');
-Route::get('/users/matchs/data','Data\MatchController@getMatchData');
+Route::get('/matchs','Data\MatchController@getMatchView');
+Route::get('/matchs/data','Data\MatchController@getMatchData');
+
+Route::get('/matchs/{reference_id}/odd/{type}','Data\OddController@getOddView');
+Route::get('/matchs/{reference_id}/odd/{type}/data','Data\OddController@getOddData');
 
 // Logs
 Route::get('admin/manages','Admin\LogController@manages');

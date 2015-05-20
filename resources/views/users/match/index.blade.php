@@ -9,7 +9,7 @@
         });
         function refresh() {
             $.ajax({
-                url: urlApi + 'users/matchs/data',
+                url: urlApi + 'matchs/data',
                 type: "GET",
                 success:function(result) {
                     $('#match_list').html(result);
