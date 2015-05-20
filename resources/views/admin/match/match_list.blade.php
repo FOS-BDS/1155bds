@@ -34,15 +34,18 @@
                     <td colspan="13" class="bg-olive"><span class="fl tle-txt">{{$leagues[$league_id]->name}}</span></td>
                 </tr>
                 @foreach($league_matchs as $match_info)
-                    <tr>
+                    <tr id="{{$match_info->reference_id}}">
                         <td style="width: 80px;">
-                            <div class="text-center bold-text">{{$match_info->h_goal}} - {{$match_info->g_goal}}</div>
+                            <div class="text-center bold-text text-green">{{$match_info->h_goal}} - {{$match_info->g_goal}}</div>
+                            @if($match_info->time!=-2 && $match_info->time!=-3)
+                                <div class="text-center">{{$match_info->haft}}</div>
+                            @endif
                             @if($match_info->time==-2)
-                                <div class="text-center bold-text">HT</div>
+                                <div class="text-center">HT</div>
                             @elseif($match_info->time==-3)
-                                <div class="text-center bold-text">FT</div>
+                                <div class="text-center">FT</div>
                             @else
-                                <div class="text-center bold-text">{{$match_info->time}}<image src="{{URL::to('/')}}/img/in.gif" border="0"/></div>
+                                <div class="text-center">{{$match_info->time}}<image src="{{URL::to('/')}}/img/in.gif" border="0"/></div>
                             @endif
 
                             <!--Hide Date when it is Today-->
@@ -235,10 +238,10 @@
                     </td>
                 </tr>
                 @foreach($league_matchs as $match_info)
-                    <tr>
+                    <tr id="{{$match_info->reference_id}}">
                         <td style="width: 80px;">
                             <div class="text-center bold-text">{{$match_info->start_date}}</div>
-                            <div class="text-center bold-text">{{$match_info->time}}</div>
+                            <div class="text-center">{{$match_info->time}}</div>
                             <!--Hide Date when it is Today-->
                         </td>
                         <td class="evt-col r-bdr">
@@ -435,10 +438,10 @@
                     </td>
                 </tr>
                 @foreach($league_matchs as $match_info)
-                    <tr>
+                    <tr id="{{$match_info->reference_id}}">
                         <td style="width: 80px;">
-                            <div class="text-center bold-text">{{$match_info->start_date}}</div>
-                            <div class="text-center bold-text">{{$match_info->time}}</div>
+                            <div class="text-center bold-text text-green">{{$match_info->h_goal}} - {{$match_info->g_goal}}</div>
+                            <div class="text-center">FT</div>
                             <!--Hide Date when it is Today-->
                         </td>
                         <td class="evt-col r-bdr">

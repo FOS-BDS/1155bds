@@ -76,7 +76,7 @@ class V9BetOdds extends OddServiceBase {
         $cacheDao->update(array('type'=>Constants::CACHE_NEWEST_ODDS),$data,array('upsert'=>true));
 
         $background=new BackgroundProcess();
-        $background->throwProcess("/cron/match/matchedNewOdds",array('cache_id'=>$data['_id']->__toString()));
+        $background->throwProcess("/cron/match/matchedNewOdds");
 
     }
     private function getOddVal($str_val) {

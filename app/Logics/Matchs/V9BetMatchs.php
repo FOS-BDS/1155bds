@@ -85,7 +85,7 @@ class V9BetMatchs extends MatchDataServiceBase {
                     $this->getMatchStartTime($is_ontime,$info[4],$info[5]),
                     $this->getMatchTime($is_ontime,$info[5],$info[12]),
                     $info[10],$info[11],
-                    0,0,$info[8],$info[9],$is_ontime);
+                    0,0,$info[8],$info[9],$is_ontime,$info[12]);
 
                 $new_matchs[$match_item->k]=$match_obj;
             }
@@ -246,12 +246,9 @@ class V9BetMatchs extends MatchDataServiceBase {
         } while($final_rule_cur->hasNext());
     }
     public function getMatchedMatchFromNewOdd() {
-        $cache_id=InputHelper::getInput("cache_id",true);
-        $mongo_id=new \MongoId($cache_id);
-
         $cacheDao=new CacheDAO();
 
-        $cache_obj=$cacheDao->findOneObjectById($mongo_id);
+        $cache_obj=$cacheDao->findOne(array('type'=>Constants::CACHE_NEWEST_ODDS));
         if($cache_obj==null) return;
 
         if(!isset($cache_obj['newest_odds'])) return;
