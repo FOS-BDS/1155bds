@@ -201,7 +201,7 @@ class V9BetMatchs extends MatchDataServiceBase {
             $current_time->setDate(intval($year),intval($dates[1]),intval($dates[0]));
             $current_time->setTime(intval($time[0]),intval($time[1]));
 
-            $current_time->add(new \DateInterval("PT11H"));
+            $current_time->add(new \DateInterval("PT".Constants::OFFSET_TIME."H"));
 
             $timestamp=$current_time->getTimestamp();
             return new \MongoDate($timestamp);
@@ -227,7 +227,7 @@ class V9BetMatchs extends MatchDataServiceBase {
             return intval($time[0]);
         } else {
             $time= explode(":",$time);
-            $hour=intval($time[0])+11;
+            $hour=intval($time[0])+Constants::OFFSET_TIME;
             $minute=intval($time[1]);
             $hour=$hour>=24?$hour-24:$hour;
             return $hour.":".$minute;
