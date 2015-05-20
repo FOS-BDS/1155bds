@@ -52,8 +52,22 @@
                         </td>
                         <td class="evt-col r-bdr">
                             <div>
-                                <div><span class="h_team team-better" title="Middlesbrough">{{$match_info->h_name}}</span></div>
-                                <div><span class="g_team" title="Brentford">{{$match_info->g_name}}</span></div>
+                                <div>
+                                    <span class="h_team team-better">
+                                        {{$match_info->h_name}}
+                                        @if($match_info->h_red>0)
+                                            <img src="{{URL::to("/")}}/img/redcard{{$match_info->h_red}}.gif">
+                                        @endif
+                                    </span>
+                                </div>
+                                <div>
+                                    <span class="g_team">
+                                        {{$match_info->g_name}}
+                                        @if($match_info->g_red>0)
+                                            <img src="{{URL::to("/")}}/img/redcard{{$match_info->g_red}}.gif">
+                                        @endif
+                                    </span>
+                                </div>
                                 <div><span class="draw" title="{{Lang::get('match.draw')}}">{{Lang::get('match.draw')}}</span></div>
                             </div>
                         </td>
@@ -446,11 +460,21 @@
                         </td>
                         <td class="evt-col r-bdr">
                             <div>
-                                <div><span class="h_team team-better"
-                                           title="Middlesbrough">{{$match_info->h_name}}</span>
+                                <div>
+                                    <span class="h_team team-better">
+                                        {{$match_info->h_name}}
+                                        @if($match_info->h_red>0)
+                                            <img src="{{URL::to("/")}}/img/redcard{{$match_info->h_red}}.gif">
+                                        @endif
+                                    </span>
                                 </div>
-                                <div><span class="g_team"
-                                           title="Brentford">{{$match_info->g_name}}</span>
+                                <div>
+                                    <span class="g_team">
+                                        {{$match_info->g_name}}
+                                        @if($match_info->g_red>0)
+                                            <img src="{{URL::to("/")}}/img/redcard{{$match_info->g_red}}.gif">
+                                        @endif
+                                    </span>
                                 </div>
                                 <div><span class="draw" title="{{Lang::get('match.draw')}}">{{Lang::get('match.draw')}}</span></div>
                             </div>
