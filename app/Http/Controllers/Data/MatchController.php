@@ -38,7 +38,7 @@ class MatchController extends BaseController{
         }
     }
     public function getMatchView() {
-        return View("admin.match.index");
+        return View("users.match.index");
     }
     private function formatMatch($matchcur,&$league_ids) {
         $final=array();
@@ -96,7 +96,7 @@ class MatchController extends BaseController{
             $leagues[$current_league->_id->__toString()]=$current_league;
         } while($league_cur->hasNext());
 
-        return View("admin.match.match_list",array('in_play'=>$inplay_match,'today'=>$today_match,'finished'=>$finished_match,'leagues'=>$leagues));
+        return View("users.match.match_list",array('in_play'=>$inplay_match,'today'=>$today_match,'finished'=>$finished_match,'leagues'=>$leagues));
 
     }
 }
