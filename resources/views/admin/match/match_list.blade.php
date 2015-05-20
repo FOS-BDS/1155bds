@@ -190,7 +190,7 @@
                             </td>
                         @endif
                         <td>
-                            Tools
+                            <img src="{{URL::to('/')}}/img/inplay.gif" width="10px" height="10px">
                         </td>
                     </tr>
                 @endforeach
@@ -390,7 +390,7 @@
                             </td>
                         @endif
                         <td>
-                            Tools
+                            <img src="{{URL::to('/')}}/img/today.gif" width="10px" height="10px">
                         </td>
                     </tr>
                 @endforeach
@@ -590,7 +590,7 @@
                             </td>
                         @endif
                         <td>
-                            Tools
+                            <img src="{{URL::to('/')}}/img/today.gif" width="10px" height="10px">
                         </td>
                     </tr>
                 @endforeach

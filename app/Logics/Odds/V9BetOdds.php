@@ -45,7 +45,10 @@ class V9BetOdds extends OddServiceBase {
                 }
             }
 
-            $matchDao->update(array('reference_id'=>$match_id),array('$set'=>array('lastest_odd'=>$lastest_odd)));
+            $matchDao->update(
+                array('reference_id'=>$match_id),
+                array('$set'=>array('lastest_odd'=>$lastest_odd)),
+                array('multi'=>true));
         }
 
 
@@ -70,7 +73,7 @@ class V9BetOdds extends OddServiceBase {
 
         $cacheDao=new CacheDAO();
         $data=array('newest_odds'=>array_keys($odd_objs),'type'=>Constants::CACHE_NEWEST_ODDS);
-        $cacheDao->insert($data);
+        $cacheDao->update(array('type'=>Constants::CACHE_NEWEST_ODDS),$data,array('upsert'=>true));
 
         $background=new BackgroundProcess();
         $background->throwProcess("/cron/match/matchedNewOdds",array('cache_id'=>$data['_id']->__toString()));
