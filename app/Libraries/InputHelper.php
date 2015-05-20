@@ -76,7 +76,7 @@ class InputHelper
         if(array_key_exists(Constants::DATA_SOURCE,self::$input)) {
             return self::$input[Constants::DATA_SOURCE];
         } else {
-            return Constants::SOURCE_NOWGOAL;// default is nowgoal
+            return Constants::SOURCE_V9BET;// default is nowgoal
         }
     }
 

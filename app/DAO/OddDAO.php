@@ -18,7 +18,7 @@ class OddDAO extends CollectionBase{
     public static function makeObject($match,$home,$h_draw,$g_draw,$away,$type) {
         $new_obj=parent::formatObject();
         $new_obj->match_id=$match->_id;
-        $new_obj->time=$match->status==1?$match->time:-1;
+        $new_obj->time=$match->status==1?intval($match->time):-1;
         $new_obj->h_goal=$match->h_goal;
         $new_obj->g_goal=$match->g_goal;
         $new_obj->home=$home;

@@ -222,7 +222,7 @@ class V9BetMatchs extends MatchDataServiceBase {
 
         }elseif($is_ontime==true) {
             $time= explode(":",$time);
-            return $time[0];
+            return intval($time[0]);
         } else {
             return $time;
         }
@@ -253,12 +253,7 @@ class V9BetMatchs extends MatchDataServiceBase {
 
         if(!isset($cache_obj['newest_odds'])) return;
 
-        $new_odd_ids=$cache_obj['newest_odds'];
-
-        $new_odd_Mongoids=array();
-        foreach ($new_odd_ids as $id) {
-            $new_odd_Mongoids[]=new \MongoId($id);
-        }
+        $new_odd_md5s=$cache_obj['newest_odds'];
         // get all Condition
         $ruleDao=new RuleDAO();
         $final_rule_cur=$ruleDao->find(
@@ -272,7 +267,8 @@ class V9BetMatchs extends MatchDataServiceBase {
             $current=(object)$current;
             $rule=new Rules();
             $rule->initFromDBObject($current);
-            $rule->process($new_odd_Mongoids,true);
+            $rule->needed_update=true;
+            $rule->process($new_odd_md5s,true);
 
         } while($final_rule_cur->hasNext());
     }
