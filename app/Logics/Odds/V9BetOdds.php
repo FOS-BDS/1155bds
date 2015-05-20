@@ -16,6 +16,7 @@ use App\DAO\RuleDAO;
 use App\Libraries\Constants;
 use App\Logics\base\OddServiceBase;
 use App\DAO\OddDAO;
+use Illuminate\Support\Facades\Log;
 
 class V9BetOdds extends OddServiceBase {
     public function processData($matchs=null,$match_odds=null)

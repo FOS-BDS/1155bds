@@ -226,7 +226,11 @@ class V9BetMatchs extends MatchDataServiceBase {
             $time= explode(":",$time);
             return intval($time[0]);
         } else {
-            return $time;
+            $time= explode(":",$time);
+            $hour=intval($time[0])+11;
+            $minute=intval($time[1]);
+            $hour=$hour>=24?$hour-24:$hour;
+            return $hour.":".$minute;
         }
     }
 
