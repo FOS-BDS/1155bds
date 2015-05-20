@@ -68,16 +68,16 @@ class V9BetOdds extends OddServiceBase {
         } while($odd_cur->hasNext());
 
         if(count($odd_objs)>0) {
+            Log::info("new Odds added.");
             $oddModel->batchInsert(array_values($odd_objs));
+
+            $cacheDao=new CacheDAO();
+            $data=array('newest_odds'=>array_keys($odd_objs),'type'=>Constants::CACHE_NEWEST_ODDS);
+            $cacheDao->update(array('type'=>Constants::CACHE_NEWEST_ODDS),$data,array('upsert'=>true));
+
+            $background=new BackgroundProcess();
+            $background->throwProcess("/cron/match/matchedNewOdds");
         }
-
-        $cacheDao=new CacheDAO();
-        $data=array('newest_odds'=>array_keys($odd_objs),'type'=>Constants::CACHE_NEWEST_ODDS);
-        $cacheDao->update(array('type'=>Constants::CACHE_NEWEST_ODDS),$data,array('upsert'=>true));
-
-        $background=new BackgroundProcess();
-        $background->throwProcess("/cron/match/matchedNewOdds");
-
     }
     private function getOddVal($str_val) {
         if(strpos($str_val,"/")!==false) {
