@@ -105,6 +105,7 @@ class BackgroundProcess extends CollectionBase
             } else {
                 $process = "http://".env("SITE_HOST","localhost"). $this->getPathBase() . "/" . $command;
             }
+            Log::info("run:".$process);
             exec("wget -O- '" . $process . "' > /dev/null");
             //Test on window
             //exec('cmd /c start '.$process);
