@@ -73,6 +73,8 @@ class BackgroundProcessController extends BaseController {
                         $version_cache['offtime_v']=$version;
                     }
                     $cache_dao->update(array('_id'=>$version_cache['_id']),$version_cache);
+                } else {
+                    Log::error("Nothing to process,result:".$result);
                 }
             }
         } catch(Exception $e) {
