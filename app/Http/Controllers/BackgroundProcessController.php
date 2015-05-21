@@ -83,6 +83,7 @@ class BackgroundProcessController extends BaseController {
 
     }
     public function getOddVersion() {
+        Log::info("reload odd version");
         $this->getFirstTimeVersion();
     }
     private function getFirstTimeVersion() {
