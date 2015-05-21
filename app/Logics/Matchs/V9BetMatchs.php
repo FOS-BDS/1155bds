@@ -159,7 +159,7 @@ class V9BetMatchs extends MatchDataServiceBase {
 
         // update FT match status
         $fulltime_match_ids=array_diff($ontime_cache->matchs,$match_ids);
-        $matchDao->update(array('reference_id'=>array('$in'=>array_values($fulltime_match_ids))),array('$set'=>array('status'=>-1)));
+        $matchDao->update(array('reference_id'=>array('$in'=>array_values($fulltime_match_ids))),array('$set'=>array('status'=>-1)),array('multi'=>true));
 
         // update ontime cache
         if($is_ontime) {
