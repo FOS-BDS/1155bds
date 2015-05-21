@@ -26,15 +26,6 @@ class V9BetMatchs extends MatchDataServiceBase {
         $is_ontime=true;
         $version=-1;
         $matchDao=new MatchDAO();
-        if($data=="{}") {
-            $matchDao->update(
-                array('reference_id'=>array('$in'=>$ontime_cache->matchs)),
-                array('$set'=>array('status'=>-1)),
-                array('multi'=>true));
-            $ontime_cache->matchs=array();
-            $this->updateOntimeCache($ontime_cache);
-            return $version;
-        }
         $data_json=json_decode($data);
         $data_json=(array)$data_json;
 
