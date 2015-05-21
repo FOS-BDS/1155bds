@@ -11,6 +11,7 @@ var user={
             return false;
         } else {
             $('.error_login').hide();
+
             $.ajax({
                 url:'/users/confirmLogin',
                 data:{username:username,password:password},
@@ -24,7 +25,7 @@ var user={
                         $('.error_login').show();
                         $('.error_login').text(result.message);
                     } else {
-                        location.href = '/users/matchs';
+                        location.href = '/matchs';
                     }
                 },
                 error:function(result){
@@ -66,7 +67,7 @@ var user={
                             $('.error_register').show();
                             $('.error_register').text(result.message);
                         }else{
-                            location.href = '/users/matchs';
+                            location.href = '/matchs';
                         }
                     },
                     error:function(result){

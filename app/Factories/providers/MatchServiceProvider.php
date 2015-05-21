@@ -14,6 +14,8 @@ use App\Libraries\Constants;
 use App\Libraries\InputHelper;
 use App\Logics\Matchs\NowGoalMatchs;
 use App\Logics\base\MatchDataServiceBase;
+use App\Logics\Matchs\V9BetMatchs;
+use App\Logics\Odds\V9BetOdds;
 
 class MatchServiceProvider implements IServiceProvider {
     private static $instance;
@@ -34,8 +36,8 @@ class MatchServiceProvider implements IServiceProvider {
      */
     public function getServiceInstance()
     {
-        if(InputHelper::getDataSource()==Constants::SOURCE_NOWGOAL) {
-            return new NowGoalMatchs();
+        if(InputHelper::getDataSource()==Constants::SOURCE_V9BET) {
+            return new V9BetMatchs();
         } else {
             throw new APIException("Invalid Data Source");
         }

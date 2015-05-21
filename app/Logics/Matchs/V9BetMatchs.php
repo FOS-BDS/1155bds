@@ -22,7 +22,7 @@ use App\Models\Rules;
 class V9BetMatchs extends MatchDataServiceBase {
     public function processData($data=null)
     {
-        $this->getOntimecache();
+        $ontime_cache=$this->getOntimecache();
         $data_json=json_decode($data);
         $data_json=(array)$data_json;
         $is_ontime=true;
@@ -31,7 +31,8 @@ class V9BetMatchs extends MatchDataServiceBase {
             $match_data=$data_json[Constants::ONTIME_KEY];
 
             if(count($match_data)==0) {
-                //$cache_dao->update(array('type'=>Constants::CACHE_ONTIME_MATCH),$intime_matchs,array('upsert'=>true));
+                $ontime_cache->matchs=array();
+                $this->updateOntimeCache($ontime_cache);
                 return $version;
             }
             $match_data=$match_data[0];
@@ -44,9 +45,7 @@ class V9BetMatchs extends MatchDataServiceBase {
         }
         if(!isset($match_data)||!isset($match_data->egs))
         {
-            /*$cache_dao->update(array(
-                    'type'=>Constants::CACHE_ONTIME_MATCH),
-                    $intime_matchs,array('upsert'=>true));*/
+            $this->updateOntimeCache($ontime_cache);
             return $version;
         }
 
@@ -86,7 +85,7 @@ class V9BetMatchs extends MatchDataServiceBase {
                     $this->getMatchStartTime($is_ontime,$info[4],$info[5]),
                     $this->getMatchTime($is_ontime,$info[5],$info[12]),
                     $info[10],$info[11],
-                    0,0,$info[8],$info[9],$is_ontime);
+                    0,0,$info[8],$info[9],$is_ontime,$info[12]);
 
                 $new_matchs[$match_item->k]=$match_obj;
             }
@@ -122,10 +121,13 @@ class V9BetMatchs extends MatchDataServiceBase {
         }
 
         // insert new matchs
-        $match_model=new MatchDAO();
+
+
+
+        $matchDao=new MatchDAO();
         $match_ids=array_keys($new_matchs);
 
-        $match_cur=$match_model->find(array('reference_id'=>array('$in'=>$match_ids)));
+        $match_cur=$matchDao->find(array('reference_id'=>array('$in'=>$match_ids)));
 
         do {
             $match_cur->next();
@@ -139,7 +141,7 @@ class V9BetMatchs extends MatchDataServiceBase {
                 $new_match_obj->start_date=$match_obj->start_date;
             }
 
-            $match_model->update(array('reference_id'=>$match_obj->reference_id),$new_match_obj);
+            $matchDao->update(array('reference_id'=>$match_obj->reference_id),$new_match_obj);
 
             $new_match_obj->_id=$match_obj->_id;
 
@@ -149,14 +151,22 @@ class V9BetMatchs extends MatchDataServiceBase {
         } while($match_cur->hasNext());
         // insert new match
         if(count($new_matchs)>0) {
-            $match_model->batchInsert(array_values($new_matchs));
+            $matchDao->batchInsert(array_values($new_matchs));
             foreach ($new_matchs as $match) {
                 $matchs[$match->reference_id]=$match;
             }
         }
 
         // update FT match status
+        $fulltime_match_ids=array_diff($ontime_cache->matchs,$match_ids);
+        $matchDao->update(array('reference_id'=>array('$in'=>array_values($fulltime_match_ids))),array('$set'=>array('status'=>-1)));
 
+        // update ontime cache
+        if($is_ontime) {
+            // update list ontime matchs for next time
+            $ontime_cache->matchs=$match_ids;
+            $this->updateOntimeCache($ontime_cache);
+        }
 
         // processing Odd data
         $v9betOdd=new V9BetOdds();
@@ -171,9 +181,11 @@ class V9BetMatchs extends MatchDataServiceBase {
         if($intime_matchs==null) {
             $intime_matchs=array('type'=>Constants::CACHE_ONTIME_MATCH,'matchs'=>array());
         }
+        return (object)$intime_matchs;
     }
-    private function updateOntimeCache() {
-
+    private function updateOntimeCache($ontime_cache) {
+        $cache_dao=new CacheDAO();
+        $cache_dao->update(array('type'=>Constants::CACHE_ONTIME_MATCH),$ontime_cache,array('upsert'=>true));
     }
     private function getMatchStartTime($is_ontime,$start_date,$match_time) {
         if($is_ontime==true) {
@@ -188,6 +200,8 @@ class V9BetMatchs extends MatchDataServiceBase {
 
             $current_time->setDate(intval($year),intval($dates[1]),intval($dates[0]));
             $current_time->setTime(intval($time[0]),intval($time[1]));
+
+            $current_time->add(new \DateInterval("PT".Constants::OFFSET_TIME."H"));
 
             $timestamp=$current_time->getTimestamp();
             return new \MongoDate($timestamp);
@@ -210,9 +224,13 @@ class V9BetMatchs extends MatchDataServiceBase {
 
         }elseif($is_ontime==true) {
             $time= explode(":",$time);
-            return $time[0];
+            return intval($time[0]);
         } else {
-            return $time;
+            $time= explode(":",$time);
+            $hour=intval($time[0])+Constants::OFFSET_TIME;
+            $minute=intval($time[1]);
+            $hour=$hour>=24?$hour-24:$hour;
+            return $hour.":".$minute;
         }
     }
 
@@ -234,22 +252,14 @@ class V9BetMatchs extends MatchDataServiceBase {
         } while($final_rule_cur->hasNext());
     }
     public function getMatchedMatchFromNewOdd() {
-        $cache_id=InputHelper::getInput("cache_id",true);
-        $mongo_id=new \MongoId($cache_id);
-
         $cacheDao=new CacheDAO();
 
-        $cache_obj=$cacheDao->findOneObjectById($mongo_id);
+        $cache_obj=$cacheDao->findOne(array('type'=>Constants::CACHE_NEWEST_ODDS));
         if($cache_obj==null) return;
 
         if(!isset($cache_obj['newest_odds'])) return;
 
-        $new_odd_ids=$cache_obj['newest_odds'];
-
-        $new_odd_Mongoids=array();
-        foreach ($new_odd_ids as $id) {
-            $new_odd_Mongoids[]=new \MongoId($id);
-        }
+        $new_odd_md5s=$cache_obj['newest_odds'];
         // get all Condition
         $ruleDao=new RuleDAO();
         $final_rule_cur=$ruleDao->find(
@@ -263,7 +273,8 @@ class V9BetMatchs extends MatchDataServiceBase {
             $current=(object)$current;
             $rule=new Rules();
             $rule->initFromDBObject($current);
-            $rule->process($new_odd_Mongoids,true);
+            $rule->needed_update=true;
+            $rule->process($new_odd_md5s,true);
 
         } while($final_rule_cur->hasNext());
     }

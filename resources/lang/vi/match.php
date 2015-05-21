@@ -19,7 +19,8 @@ return [
     'away'=>'Khách',
     'total_score'=>'Tổng bàn thắng',
     'over'=>'Trên',
-    'under'=>'Dưới'
+    'under'=>'Dưới',
+    'match_list'=>'Danh sách các trận đấu'
 
 
 
