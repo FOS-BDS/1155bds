@@ -84,10 +84,10 @@ class MatchController extends BaseController{
             $matchDatas = $matchDao->find(array('status' => 1))->sort(array('time' => -1));
             $matchs = $this->formatMatch($matchDatas, $league_ids);
         } elseif($typeView == 'today') {
-            $matchDatas=$matchDao->find(array('status'=>0))->sort(array('start_date'=>1));
+            $matchDatas=$matchDao->find(array('status'=>0,'start_date'=>array('$gt'=>1000*time())))->sort(array('start_date'=>1));
             $matchs = $this->formatMatch($matchDatas, $league_ids);
         } elseif($typeView == 'finished') {
-            $matchDatas=$matchDao->find(array('status'=>-1))->sort(array('start_date'=>-1));
+            $matchDatas=$matchDao->find(array('status'=>-1,'start_date'=>array('$gt'=>1000*(time()-24*60*60))))->sort(array('start_date'=>-1));
             $matchs = $this->formatMatch($matchDatas, $league_ids);
         }
 
