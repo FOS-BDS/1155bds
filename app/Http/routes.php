@@ -30,11 +30,9 @@ Route::get('/cron','BackgroundProcessController@cron');
 Route::get('testInput', 'HomeController@testInput');
 //Route::get('home', 'HomeController@index');
 
-Route::get('home/{user}', [
-    'middleware' => ['auth', 'roles'],
-    'uses' => 'HomeController@index',
-    'roles' => ['administrator', 'manager']
-]);
+Route::get('home',function() {
+    echo date('Y-m-d h:i:s');
+} );
 
 /* Admin */
 Route::get('admin/rules', 'Admin\RulesController@rules');
