@@ -55,8 +55,6 @@ class OutputHelper {
 
     public function getData() {
         $datas = $this->getCondition();
-
         debug($this->datas);
     }
-
 }
