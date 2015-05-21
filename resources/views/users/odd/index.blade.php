@@ -32,17 +32,17 @@
                                         $item=(object)$item;
                                 $time="-";
                                 $score="-";
-                                $home="<font color=green>Closed</font>";
-                                $draw="<font color=green>Closed</font>";
-                                $alway="<font color=green>Closed</font>";
+                                $home="Closed";
+                                $draw="Closed";
+                                $alway="Closed";
                                 if($item->time>=0) {
                                     $time=$item->time;
                                     $score=$item->h_goal." - ".$item->g_goal;
                                 } elseif($item->time==-2) {
-                                    $time="<font color=blue>HT</font>";
+                                    $time="HT";
                                     $score=$item->h_goal." - ".$item->g_goal;
                                 } elseif ($item->time==-3) {
-                                    $time="<font color=blue>FT</font>";
+                                    $time="FT";
                                     $score=$item->h_goal." - ".$item->g_goal;
                                 }
 
@@ -89,17 +89,17 @@
                                 $item=(object)$item;
                                 $time="-";
                                 $score="-";
-                                $home="<font color=green>Closed</font>";
-                                $draw="<font color=green>Closed</font>";
-                                $alway="<font color=green>Closed</font>";
+                                $home="Closed";
+                                $draw="Closed";
+                                $alway="Closed";
                                 if($item->time>=0) {
                                     $time=$item->time;
                                     $score=$item->h_goal." - ".$item->g_goal;
                                 } elseif($item->time==-2) {
-                                    $time="<font color=blue>HT</font>";
+                                    $time="HT";
                                     $score=$item->h_goal." - ".$item->g_goal;
                                 } elseif ($item->time==-3) {
-                                    $time="<font color=blue>FT</font>";
+                                    $time="FT";
                                     $score=$item->h_goal." - ".$item->g_goal;
                                 }
 
@@ -145,17 +145,17 @@
                                 $item=(object)$item;
                                 $time="-";
                                 $score="-";
-                                $home="<font color=green>Closed</font>";
-                                $draw="<font color=green>Closed</font>";
-                                $alway="<font color=green>Closed</font>";
+                                $home="Closed";
+                                $draw="Closed";
+                                $alway="Closed";
                                 if($item->time>=0) {
                                     $time=$item->time;
                                     $score=$item->h_goal." - ".$item->g_goal;
                                 } elseif($item->time==-2) {
-                                    $time="<font color=blue>HT</font>";
+                                    $time="HT";
                                     $score=$item->h_goal." - ".$item->g_goal;
                                 } elseif ($item->time==-3) {
-                                    $time="<font color=blue>FT</font>";
+                                    $time="FT";
                                     $score=$item->h_goal." - ".$item->g_goal;
                                 }
 
