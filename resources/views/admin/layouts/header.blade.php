@@ -21,6 +21,12 @@
                         <span>{!!Lang::get('app.logs')!!}</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{URL::to('admin/manages/sounds')}}">
+                        <i class="fa fa-music"></i>
+                        <span>{!!Lang::get('app.sound')!!}</span>
+                    </a>
+                </li>
                 <li class="dropdown sub-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-th-list"></i>

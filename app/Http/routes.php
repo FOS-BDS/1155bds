@@ -56,6 +56,10 @@ Route::get('/matchs/{reference_id}/odd/{type}/data','Data\OddController@getOddDa
 Route::get('admin/manages','Admin\LogController@manages');
 Route::get('admin/manages/searchLogs','Admin\LogController@searchLogs');
 Route::post('admin/manages/deleteLogs','Admin\LogController@deleteLogs');
+// end logs
+Route::get('admin/manages/sounds','Admin\SoundController@manageSounds');
+Route::post('sounds/insert','Admin\SoundController@insertSound');
+Route::get('sounds/allSounds','Admin\SoundController@allSounds');
 
 /* End Admin */
 
