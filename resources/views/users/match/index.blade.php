@@ -23,7 +23,7 @@
                     $('#inplay').html(jqXHR.responseText);
                 }
             });
-            setTimeout("inplay()",1000*30);
+            setTimeout("inplay()",1000*20);
         }
         function today() {
             $.ajax({
