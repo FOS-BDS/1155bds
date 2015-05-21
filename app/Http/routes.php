@@ -22,6 +22,7 @@ Route::get('/', 'WelcomeController@index');
 Route::get('/cron/match/v9bet/{in_time}','BackgroundProcessController@cronGetMatchData');
 Route::get('/cron/match/matchedOdds','Data\MatchController@getMatchedMatch');
 Route::get('/cron/match/matchedNewOdds','Data\MatchController@getMatchedMatchFromNewOdd');
+Route::get('/cron/oddversion','BackgroundProcessController@getOddVersion');
 Route::get('/cron','BackgroundProcessController@cron');
 
 /////// END OF CRON ///////////////
