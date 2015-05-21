@@ -14,6 +14,9 @@ use App\DAO\MatchDAO;
 use App\Factories\providers\MatchServiceProvider;
 use App\Http\Controllers\BaseController;
 use App\Libraries\ResponseBuilder;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Monolog\Handler\Mongo;
 
 class MatchController extends BaseController{
     public function postMatchs() {
@@ -68,21 +71,25 @@ class MatchController extends BaseController{
         } while($matchcur->hasNext());
         return $final;
     }
-    public function getMatchData() {
+    public function getMatchData(Request $request) {
         //get match data include running, not started yet, finished
+        $typeView = $request->get('type', '404');
+        $view = "users.match.".$typeView;
+        Log::info("Loading data for view {$view}");
         $matchDao=new MatchDAO();
 
         $league_ids=array();
-
-        $inplay_cur=$matchDao->find(array('status'=>1))->sort(array('time'=>-1));
-
-        $today_match_cur=$matchDao->find(array('status'=>0))->sort(array('start_date'=>1));
-
-        $finished_match_cur=$matchDao->find(array('status'=>-1))->sort(array('start_date'=>-1));
-
-        $inplay_match=$this->formatMatch($inplay_cur,$league_ids);
-        $today_match=$this->formatMatch($today_match_cur,$league_ids);
-        $finished_match=$this->formatMatch($finished_match_cur,$league_ids);
+        $matchs = null;
+        if($typeView == 'inplay') {
+            $matchDatas = $matchDao->find(array('status' => 1))->sort(array('time' => -1));
+            $matchs = $this->formatMatch($matchDatas, $league_ids);
+        } elseif($typeView == 'today') {
+            $matchDatas=$matchDao->find(array('status'=>0))->sort(array('start_date'=>1));
+            $matchs = $this->formatMatch($matchDatas, $league_ids);
+        } elseif($typeView == 'finished') {
+            $matchDatas=$matchDao->find(array('status'=>-1))->sort(array('start_date'=>-1));
+            $matchs = $this->formatMatch($matchDatas, $league_ids);
+        }
 
         $league_dao=new LeagueDAO();
 
@@ -96,7 +103,7 @@ class MatchController extends BaseController{
             $leagues[$current_league->_id->__toString()]=$current_league;
         } while($league_cur->hasNext());
 
-        return View("users.match.match_list",array('in_play'=>$inplay_match,'today'=>$today_match,'finished'=>$finished_match,'leagues'=>$leagues));
+        return View($view,array('matchs'=>$matchs,'leagues'=>$leagues));
 
     }
 }
