@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Data;
 
 
+use App\DAO\CacheDAO;
 use App\DAO\LeagueDAO;
 use App\DAO\MatchDAO;
 use App\Factories\providers\MatchServiceProvider;
@@ -81,13 +82,18 @@ class MatchController extends BaseController{
         //get match data include running, not started yet, finished
         $typeView = $request->get('type', '404');
         $view = "users.match.".$typeView;
-        Log::info("Loading data for view {$view}");
+
         $matchDao=new MatchDAO();
 
         $league_ids=array();
-        $matchs = null;
+        $matchs = array();
         if($typeView == 'inplay') {
-            $matchDatas = $matchDao->find(array('status' => 1))->sort(array('time' => -1));
+            $cacheDao=new CacheDAO();
+            $inplay_cache=$cacheDao->findOne(array('type'=>Constants::CACHE_ONTIME_MATCH));
+            if($inplay_cache==null) {
+                return $matchs;
+            }
+            $matchDatas = $matchDao->find(array('reference_id' => array('$in'=>$inplay_cache->matchs)))->sort(array('time' => -1));
             $matchs = $this->formatMatch($matchDatas, $league_ids);
         } elseif($typeView == 'today') {
             $mongodate=new \MongoDate(time());
