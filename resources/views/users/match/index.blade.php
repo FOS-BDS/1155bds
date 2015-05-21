@@ -5,6 +5,8 @@
 
         $(document).ready(function () {
             $('#inplay').html('Loading...');
+            $('#today').html('Loading...');
+            $('#finished').html('Loading...');
             inplay();
             today();
             finished();
@@ -14,9 +16,6 @@
                 url: urlApi + 'matchs/data',
                 data:{type:'inplay'},
                 type: "GET",
-                beforeSend:function(){
-                    $('#inplay').html('Loading...');
-                },
                 success:function(result) {
                     $('#inplay').html(result);
                 },
@@ -31,9 +30,6 @@
                 url: urlApi + 'matchs/data',
                 data:{type:'today'},
                 type: "GET",
-                beforeSend:function(){
-                    $('#today').html('Loading...');
-                },
                 success:function(result) {
                     $('#today').html(result);
                 },
@@ -48,9 +44,6 @@
                 url: urlApi + 'matchs/data',
                 data:{type:'finished'},
                 type: "GET",
-                beforeSend:function(){
-                    $('#finished').html('Loading...');
-                },
                 success:function(result) {
                     $('#finished').html(result);
                 },
