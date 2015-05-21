@@ -15,6 +15,8 @@ class Constants
 
     const ONTIME_KEY='i-ots';
     const OFFTIME_KEY='ot';
+    const ONTIME_US_KEY='us';
+    const OFFTIME_IR_KEY='ir';
 
     const TIME_PRE_MATCH=-1;
     const TIME_HT=-2;
