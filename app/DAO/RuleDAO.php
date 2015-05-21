@@ -23,11 +23,11 @@ class RuleDAO extends CollectionBase {
                 $conditionRightData = explode(':', $params['conditions'][1]);
                 $data['condition_left'] = array(
                     'id' => new MongoId($conditionLeftData[0]),
-                    'type' => $conditionLeftData[1],
+                    'type' => intval($conditionLeftData[1]),
                 );
                 $data['condition_right'] = array(
                     'id' => new MongoId($conditionRightData[0]),
-                    'type' => $conditionRightData[1],
+                    'type' => intval($conditionRightData[1]),
                 );
 
                 $rule->condition_left = $data['condition_left'];
@@ -37,17 +37,17 @@ class RuleDAO extends CollectionBase {
                 $rule->field = $params['field'];
                 if($params['time_type'] == Constants::TIME_FULL) {
                     $rule->time = array(
-                        'type' => $params['time_type'],
-                        'value' => $params['time_value'],
+                        'type' => intval($params['time_type']),
+                        'value' => intval($params['time_value']),
                     );
                 } else {
                     $rule->time = array(
-                        'type' => $params['time_type'],
-                        'value' => $params['time_type'],
+                        'type' => intval($params['time_type']),
+                        'value' => intval($params['time_type']),
                     );
                 }
                 $rule->condition_values = $params['condition_values'];
-                $rule->odd_type = $params['odd_type'];
+                $rule->odd_type = intval($params['odd_type']);
             }
             $rule->name = $params['name'];
             $rule->user_id = Session::get('user._id');

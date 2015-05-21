@@ -16,6 +16,7 @@ use App\DAO\RuleDAO;
 use App\Libraries\Constants;
 use App\Logics\base\OddServiceBase;
 use App\DAO\OddDAO;
+use Illuminate\Support\Facades\Log;
 
 class V9BetOdds extends OddServiceBase {
     public function processData($matchs=null,$match_odds=null)
@@ -45,7 +46,10 @@ class V9BetOdds extends OddServiceBase {
                 }
             }
 
-            $matchDao->update(array('reference_id'=>$match_id),array('$set'=>array('lastest_odd'=>$lastest_odd)));
+            $matchDao->update(
+                array('reference_id'=>$match_id),
+                array('$set'=>array('lastest_odd'=>$lastest_odd)),
+                array('multi'=>true));
         }
 
 
@@ -65,16 +69,16 @@ class V9BetOdds extends OddServiceBase {
         } while($odd_cur->hasNext());
 
         if(count($odd_objs)>0) {
+            Log::info("new Odds added.");
             $oddModel->batchInsert(array_values($odd_objs));
+
+            $cacheDao=new CacheDAO();
+            $data=array('newest_odds'=>array_keys($odd_objs),'type'=>Constants::CACHE_NEWEST_ODDS);
+            $cacheDao->update(array('type'=>Constants::CACHE_NEWEST_ODDS),$data,array('upsert'=>true));
+
+            $background=new BackgroundProcess();
+            $background->throwProcess("/cron/match/matchedNewOdds");
         }
-
-        $cacheDao=new CacheDAO();
-        $data=array('newest_odds'=>array_keys($odd_objs),'type'=>Constants::CACHE_NEWEST_ODDS);
-        $cacheDao->insert($data);
-
-        $background=new BackgroundProcess();
-        $background->throwProcess("/cron/match/matchedNewOdds",array('cache_id'=>$data['_id']->__toString()));
-
     }
     private function getOddVal($str_val) {
         if(strpos($str_val,"/")!==false) {

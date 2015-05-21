@@ -13,7 +13,11 @@ use App\DAO\LeagueDAO;
 use App\DAO\MatchDAO;
 use App\Factories\providers\MatchServiceProvider;
 use App\Http\Controllers\BaseController;
+use App\Libraries\Constants;
 use App\Libraries\ResponseBuilder;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Monolog\Handler\Mongo;
 
 class MatchController extends BaseController{
     public function postMatchs() {
@@ -38,7 +42,7 @@ class MatchController extends BaseController{
         }
     }
     public function getMatchView() {
-        return View("admin.match.index");
+        return View("users.match.index");
     }
     private function formatMatch($matchcur,&$league_ids) {
         $final=array();
@@ -53,7 +57,12 @@ class MatchController extends BaseController{
             $current=(object)$current;
             $start_time=new \DateTime();
             $start_time->setTimestamp($current->start_date->sec);
+            $start_time->add(new \DateInterval("PT".Constants::OFFSET_TIME."H"));
             $current->start_date=$start_time->format("d/m");
+            if($current->status==0) {
+                // today
+                $current->time=$start_time->format("H:i");
+            }
             $league_ids[$current->league_id->__toString()]=$current->league_id;
             if($current->league_id->__toString()!=$current_league_id) {
                 $current_league=array();
@@ -68,21 +77,27 @@ class MatchController extends BaseController{
         } while($matchcur->hasNext());
         return $final;
     }
-    public function getMatchData() {
+    public function getMatchData(Request $request) {
         //get match data include running, not started yet, finished
+        $typeView = $request->get('type', '404');
+        $view = "users.match.".$typeView;
+        Log::info("Loading data for view {$view}");
         $matchDao=new MatchDAO();
 
         $league_ids=array();
-
-        $inplay_cur=$matchDao->find(array('status'=>1))->sort(array('time'=>-1));
-
-        $today_match_cur=$matchDao->find(array('status'=>0))->sort(array('start_date'=>1));
-
-        $finished_match_cur=$matchDao->find(array('status'=>-1))->sort(array('start_date'=>-1));
-
-        $inplay_match=$this->formatMatch($inplay_cur,$league_ids);
-        $today_match=$this->formatMatch($today_match_cur,$league_ids);
-        $finished_match=$this->formatMatch($finished_match_cur,$league_ids);
+        $matchs = null;
+        if($typeView == 'inplay') {
+            $matchDatas = $matchDao->find(array('status' => 1))->sort(array('time' => -1));
+            $matchs = $this->formatMatch($matchDatas, $league_ids);
+        } elseif($typeView == 'today') {
+            $mongodate=new \MongoDate(time());
+            $matchDatas=$matchDao->find(array('status'=>0,'start_date'=>array('$gt'=>$mongodate)))->sort(array('start_date'=>1));
+            $matchs = $this->formatMatch($matchDatas, $league_ids);
+        } elseif($typeView == 'finished') {
+            $mongodate=new \MongoDate(time()-24*60*60);
+            $matchDatas=$matchDao->find(array('status'=>-1,'start_date'=>array('$gt'=>$mongodate)))->sort(array('start_date'=>-1));
+            $matchs = $this->formatMatch($matchDatas, $league_ids);
+        }
 
         $league_dao=new LeagueDAO();
 
@@ -96,7 +111,7 @@ class MatchController extends BaseController{
             $leagues[$current_league->_id->__toString()]=$current_league;
         } while($league_cur->hasNext());
 
-        return View("admin.match.match_list",array('in_play'=>$inplay_match,'today'=>$today_match,'finished'=>$finished_match,'leagues'=>$leagues));
+        return View($view,array('matchs'=>$matchs,'leagues'=>$leagues));
 
     }
 }

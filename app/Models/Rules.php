@@ -196,7 +196,7 @@ class Rules extends ModelBase {
     }
     public function notifyChangeParent() {
         $ruleDao=new RuleDAO();
-        $ruleDao->update(array('_id'=>array('$in'=>$this->parent_rules)),array('$set'=>array('needed_update'=>true)));
+        $ruleDao->update(array('_id'=>array('$in'=>$this->parent_rules)),array('$set'=>array('needed_update'=>true)),array('multi'=>true));
 
         $parent_curs=$ruleDao->find(array('_id'=>array('$in'=>$this->parent_rules)));
 
@@ -208,15 +208,15 @@ class Rules extends ModelBase {
             $current=(object)$current;
 
             $ruleObj=new Rules();
-            $ruleObj->initFromID($current->id,$current->parent_rules);
+            $ruleObj->initFromID($current->_id,$current->parent_rules);
             $ruleObj->notifyChangeParent();
         } while($parent_curs->hasNext());
     }
-    private function buildQuery($newest_odds=array()) {
+    private function buildQuery($newest_odd_md5s=array()) {
         $result=array('time'=>intval($this->time),
                       'type'=>strval($this->odd_type));
-        if($newest_odds!=null && count($newest_odds)>0) {
-            $result['_id']=array('$in'=>$newest_odds);
+        if($newest_odd_md5s!=null && count($newest_odd_md5s)>0) {
+            $result['md5']=array('$in'=>$newest_odd_md5s);
         }
         switch($this->operator) {
             case Constants::OPERATOR_NE:

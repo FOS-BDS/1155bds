@@ -1,39 +1,26 @@
 @extends('admin.layouts.app')
 @section('scripts')
-    <script>
-        var urlApi = '<?php echo URL::to('/') ?>/';
-
-        $(document).ready(function () {
-            $('#match_list').html('Loading...');
-            refresh();
-        });
-        function refresh() {
-            $.ajax({
-                url: urlApi + 'users/matchs/data',
-                type: "GET",
-                success:function(result) {
-                    $('#match_list').html(result);
-                },
-                error: function(jqXHR){
-                    $('#match_list').html(jqXHR.responseText);
-                }
-            });
-
-            setTimeout("refresh()",1000*30);
-        }
-    </script>
 @endsection
 @section('styles')
     <?php echo Html::style('/admin/css/match.css') ?>
 @endsection
 @section('content')
-    <div class="box box-primary box-solid widget-table">
-        <div class="box-header"><h3 class="box-title">{{Lang::get('match.match_list')}}</h3></div>
-        <div class="box-body widget-content">
-            <div id="match_list" class="table-responsive">
-
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="#inplay" data-toggle="tab">{{Lang::get('match.inplay')}}</a></li>
+            <li role="presentation"><a href="#today" data-toggle="tab">{{Lang::get('match.today')}}</a></li>
+            <li role="presentation"><a href="#finished" data-toggle="tab">{{Lang::get('match.finished')}}</a></li>
+        </ul>
+        <div class="tab-content" id="match_list">
+            <div class="tab-pane active" id="inplay">
+                {!! View("admin.match.inplay",array('in_play'=>$in_play,'leagues'=>$leagues))->render() !!}
+            </div>
+            <div class="tab-pane" id="today">
+                {!! View("admin.match.today",array('today'=>$today,'leagues'=>$leagues))->render() !!}
+            </div>
+            <div class="tab-pane" id="finished">
+                {!! View("admin.match.finished",array('finished'=>$finished,'leagues'=>$leagues))->render() !!}
             </div>
         </div>
     </div>
-
 @endsection
