@@ -74,7 +74,9 @@ class BackgroundProcessController extends BaseController {
                     }
                     $cache_dao->update(array('_id'=>$version_cache['_id']),$version_cache);
                 } else {
-                    Log::error("Nothing to process,result:".$result);
+                    if($result!="{}") {
+                        Log::error("Nothing to process,result:".$result);
+                    }
                 }
             }
         } catch(Exception $e) {
