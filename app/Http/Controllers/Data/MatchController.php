@@ -93,6 +93,7 @@ class MatchController extends BaseController{
             if($inplay_cache==null) {
                 return $matchs;
             }
+            $inplay_cache=(object)$inplay_cache;
             $matchDatas = $matchDao->find(array('reference_id' => array('$in'=>$inplay_cache->matchs)))->sort(array('time' => -1));
             $matchs = $this->formatMatch($matchDatas, $league_ids);
         } elseif($typeView == 'today') {
