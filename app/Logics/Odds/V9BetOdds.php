@@ -45,7 +45,7 @@ class V9BetOdds extends OddServiceBase {
                     $lastest_odd[$key]=$odd_obj;
                 }
             }
-
+            Log::info("update newest odd for ".$match_id);
             $matchDao->update(
                 array('reference_id'=>$match_id),
                 array('$set'=>array('newest_odd'=>$lastest_odd,'old_odd'=>$matchs[$match_id]->newest_odd)),
