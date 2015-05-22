@@ -72,5 +72,7 @@ class Constants
     const MATCH_STATUS_NOT_STARTED=0;
     const MATCH_STATUS_FT=-1;
 
-    const OFFSET_TIME=11;
+    const OFFSET_TIME_11H=11;
+    const OFFSET_TIME_7H=7;
+    const OFFSET_TIME_4H=4;
 }

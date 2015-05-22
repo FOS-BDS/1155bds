@@ -58,7 +58,7 @@ class MatchController extends BaseController{
             $current=(object)$current;
             $start_time=new \DateTime();
             $start_time->setTimestamp($current->start_date->sec);
-            $start_time->add(new \DateInterval("PT".Constants::OFFSET_TIME."H"));
+            $start_time->add(new \DateInterval("PT".Constants::OFFSET_TIME_7H."H"));
             $current->start_date=$start_time->format("d/m");
             if($current->status==0) {
                 // today
