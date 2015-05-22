@@ -3758,16 +3758,14 @@ fieldset[disabled] .btn-vk.active {
 
 .square {
     background: url("../../img/bg-square.png") no-repeat;
+    border: solid 1px;
+    max-height: 39px;
 }
 .bg-square-red {
-    background-position: top right;
-    height: 20px;
-    width: 100px;
-    border: solid 1px #ff0000;
-}
-.bg-square-blue {
     background-position: bottom right;
-    height: 20px;
-    width: 100px;
-    border: solid 1px #229700;
+    border-color: #ff0000;
+}
+.bg-square-green {
+    background-position: top right;
+    border-color: #229700;
 }
