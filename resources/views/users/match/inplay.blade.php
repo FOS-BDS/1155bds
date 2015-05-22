@@ -77,9 +77,9 @@
                                 </div>
                             </div>
                         </td>
-                        @if(isset($match_info->lastest_odd))
+                        @if(isset($match_info->newest_odd))
                             <?php
-                            $lastest_odd = (array)$match_info->lastest_odd;
+                            $lastest_odd = (array)$match_info->newest_odd;
                             ?>
                             <td>
                                 @if(isset($lastest_odd['1x2']))

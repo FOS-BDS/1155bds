@@ -48,7 +48,7 @@ class V9BetOdds extends OddServiceBase {
 
             $matchDao->update(
                 array('reference_id'=>$match_id),
-                array('$set'=>array('lastest_odd'=>$lastest_odd)),
+                array('$set'=>array('newest_odd'=>$lastest_odd,'old_odd'=>$matchs[$match_id]->newest_odd)),
                 array('multi'=>true));
         }
 

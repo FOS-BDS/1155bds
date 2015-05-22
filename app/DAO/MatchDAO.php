@@ -33,6 +33,8 @@ class MatchDAO extends CollectionBase {
         $new_obj->g_red=$g_red==""?0:intval($g_red);
         $new_obj->haft=$haft;
         $new_obj->status=$started==true?Constants::MATCH_STATUS_RUNNING:Constants::MATCH_STATUS_NOT_STARTED;
+        $new_obj->newest_odd=new \stdClass();
+        $new_obj->old_odd=new \stdClass();
 
         return $new_obj;
     }
