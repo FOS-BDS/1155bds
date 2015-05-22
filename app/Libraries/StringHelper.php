@@ -32,7 +32,7 @@ class StringHelper {
             $keys = array('home', 'draw', 'away');
             foreach ($keys as $key) {
                 if ($newest_odd[$odd_type][$key] > $old_odd[$odd_type][$key]) {
-                    $result[$key] = ' square bg-square-blue ';
+                    $result[$key] = ' square bg-square-green ';
                 } elseif ($newest_odd[$odd_type][$key] < $old_odd[$odd_type][$key]) {
                     $result[$key] = ' square bg-square-red ';
                 }
