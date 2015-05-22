@@ -6,7 +6,7 @@
             <button type="button" class="btn btn-sm btn-info" onclick="RuleModule.addRule(this)"><span class="fa fa-plus"></span> {{Lang::get('app.create_rule_new')}}</button>
         </div>
     </div>
-    <div class="box-body widget-content">
+    <div class="box-body widget-content table-responsive">
         <table class="table table-striped table-bordered table-hover table-responsive">
             <tr class="active" style="background-color: #2a6496;">
                 <th style="width:20%;">{{Lang::get('app.name')}}</th>

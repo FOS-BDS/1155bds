@@ -66,7 +66,7 @@
             <li role="presentation"><a href="#today" data-toggle="tab">{{Lang::get('match.today')}}</a></li>
             <li role="presentation"><a href="#finished" data-toggle="tab">{{Lang::get('match.finished')}}</a></li>
         </ul>
-        <div class="tab-content">
+        <div class="tab-content table-responsive">
             <div class="tab-pane active" id="inplay">
 
             </div>
