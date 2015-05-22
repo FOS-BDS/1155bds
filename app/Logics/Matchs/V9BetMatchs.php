@@ -33,6 +33,7 @@ class V9BetMatchs extends MatchDataServiceBase {
             $match_data=$data_json[Constants::ONTIME_KEY];
 
             if(count($match_data)==0) {
+                Log::info('zero case 1');
                 $matchDao->update(
                     array('reference_id'=>array('$in'=>$ontime_cache->matchs)),
                     array('$set'=>array('status'=>-1)),
@@ -55,6 +56,7 @@ class V9BetMatchs extends MatchDataServiceBase {
             $d=$us_object->d;
             if(count($d)==0) {
                 // al matchs are finished
+                Log::info('zero case 2');
                 $matchDao->update(
                     array('reference_id'=>array('$in'=>$ontime_cache->matchs)),
                     array('$set'=>array('status'=>-1)),
@@ -145,12 +147,7 @@ class V9BetMatchs extends MatchDataServiceBase {
             }
 
         }
-
         // insert new matchs
-
-
-
-
         $match_ids=array_keys($new_matchs);
 
         $match_cur=$matchDao->find(array('reference_id'=>array('$in'=>$match_ids)));

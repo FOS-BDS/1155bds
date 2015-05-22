@@ -3760,8 +3760,8 @@ fieldset[disabled] .btn-vk.active {
     background: url("../../img/bg-square.png") no-repeat;
     border: solid 1px;
     max-height: 39px;
-    margin-bottom: 1px;
-    margin-top: 1px;
+    margin-bottom: 2px;
+    margin-top: 2px;
 }
 .bg-square-red {
     background-position: bottom right;
