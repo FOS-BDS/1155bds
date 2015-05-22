@@ -18,7 +18,7 @@
     <div class="wrapper row-offcanvas row-offcanvas-left">
         <section class="content">
             <div class="row">
-                <div class="col-xs-12">
+                <div class="col-lg-12 col-md-12 col-xs-12 no-padding">
                     @yield('content')
                 </div>
             </div>

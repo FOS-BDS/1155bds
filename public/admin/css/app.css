@@ -2524,6 +2524,9 @@ Component: timeline
   .error-page > .error-content {
     margin-left: 0;
   }
+    .col-xs-nopadding {
+        padding: 1%;
+    }
 }
 .error-page > .error-content > h3 {
   font-weight: 300;
