@@ -3755,3 +3755,19 @@ fieldset[disabled] .btn-vk.active {
     padding: 5px 10px;
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
+
+.square {
+    background: url("../../img/bg-square.png") no-repeat;
+}
+.bg-square-red {
+    background-position: top right;
+    height: 20px;
+    width: 100px;
+    border: solid 2px #ff0000;
+}
+.bg-square-blue {
+    background-position: bottom right;
+    height: 20px;
+    width: 100px;
+    border: solid 2px #229700;
+}
