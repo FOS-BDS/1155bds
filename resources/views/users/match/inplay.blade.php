@@ -85,7 +85,7 @@
                             <td>
                                 @if(isset($lastest_odd['1x2']))
                                     <?php
-                                        $indicator=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd['1x2'],$old_odd['1x2'])
+                                    $indicator=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd,$old_odd,'1x2')
                                     ?>
                                     <div title="{{Lang::get('match.home')}}"
                                          class="text-center bold-text {{$indicator['home']}}">
@@ -117,7 +117,7 @@
                             <td>
                                 @if(isset($lastest_odd['ah']))
                                     <?php
-                                        $class=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd['ah'],$old_odd['ah'])
+                                    $class=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd,$old_odd,'ah')
                                     ?>
                                     <div title="{{Lang::get('match.home')}}"
                                          class="text-center bold-text {{$class['home']}}">{{$lastest_odd['ah']['home']}}</div>
@@ -146,7 +146,7 @@
                             <td>
                                 @if(isset($lastest_odd['ou']))
                                     <?php
-                                    $class=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd['ou'],$old_odd['ou'])
+                                    $class=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd,$old_odd,'ou')
                                     ?>
                                     <div title="{{Lang::get('match.over')}}"
                                          class="text-center bold-text {{$class['home']}}">{{$lastest_odd['ou']['home']}}</div>
@@ -162,7 +162,7 @@
                             <td>
                                 @if(isset($lastest_odd['1x21st']))
                                     <?php
-                                    $class=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd['1x21st'],$old_odd['1x21st'])
+                                    $class=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd,$old_odd,'1x21st')
                                     ?>
                                     <div title="{{Lang::get('match.home')}}"
                                          class="text-center bold-text {{$class['home']}}">{{$lastest_odd['1x21st']['home']}}</div>
@@ -192,7 +192,7 @@
                             <td>
                                 @if(isset($lastest_odd['ah1st']))
                                     <?php
-                                    $class=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd['ah1st'],$old_odd['ah1st'])
+                                    $class=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd,$old_odd,'ah1st')
                                     ?>
                                     <div title="{{Lang::get('match.home')}}"
                                          class="text-center bold-text {{$class['home']}}">{{$lastest_odd['ah1st']['home']}}</div>
@@ -221,7 +221,7 @@
                             <td>
                                 @if(isset($lastest_odd['ou1st']))
                                     <?php
-                                    $class=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd['ou1st'],$old_odd['ou1st'])
+                                    $class=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd,$old_odd,'ou1st')
                                     ?>
                                     <div title="{{Lang::get('match.over')}}"
                                          class="text-center bold-text {{$class['home']}}">{{$lastest_odd['ou1st']['home']}}</div>

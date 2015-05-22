@@ -23,17 +23,17 @@ class StringHelper {
         $data_array=explode(",",$main_data);
         return $data_array;
     }
-    public  static function getIndicatorClass($newest_odd, $old_odd)
+    public  static function getIndicatorClass($newest_odd, $old_odd,$odd_type)
     {
         $result = array('home' => '', 'draw' => '', 'away' => '');
-        if (!isset($old_odd)) {
+        if (!isset($old_odd[$odd_type])) {
             return $result;
         } else {
             $keys = array('home', 'draw', 'away');
             foreach ($keys as $key) {
-                if ($newest_odd[$key] > $old_odd[$key]) {
+                if ($newest_odd[$odd_type][$key] > $old_odd[$odd_type][$key]) {
                     $result[$key] = ' square bg-square-blue ';
-                } elseif ($newest_odd[$key] < $old_odd[$key]) {
+                } elseif ($newest_odd[$odd_type][$key] < $old_odd[$odd_type][$key]) {
                     $result[$key] = ' square bg-square-red ';
                 }
             }
