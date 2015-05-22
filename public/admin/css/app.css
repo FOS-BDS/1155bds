@@ -3763,11 +3763,11 @@ fieldset[disabled] .btn-vk.active {
     background-position: top right;
     height: 20px;
     width: 100px;
-    border: solid 2px #ff0000;
+    border: solid 1px #ff0000;
 }
 .bg-square-blue {
     background-position: bottom right;
     height: 20px;
     width: 100px;
-    border: solid 2px #229700;
+    border: solid 1px #229700;
 }

@@ -23,4 +23,21 @@ class StringHelper {
         $data_array=explode(",",$main_data);
         return $data_array;
     }
+    public  static function getIndicatorClass($newest_odd, $old_odd)
+    {
+        $result = array('home' => '', 'draw' => '', 'away' => '');
+        if (!isset($old_odd)) {
+            return $result;
+        } else {
+            $keys = array('home', 'draw', 'away');
+            foreach ($keys as $key) {
+                if ($newest_odd[$key] > $old_odd[$key]) {
+                    $result[$key] = ' square bg-square-blue ';
+                } elseif ($newest_odd[$key] < $old_odd[$key]) {
+                    $result[$key] = ' square bg-square-red ';
+                }
+            }
+        }
+        return $result;
+    }
 }

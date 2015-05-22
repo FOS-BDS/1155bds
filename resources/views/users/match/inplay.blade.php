@@ -77,18 +77,24 @@
                                 </div>
                             </div>
                         </td>
-                        @if(isset($match_info->newest_odd))
+                        @if(isset($match_info->newest_odd) && isset($match_info->old_odd))
                             <?php
                             $lastest_odd = (array)$match_info->newest_odd;
+                            $old_odd = (array)$match_info->old_odd;
                             ?>
                             <td>
                                 @if(isset($lastest_odd['1x2']))
+                                    <?php
+                                        $indicator=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd['1x2'],$old_odd['1x2'])
+                                    ?>
                                     <div title="{{Lang::get('match.home')}}"
-                                         class="text-center bold-text">{{$lastest_odd['1x2']['home']}}</div>
+                                         class="text-center bold-text {{$indicator['home']}}">
+                                        {{$lastest_odd['1x2']['home']}}
+                                    </div>
                                     <div title="{{Lang::get('match.away')}}"
-                                         class="text-center bold-text">{{$lastest_odd['1x2']['away']}}</div>
+                                         class="text-center bold-text {{$indicator['away']}}">{{$lastest_odd['1x2']['away']}}</div>
                                     <div title="{{Lang::get('match.draw')}}"
-                                         class="text-center bold-text">{{$lastest_odd['1x2']['draw']}}</div>
+                                         class="text-center bold-text {{$indicator['draw']}}">{{$lastest_odd['1x2']['draw']}}</div>
                                 @else
                                     <div>&nbsp;</div>
                                     <div>&nbsp;</div>
@@ -110,10 +116,13 @@
                             </td>
                             <td>
                                 @if(isset($lastest_odd['ah']))
+                                    <?php
+                                        $class=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd['ah'],$old_odd['ah'])
+                                    ?>
                                     <div title="{{Lang::get('match.home')}}"
-                                         class="text-center bold-text">{{$lastest_odd['ah']['home']}}</div>
+                                         class="text-center bold-text {{$class['home']}}">{{$lastest_odd['ah']['home']}}</div>
                                     <div title="{{Lang::get('match.away')}}"
-                                         class="text-center bold-text">{{$lastest_odd['ah']['away']}}</div>
+                                         class="text-center bold-text {{$class['away']}}">{{$lastest_odd['ah']['away']}}</div>
                                     <div>&nbsp;</div>
                                 @else
                                     <div>&nbsp;</div>
@@ -136,10 +145,13 @@
                             </td>
                             <td>
                                 @if(isset($lastest_odd['ou']))
+                                    <?php
+                                    $class=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd['ou'],$old_odd['ou'])
+                                    ?>
                                     <div title="{{Lang::get('match.over')}}"
-                                         class="text-center bold-text">{{$lastest_odd['ou']['home']}}</div>
+                                         class="text-center bold-text {{$class['home']}}">{{$lastest_odd['ou']['home']}}</div>
                                     <div title="{{Lang::get('match.under')}}"
-                                         class="text-center bold-text">{{$lastest_odd['ou']['away']}}</div>
+                                         class="text-center bold-text {{$class['away']}}">{{$lastest_odd['ou']['away']}}</div>
                                     <div>&nbsp;</div>
                                 @else
                                     <div>&nbsp;</div>
@@ -149,12 +161,15 @@
                             </td>
                             <td>
                                 @if(isset($lastest_odd['1x21st']))
+                                    <?php
+                                    $class=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd['1x21st'],$old_odd['1x21st'])
+                                    ?>
                                     <div title="{{Lang::get('match.home')}}"
-                                         class="text-center bold-text">{{$lastest_odd['1x21st']['home']}}</div>
+                                         class="text-center bold-text {{$class['home']}}">{{$lastest_odd['1x21st']['home']}}</div>
                                     <div title="{{Lang::get('match.away')}}"
-                                         class="text-center bold-text">{{$lastest_odd['1x21st']['away']}}</div>
+                                         class="text-center bold-text {{$class['away']}}">{{$lastest_odd['1x21st']['away']}}</div>
                                     <div title="{{Lang::get('match.draw')}}"
-                                         class="text-center bold-text">{{$lastest_odd['1x21st']['draw']}}</div>
+                                         class="text-center bold-text {{$class['draw']}}">{{$lastest_odd['1x21st']['draw']}}</div>
                                 @else
                                     <div>&nbsp;</div>
                                     <div>&nbsp;</div>
@@ -176,10 +191,13 @@
                             </td>
                             <td>
                                 @if(isset($lastest_odd['ah1st']))
+                                    <?php
+                                    $class=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd['ah1st'],$old_odd['ah1st'])
+                                    ?>
                                     <div title="{{Lang::get('match.home')}}"
-                                         class="text-center bold-text">{{$lastest_odd['ah1st']['home']}}</div>
+                                         class="text-center bold-text {{$class['home']}}">{{$lastest_odd['ah1st']['home']}}</div>
                                     <div title="{{Lang::get('match.away')}}"
-                                         class="text-center bold-text">{{$lastest_odd['ah1st']['away']}}</div>
+                                         class="text-center bold-text {{$class['away']}}">{{$lastest_odd['ah1st']['away']}}</div>
                                     <div>&nbsp;</div>
                                 @else
                                     <div>&nbsp;</div>
@@ -202,10 +220,13 @@
                             </td>
                             <td>
                                 @if(isset($lastest_odd['ou1st']))
+                                    <?php
+                                    $class=\App\Libraries\StringHelper::getIndicatorClass($lastest_odd['ou1st'],$old_odd['ou1st'])
+                                    ?>
                                     <div title="{{Lang::get('match.over')}}"
-                                         class="text-center bold-text">{{$lastest_odd['ou1st']['home']}}</div>
+                                         class="text-center bold-text {{$class['home']}}">{{$lastest_odd['ou1st']['home']}}</div>
                                     <div title="{{Lang::get('match.under')}}"
-                                         class="text-center bold-text">{{$lastest_odd['ou1st']['away']}}</div>
+                                         class="text-center bold-text {{$class['home']}}">{{$lastest_odd['ou1st']['away']}}</div>
                                     <div>&nbsp;</div>
                                 @else
                                     <div>&nbsp;</div>
@@ -215,8 +236,12 @@
                             </td>
                         @endif
                         <td>
-                            <a href="{{URL::to('/')}}/matchs/{{$match_info->reference_id}}/odd/fulltime" target="_blank"><img src="/img/inplay.gif" height="10" width="10" title="Odd Ca tran"></a>
-                            <a href="{{URL::to('/')}}/matchs/{{$match_info->reference_id}}/odd/hafttime" target="_blank"><img src="/img/today.gif" height="10" width="10" title="Odd Hiep 1"></a>
+                            <a href="{{URL::to('/')}}/matchs/{{$match_info->reference_id}}/odd/fulltime"
+                               target="_blank"><img src="/img/inplay.gif" height="10" width="10"
+                                                    title="Odd Ca tran"></a>
+                            <a href="{{URL::to('/')}}/matchs/{{$match_info->reference_id}}/odd/hafttime"
+                               target="_blank"><img src="/img/today.gif" height="10" width="10"
+                                                    title="Odd Hiep 1"></a>
                         </td>
                     </tr>
                 @endforeach
