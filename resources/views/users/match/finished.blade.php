@@ -146,3 +146,4 @@
         </tr>
     @endif
     </tbody>
+</table>
