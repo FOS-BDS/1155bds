@@ -32,6 +32,7 @@
                     </td>
                 </tr>
                 @foreach($league_matchs as $match_info)
+
                     <tr id="{{$match_info->reference_id}}">
                         <td style="width: 30px;">
                             <div class="text-center bold-text">{{$match_info->start_date}}</div>

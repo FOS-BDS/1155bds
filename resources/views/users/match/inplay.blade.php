@@ -47,7 +47,7 @@
                             @elseif($match_info->time==-3)
                                 <div class="text-center">FT</div>
                             @else
-                                <div class="text-center">{{$match_info->time}}
+                                <div class="text-center">{{intval($match_info->time)+1}}
                                     <image src="{{URL::to('/')}}/img/in.gif" border="0"/>
                                 </div>
                                 @endif

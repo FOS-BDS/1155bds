@@ -15,6 +15,8 @@ class Constants
 
     const ONTIME_KEY='i-ots';
     const OFFTIME_KEY='ot';
+    const ONTIME_US_KEY='us';
+    const OFFTIME_IR_KEY='ir';
 
     const TIME_PRE_MATCH=-1;
     const TIME_HT=-2;
@@ -70,5 +72,7 @@ class Constants
     const MATCH_STATUS_NOT_STARTED=0;
     const MATCH_STATUS_FT=-1;
 
-    const OFFSET_TIME=11;
+    const OFFSET_TIME_11H=11;
+    const OFFSET_TIME_7H=7;
+    const OFFSET_TIME_4H=4;
 }

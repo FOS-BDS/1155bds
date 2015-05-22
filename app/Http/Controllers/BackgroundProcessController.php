@@ -74,7 +74,9 @@ class BackgroundProcessController extends BaseController {
                     }
                     $cache_dao->update(array('_id'=>$version_cache['_id']),$version_cache);
                 } else {
-                    Log::error("Nothing to process,result:".$result);
+                    if($result!="{}") {
+                        Log::error("Nothing to process,result:".$result);
+                    }
                 }
             }
         } catch(Exception $e) {
@@ -82,12 +84,14 @@ class BackgroundProcessController extends BaseController {
         }
 
     }
+    public function getOddVersion() {
+        Log::info("reload odd version");
+        $this->getFirstTimeVersion();
+    }
     private function getFirstTimeVersion() {
         $link="http://sb.v9bet.com/vi-vn/OddsService/GetOdds?_=".(time()*1000)."&sportId=1&programmeId=0&pageType=1&uiBetType=am&displayView=2&oddsType=2&sortBy=1&isFirstLoad=true&MoreBetEvent=null";
-        Log::info($link);
-        $result=$this->curlGet($link);
 
-        Log::info("Result:".$result);
+        $result=$this->curlGet($link);
 
         $intime_version=0;
         $offtime_version=0;
@@ -111,9 +115,9 @@ class BackgroundProcessController extends BaseController {
                 return;
             }
         }
-
         $cache_dao=new CacheDAO();
-        $cache_dao->insert(array('intime_v'=>$intime_version,'offtime_v'=>$offtime_version,'type'=>Constants::CACHE_ODDS_VERSION));
+        $cache=array('intime_v'=>$intime_version,'offtime_v'=>$offtime_version,'type'=>Constants::CACHE_ODDS_VERSION);
+        $cache_dao->update(array('type'=>Constants::CACHE_ODDS_VERSION),$cache,array('upsert'=>true));
     }
     function curlGet($URL) {
         session_start();

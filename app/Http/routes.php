@@ -22,13 +22,18 @@ Route::get('/', 'WelcomeController@index');
 Route::get('/cron/match/v9bet/{in_time}','BackgroundProcessController@cronGetMatchData');
 Route::get('/cron/match/matchedOdds','Data\MatchController@getMatchedMatch');
 Route::get('/cron/match/matchedNewOdds','Data\MatchController@getMatchedMatchFromNewOdd');
+Route::get('/cron/oddversion','BackgroundProcessController@getOddVersion');
 Route::get('/cron','BackgroundProcessController@cron');
 
 /////// END OF CRON ///////////////
 
 
 Route::get('testInput', 'HomeController@testInput');
-Route::get('home', 'HomeController@index');
+//Route::get('home', 'HomeController@index');
+
+Route::get('home',function() {
+    echo date('Y-m-d h:i:s');
+} );
 
 /* Admin */
 Route::get('admin/rules', 'Admin\RulesController@rules');
@@ -51,6 +56,10 @@ Route::get('/matchs/{reference_id}/odd/{type}/data','Data\OddController@getOddDa
 Route::get('admin/manages','Admin\LogController@manages');
 Route::get('admin/manages/searchLogs','Admin\LogController@searchLogs');
 Route::post('admin/manages/deleteLogs','Admin\LogController@deleteLogs');
+// end logs
+Route::get('admin/manages/sounds','Admin\SoundController@manageSounds');
+Route::post('sounds/insert','Admin\SoundController@insertSound');
+Route::get('sounds/allSounds','Admin\SoundController@allSounds');
 
 /* End Admin */
 

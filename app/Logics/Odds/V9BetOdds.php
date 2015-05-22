@@ -102,8 +102,4 @@ class V9BetOdds extends OddServiceBase {
             return floatval($str_val);
         }
     }
-    private function getMatchedMatchWithNewOdds($new_odds) {
-        $ruleDao=new RuleDAO();
-        $condition_cur=$ruleDao->find(array());
-    }
 }

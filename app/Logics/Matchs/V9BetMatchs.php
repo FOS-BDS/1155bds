@@ -23,14 +23,20 @@ class V9BetMatchs extends MatchDataServiceBase {
     public function processData($data=null)
     {
         $ontime_cache=$this->getOntimecache();
-        $data_json=json_decode($data);
-        $data_json=(array)$data_json;
         $is_ontime=true;
         $version=-1;
+        $matchDao=new MatchDAO();
+        $data_json=json_decode($data);
+        $data_json=(array)$data_json;
+
         if(array_key_exists(Constants::ONTIME_KEY,$data_json)) {
             $match_data=$data_json[Constants::ONTIME_KEY];
 
             if(count($match_data)==0) {
+                $matchDao->update(
+                    array('reference_id'=>array('$in'=>$ontime_cache->matchs)),
+                    array('$set'=>array('status'=>-1)),
+                    array('multi'=>true));
                 $ontime_cache->matchs=array();
                 $this->updateOntimeCache($ontime_cache);
                 return $version;
@@ -42,6 +48,26 @@ class V9BetMatchs extends MatchDataServiceBase {
             $match_data=$data_json[Constants::OFFTIME_KEY];
             $is_ontime=false;
             $version=$match_data->v;
+        } elseif(array_key_exists(Constants::ONTIME_US_KEY,$data_json)) {
+            $us_object=$data_json[Constants::ONTIME_US_KEY];
+            $us_object=$us_object[0];
+            $version=$us_object->v;
+            $d=$us_object->d;
+            if(count($d)==0) {
+                // al matchs are finished
+                $matchDao->update(
+                    array('reference_id'=>array('$in'=>$ontime_cache->matchs)),
+                    array('$set'=>array('status'=>-1)),
+                    array('multi'=>true));
+                $ontime_cache->matchs=array();
+                $this->updateOntimeCache($ontime_cache);
+            }
+            return $version;
+        } elseif(array_key_exists(Constants::OFFTIME_IR_KEY,$data_json)) {
+            $ir_object=$data_json[Constants::OFFTIME_IR_KEY];
+            //$ir_object=$ir_object[0];
+            $version=$ir_object->v;
+            return $version;
         }
         if(!isset($match_data)||!isset($match_data->egs))
         {
@@ -124,7 +150,7 @@ class V9BetMatchs extends MatchDataServiceBase {
 
 
 
-        $matchDao=new MatchDAO();
+
         $match_ids=array_keys($new_matchs);
 
         $match_cur=$matchDao->find(array('reference_id'=>array('$in'=>$match_ids)));
@@ -159,7 +185,7 @@ class V9BetMatchs extends MatchDataServiceBase {
 
         // update FT match status
         $fulltime_match_ids=array_diff($ontime_cache->matchs,$match_ids);
-        $matchDao->update(array('reference_id'=>array('$in'=>array_values($fulltime_match_ids))),array('$set'=>array('status'=>-1)));
+        $matchDao->update(array('reference_id'=>array('$in'=>array_values($fulltime_match_ids))),array('$set'=>array('status'=>-1)),array('multi'=>true));
 
         // update ontime cache
         if($is_ontime) {
@@ -201,7 +227,7 @@ class V9BetMatchs extends MatchDataServiceBase {
             $current_time->setDate(intval($year),intval($dates[1]),intval($dates[0]));
             $current_time->setTime(intval($time[0]),intval($time[1]));
 
-            $current_time->add(new \DateInterval("PT".Constants::OFFSET_TIME."H"));
+            $current_time->add(new \DateInterval("PT".Constants::OFFSET_TIME_4H."H"));
 
             $timestamp=$current_time->getTimestamp();
             return new \MongoDate($timestamp);
@@ -227,7 +253,7 @@ class V9BetMatchs extends MatchDataServiceBase {
             return intval($time[0]);
         } else {
             $time= explode(":",$time);
-            $hour=intval($time[0])+Constants::OFFSET_TIME;
+            $hour=intval($time[0])+Constants::OFFSET_TIME_11H;
             $minute=intval($time[1]);
             $hour=$hour>=24?$hour-24:$hour;
             return $hour.":".$minute;
