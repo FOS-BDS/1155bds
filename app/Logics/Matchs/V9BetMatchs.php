@@ -162,9 +162,9 @@ class V9BetMatchs extends MatchDataServiceBase {
             if($is_ontime==true) {
                 // skip start date when match is running
                 $new_match_obj->start_date=$match_obj->start_date;
-                $new_match_obj->newest_odd=$match_obj->newest_odd;
-                $new_match_obj->old_odd=$match_obj->old_odd;
             }
+            $new_match_obj->newest_odd=$match_obj->newest_odd;
+            $new_match_obj->old_odd=$match_obj->old_odd;
 
             $matchDao->update(array('reference_id'=>$match_obj->reference_id),$new_match_obj);
 
