@@ -264,7 +264,7 @@ class V9BetMatchs extends MatchDataServiceBase {
         // get all finale edited data
         $ruleDao=new RuleDAO();
         $final_rule_cur=$ruleDao->find(
-            array('needed_update'=>false,'status'=>Constants::STATUS_MAIN));
+            array('needed_update'=>true,'status'=>Constants::STATUS_MAIN));
 
         do {
             $final_rule_cur->next();
