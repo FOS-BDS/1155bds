@@ -10,6 +10,7 @@ namespace App\Logics\Matchs;
 
 
 use App\DAO\CacheDAO;
+use App\DAO\MatchedMatchsDAO;
 use App\DAO\RuleDAO;
 use App\Libraries\Constants;
 use App\Libraries\InputHelper;
@@ -263,7 +264,7 @@ class V9BetMatchs extends MatchDataServiceBase {
         // get all finale edited data
         $ruleDao=new RuleDAO();
         $final_rule_cur=$ruleDao->find(
-            array('needed_update'=>true,'status'=>Constants::STATUS_MAIN));
+            array('needed_update'=>false,'status'=>Constants::STATUS_MAIN));
 
         do {
             $final_rule_cur->next();
@@ -272,9 +273,36 @@ class V9BetMatchs extends MatchDataServiceBase {
             $current=(object)$current;
             $rule=new Rules();
             $rule->initFromDBObject($current);
-            $rule->process();
+            $matched_matchs=$rule->process();
+
+            $this->updateUserMatchedMatch($rule,$matched_matchs);
 
         } while($final_rule_cur->hasNext());
+    }
+    private function updateUserMatchedMatch($rule,$matched_matchs) {
+        $exist=MatchedMatchsDAO::getInstance()->find(array(
+            'match_id'=>array('$in'=>$matched_matchs),
+            'color_lever'=>array('$gt'=>$rule->color_lever),
+            'user_id'=>$rule->user_id),
+            array('match_id'));
+        $existing_matchs=array();
+        do {
+            $exist->next();
+            $current_obj=$exist->current();
+            if($current_obj==null) break;
+            $current_obj=(object)$current_obj;
+            $existing_matchs[]=$current_obj->match_id;
+
+        } while($exist->hasNext());
+
+        $matched_matchs=array_diff($matched_matchs,$existing_matchs);
+
+        foreach ($matched_matchs as $match_id) {
+            MatchedMatchsDAO::getInstance()->update(
+                array('match_id'=>$match_id,'user_id'=>$rule->user_id),
+                array('match_id'=>$match_id,'color_lever'=>$rule->color_lever,'user_id'=>$rule->user_id),
+                array('upsert'=>true));
+        }
     }
     public function getMatchedMatchFromNewOdd() {
         $cacheDao=new CacheDAO();

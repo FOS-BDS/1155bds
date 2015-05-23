@@ -39,6 +39,8 @@ class Rules extends ModelBase {
     public $status;
     public $type;
     public $rule_color;
+    public $user_id;
+    public $color_lever=0;
 
     /**
      * @var bool
@@ -81,6 +83,7 @@ class Rules extends ModelBase {
         $this->parent_rules=$db_object->parent_rules;
         $this->match_matched=$db_object->match_matched;
         $this->matched_md5=$db_object->matched_md5;
+        $this->user_id=$db_object->user_id;
 
         if($db_object->type==Constants::TYPE_CONDITION) {
             $this->field=$db_object->field;
