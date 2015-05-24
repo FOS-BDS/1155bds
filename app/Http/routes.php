@@ -23,6 +23,9 @@ Route::get('/cron/match/v9bet/{in_time}','BackgroundProcessController@cronGetMat
 Route::get('/cron/match/matchedOdds','Data\MatchController@getMatchedMatch');
 Route::get('/cron/match/matchedNewOdds','Data\MatchController@getMatchedMatchFromNewOdd');
 Route::get('/cron/oddversion','BackgroundProcessController@getOddVersion');
+
+// clean logs every 24h
+Route::get('/cron/log/clean','LogController@clean');
 Route::get('/cron','BackgroundProcessController@cron');
 
 /////// END OF CRON ///////////////

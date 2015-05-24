@@ -65,4 +65,7 @@ namespace App\Http\Controllers;
                 throw new \Exception($e->getMessage());
             }
         }
+        public function clean() {
+            LogDAO::getInstance()->remove();
+        }
     }

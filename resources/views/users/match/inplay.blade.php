@@ -1,3 +1,21 @@
+<?php
+use Illuminate\Support\Facades\URL;
+$new_ids = array_keys($matched_matchs);
+if (isset($_COOKIE['match_ids'])) {
+    $reported_ids = $_COOKIE['match_ids'];
+    $reported_ids = json_decode($reported_ids);
+
+    $diff = array_diff($new_ids, $reported_ids);
+
+    if (count($diff) > 0) {
+
+        $myAudioFile = URL::to("/") . "/audio/notification.mp3";
+        echo '<video controls autoplay name="media" hidden="true"><source src="' . $myAudioFile . '" type="audio/mpeg"></video>';
+
+    }
+}
+setcookie('match_ids', json_encode($new_ids), time() + (86400 * 30));
+?>
 <table class="table table-striped table-bordered table-hover table-responsive">
     <thead class="bg-olive">
     <tr>
