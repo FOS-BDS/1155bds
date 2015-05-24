@@ -35,6 +35,13 @@
                                 class="fl tle-txt">{{$leagues[$league_id]->name}}</span></td>
                 </tr>
                 @foreach($league_matchs as $match_info)
+                    <?php
+                            if(isset($matched_matchs[$match_info->_id->__toString()])) {
+                                $row_class="background-color: #ffff00;";
+                            } else {
+                                $row_class="";
+                            }
+                    ?>
                     <tr id="{{$match_info->reference_id}}">
                         <td style="width: 30px;">
                             <div class="text-center bold-text text-green">{{$match_info->h_goal}}
@@ -54,7 +61,7 @@
 
                                         <!--Hide Date when it is Today-->
                         </td>
-                        <td class="evt-col r-bdr">
+                        <td class="evt-col r-bdr" style="{{$row_class}}">
                             <div>
                                 <div>
                                     <span class="h_team team-better">

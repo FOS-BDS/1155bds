@@ -140,7 +140,6 @@ class Rules extends ModelBase {
      * @return array
      */
     public function process($newest_odds=array(),$update_parent=false) {
-        Log::info("Run Process");
         if($this->needed_update) {
             $oddDAO=new OddDAO();
             $match_matched=array();
@@ -181,11 +180,12 @@ class Rules extends ModelBase {
             }
             asort($match_matched);
             asort($this->match_matched);
+            // value changed
+            //1- update this object
+            $ruleDao=new RuleDAO();
+            $ruleDao->update(array('_id'=>$this->id),array('$set'=>array('needed_update'=>false,'match_matched'=>array_values($match_matched))));
+
             if(md5(json_encode($this->match_matched))!=md5(json_encode($match_matched))) {
-                // value changed
-                //1- update this object
-                $ruleDao=new RuleDAO();
-                $ruleDao->update(array('_id'=>$this->id),array('$set'=>array('needed_update'=>false,'match_matched'=>array_values($match_matched))));
                 // update for all parent
                 if($update_parent) {
                     $this->notifyChangeParent();

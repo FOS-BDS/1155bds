@@ -56,7 +56,7 @@ class RuleDAO extends CollectionBase {
                     );
                 }
                 $rule->condition_values = $params['condition_values'];
-                $rule->odd_type = intval($params['odd_type']);
+                $rule->odd_type = $params['odd_type'];
             }
             $rule->name = $params['name'];
             $rule->user_id = Session::get('user._id');

@@ -46,7 +46,12 @@ Route::get('admin/rules/validate', 'Admin\RulesController@checkValid');
 
 
 /* Match */
-Route::get('/matchs','Data\MatchController@getMatchView');
+Route::get('/matchs',
+    [
+        'uses'=>'Data\MatchController@getMatchView',
+        'middleware'=>['auth']
+    ]
+    );
 Route::get('/matchs/data','Data\MatchController@getMatchData');
 
 Route::get('/matchs/{reference_id}/odd/{type}','Data\OddController@getOddView');
